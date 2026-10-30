@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Red Mango</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000;
+color:white;
+padding:20px;
+max-width:900px;
+margin:auto;
+}
+
+h1{
+font-size:3rem;
+font-weight:800;
+}
+
+.orange{
+color:#ff7b00;
+}
+
+p{
+color:#aaa;
+line-height:1.7;
+}
+
+.card{
+background:#0d0d0d;
+border:1px solid #222;
+border-radius:20px;
+padding:25px;
+margin-top:25px;
+}
+
+.btn{
+display:inline-block;
+padding:18px 40px;
+border-radius:15px;
+text-decoration:none;
+font-weight:bold;
+font-size:1.1rem;
+margin-top:20px;
+border:none;
+cursor:pointer;
+}
+
+.donate-btn{
+background:linear-gradient(90deg,#9945ff,#14f195);
+color:white;
+}
+
+.play-btn{
+background:#111;
+border:1px solid #333;
+color:white;
+margin-left:10px;
+}
+
+.progress-bar{
+width:100%;
+height:18px;
+background:#1a1a1a;
+border-radius:50px;
+overflow:hidden;
+margin-top:20px;
+}
+
+.progress-fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#ff8800,#14f195);
+transition:width .8s ease;
+}
+
+.wallet-box{
+background:#060606;
+border:1px solid #222;
+padding:20px;
+border-radius:15px;
+word-break:break-all;
+margin-top:15px;
+}
+
+.copy-btn{
+width:100%;
+padding:15px;
+margin-top:15px;
+background:#181818;
+border:1px solid #333;
+color:white;
+border-radius:12px;
+cursor:pointer;
+}
+
+.copy-btn:hover{
+background:#202020;
+}
+
+.roadmap-item{
+padding:12px;
+border-left:3px solid #ff7b00;
+margin:10px 0;
+background:#101010;
+}
+
+.goal{
+font-size:2rem;
+font-weight:bold;
+margin-top:15px;
+}
+
+.status{
+margin-top:10px;
+color:#14f195;
+font-size:.9rem;
+}
+
+footer{
+text-align:center;
+margin-top:50px;
+color:#666;
+}
+
+@media(max-width:600px){
+
+h1{
+font-size:2.2rem;
+}
+
+.btn{
+display:block;
+width:100%;
+text-align:center;
+}
+
+.play-btn{
+margin-left:0;
+margin-top:12px;
+}
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>
+Support the mission.<br>
+<span class="orange">Fuel the future.</span>
+</h1>
+
+<p style="margin-top:20px;">
+The Red Mango is a community-driven Solana project focused on building
+entertaining experiences, growing a strong community and eventually
+developing The Red Mango ecosystem.
+</p>
+
+<p style="margin-top:20px;">
+Every contribution helps support development, branding, community growth,
+marketing, hosting costs and future expansion of the project.
+</p>
+
+<button class="btn donate-btn" onclick="donate()">
+🥭 Donate SOL
+</button>
+
+<a href="game.html" class="btn play-btn">
+🎮 Play Mango Bird
+</a>
+
+<div class="card">
+
+<h3>FUNDING PROGRESS</h3>
+
+<div class="goal">
+<span id="raised">0.00</span> / 10 SOL
+</div>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+
+<p style="margin-top:15px;">
+Tracking live wallet balance on Solana.
+</p>
+
+<div class="status" id="status">
+Loading wallet balance...
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>ABOUT THE PROJECT</h3>
+
+<p style="margin-top:15px;">
+The Red Mango aims to build a recognisable community around creativity,
+gaming and crypto culture.
+</p>
+
+<p style="margin-top:15px;">
+Funding helps support:
+</p>
+
+<ul style="margin-top:15px;padding-left:20px;color:#aaa;">
+<li>Website development</li>
+<li>Community growth</li>
+<li>Marketing campaigns</li>
+<li>Brand expansion</li>
+<li>Mango Bird development</li>
+<li>Future ecosystem features</li>
+</ul>
+
+</div>
+
+<div class="card">
+
+<h3>ROADMAP</h3>
+
+<div class="roadmap-item">
+✅ Website Launch
+</div>
+
+<div class="roadmap-item">
+✅ Community Building
+</div>
+
+<div class="roadmap-item">
+🔄 Funding Goal
+</div>
+
+<div class="roadmap-item">
+🚀 Future Ecosystem Development
+</div>
+
+<div class="roadmap-item">
+📈 Marketing Expansion
+</div>
+
+<div class="roadmap-item">
+🌍 Worldwide Community Growth
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>WALLET ADDRESS</h3>
+
+<div class="wallet-box" id="wallet">
+79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD
+</div>
+
+<button class="copy-btn" onclick="copyWallet()">
+Copy Address
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>FOLLOW</h3>
+
+<p style="margin-top:15px;">
+<a
+href="https://x.com/the\_redmango?s=11"
+target="_blank"
+style="color:#14f195;text-decoration:none;">
+𝕏 @the_redmango
+</a>
+</p>
+
+</div>
+
+<footer>
+The Red Mango • Built on Solana
+</footer>
+
+<script>
+
+const WALLET =
+"79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD";
+
+const GOAL = 10;
+
+async function updateBalance(){
+
+try{
+
+const response = await fetch(
+"https://api.mainnet-beta.solana.com",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+jsonrpc:"2.0",
+id:1,
+method:"getBalance",
+params:[WALLET]
+})
+}
+);
+
+const data = await response.json();
+
+const lamports =
+data.result?.value || 0;
+
+const sol =
+lamports / 1000000000;
+
+document.getElementById("raised")
+.innerText =
+sol.toFixed(2);
+
+const percent =
+Math.min(
+(sol / GOAL) * 100,
+100
+);
+
+document.getElementById(
+"progressFill"
+).style.width =
+percent + "%";
+
+document.getElementById(
+"status"
+).innerText =
+"Live balance updated";
+
+}
+catch(error){
+
+console.error(error);
+
+document.getElementById(
+"status"
+).innerText =
+"Unable to load wallet balance";
+
+}
+
+}
+
+function copyWallet(){
+
+const wallet =
+document.getElementById(
+"wallet"
+).innerText.trim();
+
+navigator.clipboard
+.writeText(wallet)
+.then(()=>{
+alert("Wallet copied!");
+})
+.catch(()=>{
+prompt(
+"Copy wallet address:",
+wallet
+);
+});
+
+}
+
+function donate(){
+
+copyWallet();
+
+alert(
+"Wallet address copied. Send SOL to support The Red Mango."
+);
+
+}
+
+updateBalance();
+
+setInterval(
+updateBalance,
+30000
+);
+
+</script>
+
+</body>
+</html>
