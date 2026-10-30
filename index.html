@@ -23,9 +23,6 @@
       --green:#20f2a1;
       --green-2:#6ce8bc;
       --red:#ff6d6d;
-      --light-card:#d7d7d7;
-      --light-text:#111;
-      --light-muted:#4a4a4a;
       --shadow:rgba(0,0,0,0.28);
     }
 
@@ -715,7 +712,7 @@
     .help-text{
       margin-top:10px;
       font-size:0.8rem;
-      color:var(--light-muted);
+      color:#4d4d4d;
       display:flex;
       align-items:center;
       gap:8px;
@@ -729,14 +726,28 @@
       display:inline-block;
     }
 
-    .status-line{
+    .checkbox-row{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-size:0.82rem;
-      color:var(--muted);
+      gap:10px;
+      margin-top:10px;
+      color:#1b1b1b;
+      font-size:0.88rem;
+      font-weight:700;
+    }
+
+    .checkbox-row input{
+      width:16px;
+      height:16px;
+      accent-color:#1f9f5f;
+    }
+
+    .success{
+      display:none;
+      color:#0d7d43;
+      font-weight:800;
       margin-top:12px;
+      font-size:0.88rem;
     }
 
     @media (max-width:920px){
@@ -900,7 +911,7 @@
       <div class="donate-visual">
         <div class="donation-chip">Donation Drive</div>
         <h4>Fast donation flow</h4>
-        <p>Click donate, send through Phantom, then come back and confirm once it’s sent.</p>
+        <p>Enter the amount, send through Phantom, then return and confirm after sending.</p>
       </div>
 
       <div class="light-donate-card">
@@ -918,14 +929,18 @@
           <button class="light-action primary" id="sendBtn" type="button">Send via Phantom</button>
         </div>
 
+        <label class="checkbox-row">
+          <input id="sentCheckbox" type="checkbox" />
+          <span>I sent SOL</span>
+        </label>
+
         <div class="light-actions">
-          <button class="light-action" id="cancelTotalBtn" type="button">I sent SOL</button>
-          <button class="light-action primary" id="addToTotalBtn" type="button">Add to total</button>
+          <button class="light-action" id="addToTotalBtn" type="button">Add to total</button>
         </div>
 
         <div class="help-text">
           <span class="help-dot"></span>
-          <span>Send via Phantom, then confirm after sending.</span>
+          <span>Open Phantom, send the SOL, then confirm here.</span>
         </div>
 
         <div id="successMsg" class="success">Donation added to total.</div>
@@ -1068,7 +1083,7 @@
         <div class="wallet-card">
           <div class="label">Donation Instructions</div>
           <div class="value">
-            Send SOL to the wallet above. After you send it, return and click “Add to total.”
+            Send SOL to the wallet above. After you send it, return and check the box to confirm.
           </div>
         </div>
       </div>
@@ -1099,6 +1114,7 @@
 
     const amountInput = document.getElementById("amountInput");
     const successMsg = document.getElementById("successMsg");
+    const sentCheckbox = document.getElementById("sentCheckbox");
 
     function getStoredRaised() {
       let value = Number(localStorage.getItem("redMangoRaised"));
@@ -1160,6 +1176,11 @@
         return;
       }
 
+      if (!sentCheckbox.checked) {
+        alert("Please check the box that says you sent SOL.");
+        return;
+      }
+
       const current = getStoredRaised();
       const next = Number((current + val).toFixed(2));
       localStorage.setItem("redMangoRaised", String(next));
@@ -1172,6 +1193,7 @@
 
       updateProgress();
       amountInput.value = "";
+      sentCheckbox.checked = false;
     }
 
     document.getElementById("sendBtn").addEventListener("click", () => openPhantom(amountInput.value));
@@ -1181,11 +1203,7 @@
 
     document.getElementById("cancelBtn").addEventListener("click", () => {
       amountInput.value = "";
-    });
-
-    document.getElementById("cancelTotalBtn").addEventListener("click", () => {
-      amountInput.value = "";
-      successMsg.style.display = "none";
+      sentCheckbox.checked = false;
     });
 
     document.getElementById("addToTotalBtn").addEventListener("click", addToTotal);
