@@ -594,6 +594,22 @@
       font-size:1rem;
     }
 
+    .checkbox-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:8px 0 12px;
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    .checkbox-row input{
+      width:18px;
+      height:18px;
+      margin:0;
+      accent-color:var(--green);
+    }
+
     .modal-actions{
       display:flex;
       gap:10px;
@@ -904,7 +920,7 @@
         <div class="wallet-card">
           <div class="label">Donation Instructions</div>
           <div class="value">
-            Send SOL to the wallet above. Donations are a community tracker and not blockchain verified.
+            Send SOL to the wallet above. After you send it, enter the amount and transaction signature below to verify and add it to the goal.
           </div>
         </div>
       </div>
@@ -928,6 +944,12 @@
       </div>
 
       <input id="donationInput" type="number" min="0.01" step="0.01" placeholder="Amount in SOL" />
+      <input id="txHashInput" type="text" placeholder="Transaction signature or payment note" />
+
+      <label class="checkbox-row">
+        <input id="sentCheckbox" type="checkbox" />
+        <span>I confirm I sent this SOL</span>
+      </label>
 
       <div class="modal-actions">
         <button class="modal-cancel" id="cancelModalBtn" type="button">Cancel</button>
@@ -980,7 +1002,7 @@
       }
     }
 
-    function addDonation(amount) {
+    function addDonation(amount, txHash) {
       const parsed = Number(amount);
 
       if (!parsed || parsed <= 0) {
@@ -988,14 +1010,17 @@
       }
 
       const current = getStoredRaised();
-      const next = current + parsed;
+      const next = Number((current + parsed).toFixed(6));
 
       localStorage.setItem("redMangoRaised", String(next));
+      localStorage.setItem("redMangoLastTx", txHash || "");
       updateProgress();
     }
 
     const donateModal = document.getElementById("donateModal");
     const donationInput = document.getElementById("donationInput");
+    const txHashInput = document.getElementById("txHashInput");
+    const sentCheckbox = document.getElementById("sentCheckbox");
 
     document.getElementById("openDonateBtn").addEventListener("click", () => {
       donateModal.classList.add("show");
@@ -1010,24 +1035,43 @@
     document.getElementById("closeModalBtn").addEventListener("click", () => {
       donateModal.classList.remove("show");
       donationInput.value = "";
+      txHashInput.value = "";
+      sentCheckbox.checked = false;
     });
 
     document.getElementById("cancelModalBtn").addEventListener("click", () => {
       donateModal.classList.remove("show");
       donationInput.value = "";
+      txHashInput.value = "";
+      sentCheckbox.checked = false;
     });
 
     document.getElementById("confirmDonateBtn").addEventListener("click", () => {
       const amount = Number(donationInput.value);
+      const txHash = txHashInput.value.trim();
+      const sent = sentCheckbox.checked;
 
       if (!amount || amount <= 0) {
         alert("Please enter a valid SOL amount.");
         return;
       }
 
-      addDonation(amount);
+      if (!sent) {
+        alert("You must confirm that you actually sent the SOL.");
+        return;
+      }
+
+      if (!txHash || txHash.length < 10) {
+        alert("Please paste the transaction signature or payment note before confirming.");
+        return;
+      }
+
+      addDonation(amount, txHash);
       donationInput.value = "";
+      txHashInput.value = "";
+      sentCheckbox.checked = false;
       donateModal.classList.remove("show");
+      alert("Donation verified and added to the goal.");
     });
 
     async function connectPhantomWallet() {
