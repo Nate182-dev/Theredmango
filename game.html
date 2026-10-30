@@ -289,7 +289,7 @@
       font-weight:900;
       color:#fff;
       background:linear-gradient(90deg, #7f61ef, #4ad9b2);
-      box-shadow:0 12px 22px rgba(64,64,80,0.25);
+      box-shadow:0 12px 22px rgba(35, 36, 42, 0.25);
     }
 
     @media (max-width:430px){
@@ -361,15 +361,15 @@
       over: false,
       score: 0,
       best: storedHigh,
-      gravity: 0.48,
-      lift: -7.6,
+      gravity: 0.62,
+      lift: -8.9,
       birdX: 110,
       birdY: 220,
       birdRadius: 16,
       velocity: 0,
-      pipeWidth: 64,
-      pipeGap: 170,
-      pipeSpeed: 2.7,
+      pipeWidth: 62,
+      pipeGap: 140,
+      pipeSpeed: 3.25,
       spawnTimer: 0,
       pipes: [],
       cloudOffset: 0,
@@ -432,11 +432,11 @@
       state.velocity += state.gravity;
       state.birdY += state.velocity;
 
-      const speedBoost = Math.min(3.6, 2.7 + state.score * 0.12);
+      const speedBoost = Math.min(6.2, 3.25 + state.score * 0.22);
       state.pipeSpeed = speedBoost;
 
       state.spawnTimer += 1;
-      if (state.spawnTimer >= 90) {
+      if (state.spawnTimer >= 76) {
         createPipe();
         state.spawnTimer = 0;
       }
@@ -469,7 +469,7 @@
         const hitsTop = birdTop < topBottom;
         const hitsBottom = birdBottom > bottomTop;
 
-        if (hitsX && (hitsTop || hitsBottom)) {
+        if (hitsX && (hitsTop || intersectsBottom)) {
           state.over = true;
           state.running = false;
           updateBest();
@@ -494,7 +494,6 @@
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // clouds
       ctx.fillStyle = "rgba(255,255,255,0.55)";
       for (let i = 0; i < 8; i++) {
         const x = ((i * 80) - (state.cloudOffset % 80)) + 24;
@@ -506,18 +505,16 @@
         ctx.arc(x + 36, y, 18, 0, Math.PI * 2);
         ctx.fill();
       }
-      state.cloudOffset += 0.6;
+      state.cloudOffset += 0.7;
 
-      // city silhouette in the distance
       ctx.fillStyle = "rgba(88,114,133,0.45)";
       const skylineY = 300;
       for (let i = 0; i < 18; i++) {
         const x = i * 26;
-        const height = 30 + ((i % 5) * 10);
-        ctx.fillRect(x, skylineY - height, 18, height);
+        const h = 30 + ((i % 5) * 10);
+        ctx.fillRect(x, skylineY - h, 18, h);
       }
 
-      // ground
       ctx.fillStyle = "#86d258";
       ctx.fillRect(0, canvas.height - 46, canvas.width, 46);
 
@@ -526,7 +523,6 @@
         ctx.fillRect(x - (state.cloudOffset * 2 % 24), canvas.height - 28, 16, 6);
       }
 
-      // green stripe / grass
       ctx.fillStyle = "#5b9f37";
       ctx.fillRect(0, canvas.height - 60, canvas.width, 14);
 
@@ -540,17 +536,14 @@
       const topHeight = pipe.topHeight;
       const bottomY = pipe.topHeight + pipe.gap;
 
-      // pipe body
       ctx.fillStyle = "#6fbf45";
       ctx.fillRect(pipe.x, 0, pipe.w, topHeight);
       ctx.fillRect(pipe.x, bottomY, pipe.w, state.groundY - bottomY);
 
-      // highlight / shading
       ctx.fillStyle = "#8bdb60";
       ctx.fillRect(pipe.x + 8, 0, 7, topHeight);
       ctx.fillRect(pipe.x + 8, bottomY, 7, state.groundY - bottomY);
 
-      // caps
       ctx.fillStyle = "#5aa73e";
       ctx.fillRect(pipe.x - 8, topHeight - 18, pipe.w + 16, 18);
       ctx.fillRect(pipe.x - 8, bottomY, pipe.w + 16, 18);
@@ -559,7 +552,6 @@
       ctx.fillRect(pipe.x + 8, topHeight - 18, pipe.w - 16, 8);
       ctx.fillRect(pipe.x + 8, bottomY, pipe.w - 16, 8);
 
-      // pipe inner shadow
       ctx.fillStyle = "rgba(0,0,0,0.15)";
       ctx.fillRect(pipe.x + pipe.w - 8, 0, 8, topHeight);
       ctx.fillRect(pipe.x + pipe.w - 8, bottomY, 8, state.groundY - bottomY);
@@ -575,37 +567,31 @@
       const tilt = Math.max(-1.2, Math.min(1.2, state.velocity / 9));
       ctx.rotate(tilt);
 
-      // body
       ctx.fillStyle = "#ff8a2f";
       ctx.beginPath();
       ctx.arc(0, 0, state.birdRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      // head highlight
       ctx.fillStyle = "#ffbf6d";
       ctx.beginPath();
       ctx.arc(-6, -7, 8, 0, Math.PI * 2);
       ctx.fill();
 
-      // left wing
       ctx.fillStyle = "#e66d00";
       ctx.beginPath();
       ctx.ellipse(-11, 5, 14, 10, -0.75, 0, Math.PI * 2);
       ctx.fill();
 
-      // right wing
       ctx.fillStyle = "#ffb24b";
       ctx.beginPath();
       ctx.ellipse(8, 8, 12, 9, 0.9, 0, Math.PI * 2);
       ctx.fill();
 
-      // eye
       ctx.fillStyle = "#0d0d0d";
       ctx.beginPath();
       ctx.arc(8, -5, 3.0, 0, Math.PI * 2);
       ctx.fill();
 
-      // beak
       ctx.fillStyle = "#ff5b00";
       ctx.beginPath();
       ctx.moveTo(17, 0);
@@ -614,11 +600,10 @@
       ctx.closePath();
       ctx.fill();
 
-      // little leaf
       ctx.fillStyle = "#20d17a";
       ctx.beginPath();
       ctx.moveTo(-12, -10);
-      ctx.quadraticCurveTo(-4, -18, 4, -12);
+      ctx.quadraticCurveTo(-4, -18, 4, -13);
       ctx.quadraticCurveTo(-5, -2, -12, -10);
       ctx.fill();
 
