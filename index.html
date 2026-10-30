@@ -1,587 +1,1333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Red Mango</title>
-
-  <style>
-    :root{--bg:#070b10;--panel:#111821;--line:#2a3642;--text:#edf4f8;--muted:#a7b2bf;--soft:#8190a0;--orange:#ff8a2c;--gold:#f7c36f;--purple:#8d60ff;--green:#20f2a1}
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top left,rgba(141,96,255,0.18),transparent 24%),radial-gradient(circle at bottom right,rgba(32,242,161,0.12),transparent 22%),var(--bg);color:var(--text);line-height:1.6}
-    a{text-decoration:none}
-    .container{max-width:1200px;margin:0 auto;padding:20px 18px 80px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 0 26px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(135deg,rgba(255,138,44,0.18),rgba(141,96,255,0.18));border:1px solid rgba(255,255,255,0.06)}
-    .brand-text h2{font-size:1.08rem;font-weight:800;letter-spacing:-0.02em}
-    .brand-text p{font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
-    .nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-    .nav a{color:#d8e0ea;font-size:0.92rem;transition:0.2s ease}
-    .nav a:hover{color:#fff}
-    .wallet-btn{background:linear-gradient(90deg,var(--purple),var(--green));color:#fff;border:none;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer;box-shadow:0 14px 28px rgba(141,96,255,0.25)}
-    .hero{display:grid;grid-template-columns:1.1fr 0.9fr;gap:30px;padding:28px 0 10px;align-items:center}
-    .hero-copy h1{font-size:clamp(2.7rem,5vw,5rem);line-height:0.92;letter-spacing:-0.07em;margin-bottom:18px;font-weight:900}
-    .gradient{background:linear-gradient(90deg,var(--orange),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .hero-copy p{color:var(--muted);font-size:1.06rem;max-width:620px;margin-bottom:26px}
-    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:26px}
-    .primary-btn,.secondary-btn{display:inline-flex;align-items:center;justify-content:center;padding:16px 24px;border-radius:14px;font-weight:800;cursor:pointer;transition:transform 0.15s ease;border:none}
-    .primary-btn{background:linear-gradient(90deg,var(--purple),var(--green));color:#fff;box-shadow:0 18px 35px rgba(141,96,255,0.27)}
-    .secondary-btn{border:1px solid var(--line);background:rgba(255,255,255,0.02);color:var(--text)}
-    .primary-btn:hover,.secondary-btn:hover{transform:translateY(-1px)}
-    .stats{display:flex;flex-wrap:wrap;gap:18px}
-    .stat{min-width:140px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
-    .stat .label{color:var(--soft);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
-    .stat .value{font-size:1.4rem;font-weight:800;color:var(--text)}
-    .hero-card{background:linear-gradient(180deg,rgba(17,20,24,0.96),rgba(14,18,24,0.96));border:1px solid rgba(255,255,255,0.06);border-radius:26px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,0.28)}
-    .mini-header{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:18px}
-    .donation-box{background:#0a0d12;border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:18px}
-    .donation-amount{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}
-    .donation-amount h3{font-size:2.2rem;font-weight:900;letter-spacing:-0.06em}
-    .donation-amount span{color:var(--green);font-size:0.9rem;font-weight:700}
-    .progress-wrap{margin-top:10px}
-    .progress-bar{height:12px;background:#161b22;border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,0.05)}
-    .progress-fill{width:1%;height:100%;background:linear-gradient(90deg,var(--purple),var(--green));border-radius:inherit;transition:width 0.8s ease}
-    .goal-text{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:var(--muted);font-size:0.82rem}
-    .wallet-preview{background:#0b0d12;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-all;color:#edf2f8;margin-bottom:10px}
-    .copy-row{display:flex;gap:10px;margin-top:12px}
-    .copy-btn{flex:1;background:#1a212b;border:1px solid var(--line);border-radius:12px;color:white;padding:12px 14px;font-weight:700;cursor:pointer}
-    .copy-btn:hover{background:#212a34}
-    .success{display:none;color:#0d7d43;font-weight:800;margin-top:12px;font-size:0.88rem}
-    .section{margin-top:26px;background:rgba(17,20,24,0.92);border:1px solid var(--line);border-radius:22px;padding:24px 22px;box-shadow:0 18px 40px rgba(0,0,0,0.18)}
-    .section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-    .section-heading h3{font-size:1.45rem;letter-spacing:-0.04em;font-weight:800}
-    .pill{background:rgba(255,255,255,0.03);border:1px solid var(--line);color:var(--muted);padding:8px 12px;border-radius:999px;font-size:0.76rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700}
-    .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:22px;align-items:start}
-    .about-grid p{color:var(--muted);font-size:1rem;margin-bottom:14px}
-    .feature-list{display:grid;gap:12px}
-    .feature{display:flex;align-items:flex-start;gap:12px;background:#0b0d12;border:1px solid var(--line);border-radius:14px;padding:14px 15px}
-    .feature-icon{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,rgba(141,96,255,0.16),rgba(32,242,161,0.16));display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-    .feature h4{font-size:1rem;margin-bottom:4px}
-    .feature p{color:var(--muted);font-size:0.9rem;margin:0}
-    .roadmap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:10px}
-    .roadmap-item{background:#0b0d12;border:1px solid var(--line);border-radius:16px;padding:18px 16px;position:relative;overflow:hidden}
-    .roadmap-item::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(180deg,var(--orange),var(--green))}
-    .roadmap-item .phase{color:var(--soft);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;font-weight:700}
-    .roadmap-item h4{font-size:1.06rem;margin-bottom:10px}
-    .roadmap-item p{color:var(--muted);font-size:0.9rem}
-    .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:8px}
-    .support-card{background:#0b0d12;border:1px solid var(--line);border-radius:16px;padding:18px 16px}
-    .support-card h4{font-size:1.1rem;margin-bottom:8px}
-    .support-card p{color:var(--muted);font-size:0.9rem}
-    .wallet-box{display:grid;gap:12px;margin-top:8px}
-    .wallet-card{background:#0b0d12;border:1px solid var(--line);border-radius:16px;padding:18px 16px}
-    .wallet-card .label{color:var(--muted);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-weight:700}
-    .wallet-card .value{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.96rem;word-break:break-all;color:var(--text)}
-    .social-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
-    .social-links a{background:rgba(255,255,255,0.02);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 14px;font-weight:700}
-    .bottom-cta{margin-top:28px;background:linear-gradient(180deg,rgba(28,34,42,0.95),rgba(20,25,31,0.95));border:1px solid var(--line);border-radius:20px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 20px 40px rgba(0,0,0,0.15)}
-    .bottom-cta h4{font-size:1.1rem;font-weight:800}
-    .bottom-cta p{color:var(--muted);font-size:0.88rem}
-    .footer{padding:28px 0 0;text-align:center;color:var(--soft);font-size:0.85rem}
-    .donate-layout{display:grid;grid-template-columns:0.8fr 1fr;gap:18px;align-items:center;margin-top:30px;margin-bottom:10px}
-    .donate-visual{background:linear-gradient(135deg,rgba(141,96,255,0.12),rgba(32,242,161,0.10));border:1px solid var(--line);border-radius:20px;min-height:180px;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:10px}
-    .donate-visual h4{font-size:1.2rem;font-weight:800}
-    .donate-visual p{color:var(--muted);font-size:0.92rem}
-    .donation-chip{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:999px;padding:8px 12px;width:max-content;font-weight:800;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase}
-    .light-donate-card{background:linear-gradient(180deg,rgba(210,210,210,0.92),rgba(192,192,192,0.90));border:1px solid rgba(0,0,0,0.05);border-radius:22px;padding:20px 18px 18px;box-shadow:0 12px 30px rgba(0,0,0,0.08);color:#111}
-    .light-donate-card .header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-    .light-donate-card h3{font-size:1.6rem;font-weight:900;letter-spacing:-0.05em}
-    .light-donate-card .close{width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,0.08);position:relative;display:inline-block}
-    .light-donate-card .close::before,.light-donate-card .close::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:#111;border-radius:2px;transform-origin:center}
-    .light-donate-card .close::before{transform:translate(-50%,-50%) rotate(45deg)}
-    .light-donate-card .close::after{transform:translate(-50%,-50%) rotate(-45deg)}
-    .field{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.18);border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:0 12px;height:42px;margin-top:8px}
-    .field input{flex:1;height:100%;border:none;background:transparent;outline:none;color:#111;font-size:1rem;font-family:inherit}
-    .field input::placeholder{color:#5d5d5d}
-    .light-actions{display:flex;gap:12px;margin-top:12px}
-    .light-action{flex:1;border-radius:10px;padding:10px 12px;font-weight:700;font-size:0.92rem;cursor:pointer;background:rgba(255,255,255,0.12);border:1px solid rgba(0,0,0,0.04);color:#111}
-    .light-action.primary{background:rgba(255,255,255,0.22)}
-    .help-text{margin-top:10px;font-size:0.8rem;color:#4d4d4d;display:flex;align-items:center;gap:8px}
-    .help-dot{width:8px;height:8px;border-radius:50%;background:#20a86b;display:inline-block}
-    @media (max-width:920px){
-      .hero,.donate-layout,.about-grid{grid-template-columns:1fr}
-      .roadmap{grid-template-columns:1fr 1fr}
-      .support-grid{grid-template-columns:1fr}
-    }
-    @media (max-width:620px){
-      header{flex-direction:column;align-items:flex-start}
-      .nav{width:100%;justify-content:space-between}
-      .hero-actions{flex-direction:column;align-items:stretch}
-      .primary-btn,.secondary-btn{width:100%}
-      .roadmap{grid-template-columns:1fr}
-      .stats{grid-template-columns:1fr 1fr;display:grid}
-      .bottom-cta{flex-direction:column;align-items:flex-start}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<meta name="description" content="The Red Mango — a community-first Solana project with a bold identity, transparent wallet information, and a playful gaming side quest.">
+<title>The Red Mango — A Different Kind of Energy</title>
+<style>
+:root {
+  --bg:#080808;
+  --panel:#11100f;
+  --red:#ff3d32;
+  --orange:#ff8a35;
+  --gold:#ffd166;
+  --text:#fff8f0;
+  --muted:#b4aaa2;
+  --line:rgba(255,255,255,.10);
+  --max:1160px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:90px;
+}
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 15% 10%,#ff3d3222,transparent 34%),
+    radial-gradient(ellipse at 85% 40%,#ff8a3515,transparent 32%),
+    linear-gradient(#090807,#080808 65%);
+}
+a { color:inherit; text-decoration:none; }
+button { font:inherit; cursor:pointer; }
+::selection { background:var(--red); color:white; }
+.wrap {
+  width:min(var(--max),calc(100% - 40px));
+  margin:auto;
+}
+.gradient {
+  background:linear-gradient(105deg,#fff4db,#ffb16b 42%,#ff4238 78%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+/* Animated background */
+.ambient {
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:-1;
+}
+.orb {
+  position:absolute;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:.13;
+  animation:float 15s ease-in-out infinite alternate;
+}
+.orb.one { background:#ff3028; top:5%; left:-180px; }
+.orb.two {
+  background:#ff9a32;
+  right:-220px;
+  top:42%;
+  animation-delay:-5s;
+}
+@keyframes float {
+  from { transform:translate(0,-20px) scale(.9); }
+  to { transform:translate(80px,70px) scale(1.2); }
+}
+/* Navigation */
+.nav {
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#080808bb;
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid #ffffff12;
+}
+.navin {
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-weight:900;
+  letter-spacing:-.04em;
+  font-size:1.04rem;
+}
+.brandmark {
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  background:linear-gradient(140deg,var(--red),var(--orange));
+  display:grid;
+  place-items:center;
+  box-shadow:0 6px 28px #ff3d3233;
+  transform:rotate(-7deg);
+}
+.brandmark span {
+  font-size:20px;
+  filter:drop-shadow(0 2px 2px #802000);
+}
+.navlinks {
+  display:flex;
+  align-items:center;
+  gap:26px;
+  color:#d6cbc2;
+  font-size:.9rem;
+}
+.navlinks a { transition:color .2s; }
+.navlinks a:hover { color:var(--gold); }
+.btn,.navcta {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  border:1px solid transparent;
+  border-radius:13px;
+  padding:12px 18px;
+  font-weight:800;
+  transition:transform .2s,box-shadow .2s,background .2s;
+}
+.navcta,.btn.primary {
+  background:linear-gradient(115deg,var(--red),#ff6a32);
+  color:white;
+  box-shadow:0 8px 28px #ff3d3225;
+}
+.btn.secondary {
+  border-color:var(--line);
+  background:#ffffff09;
+  color:white;
+}
+.btn:hover,.navcta:hover {
+  transform:translateY(-3px);
+  box-shadow:0 12px 34px #ff3d3240;
+}
+.btn.secondary:hover { background:#ffffff12; }
+.menu {
+  display:none;
+  border:1px solid var(--line);
+  background:#15110f;
+  color:white;
+  border-radius:10px;
+  padding:9px 12px;
+}
+/* Hero */
+.hero {
+  min-height:650px;
+  display:grid;
+  grid-template-columns:1.06fr .94fr;
+  align-items:center;
+  gap:35px;
+  padding:80px 0 75px;
+}
+.eyebrow {
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:7px 11px;
+  border:1px solid #ff6b4c40;
+  border-radius:999px;
+  background:#ff4a2d0e;
+  color:#ffc1a5;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  font-size:.69rem;
+  font-weight:900;
+}
+.pulse {
+  width:7px;
+  height:7px;
+  background:#ff7b45;
+  border-radius:50%;
+  box-shadow:0 0 0 5px #ff7b4520;
+  animation:pulse 1.8s infinite;
+}
+@keyframes pulse {
+  50% { box-shadow:0 0 0 9px #ff7b4500; }
+}
+h1 {
+  font-size:clamp(3.4rem,7.4vw,6.7rem);
+  line-height:.91;
+  letter-spacing:-.085em;
+  margin:26px 0 24px;
+}
+.hero p {
+  color:var(--muted);
+  font-size:1.08rem;
+  max-width:590px;
+  margin:0 0 29px;
+}
+.heroactions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.trustrow {
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  margin-top:30px;
+  color:#a99d93;
+  font-size:.78rem;
+}
+.trustrow span { display:flex; align-items:center; gap:7px; }
+.tick { color:#ffb46b; }
+/* Mango illustration */
+.art {
+  position:relative;
+  min-height:440px;
+  display:grid;
+  place-items:center;
+}
+.ring {
+  position:absolute;
+  width:min(95%,440px);
+  aspect-ratio:1;
+  border:1px solid #ff6a3933;
+  border-radius:50%;
+  animation:spin 34s linear infinite;
+}
+.ring::before,.ring::after {
+  content:"";
+  position:absolute;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 24px var(--orange);
+}
+.ring::before { top:15%; left:15%; }
+.ring::after { right:8%; bottom:28%; width:6px; height:6px; background:var(--red); }
+.ring.r2 {
+  width:76%;
+  border-style:dashed;
+  border-color:#ffba6b22;
+  animation-direction:reverse;
+  animation-duration:48s;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.mango {
+  width:min(76%,330px);
+  aspect-ratio:.83;
+  position:relative;
+  display:grid;
+  place-items:center;
+  filter:drop-shadow(0 28px 45px #ff3b2a36);
+  animation:mangoFloat 5s ease-in-out infinite;
+}
+@keyframes mangoFloat {
+  0%,100% { transform:translateY(0) rotate(-3deg); }
+  50% { transform:translateY(-15px) rotate(2deg); }
+}
+.mangobody {
+  position:absolute;
+  inset:11% 8% 8%;
+  border-radius:53% 47% 51% 49% / 37% 42% 58% 63%;
+  background:linear-gradient(145deg,#ffdf62 0%,#ff9a2e 33%,#ff3b2f 72%,#a90d1d 100%);
+  transform:rotate(-12deg);
+  box-shadow:inset -20px -18px 45px #7c071d70,inset 16px 15px 35px #fff8a94a;
+}
+.mangobody::before {
+  content:"";
+  position:absolute;
+  width:22%;
+  height:38%;
+  left:19%;
+  top:12%;
+  border-radius:50%;
+  background:linear-gradient(90deg,#fff7c5aa,transparent);
+  transform:rotate(28deg);
+  filter:blur(5px);
+}
+.leaf {
+  position:absolute;
+  top:4%;
+  left:49%;
+  width:31%;
+  height:19%;
+  background:linear-gradient(140deg,#c8ef6c,#2a9d48);
+  border-radius:4% 100% 4% 100%;
+  transform:rotate(-27deg);
+  z-index:2;
+  box-shadow:inset -5px -4px 9px #164b2b55;
+}
+.leaf::after {
+  content:"";
+  position:absolute;
+  left:12%;
+  top:52%;
+  height:2px;
+  width:77%;
+  background:#e5ff9a88;
+  transform:rotate(-25deg);
+}
+.face {
+  position:relative;
+  z-index:3;
+  font-size:clamp(3rem,7vw,5.3rem);
+  font-weight:1000;
+  letter-spacing:-.1em;
+  color:#40100c;
+  text-shadow:0 2px 0 #ffcf68;
+  transform:rotate(-12deg);
+  margin-top:45px;
+}
+.spark {
+  position:absolute;
+  color:var(--gold);
+  font-size:25px;
+  animation:twinkle 2.5s ease-in-out infinite;
+}
+.s1 { top:13%; right:14%; }
+.s2 { left:9%; bottom:23%; animation-delay:.7s; }
+.s3 { right:7%; bottom:16%; font-size:16px; animation-delay:1.2s; }
+@keyframes twinkle {
+  0%,100% { opacity:.3; transform:scale(.7) rotate(0); }
+  50% { opacity:1; transform:scale(1.25) rotate(25deg); }
+}
+.floatcard {
+  position:absolute;
+  border:1px solid #ffffff18;
+  background:#13100fdd;
+  backdrop-filter:blur(14px);
+  border-radius:16px;
+  padding:12px 15px;
+  box-shadow:0 12px 35px #0006;
+  animation:cardFloat 6s ease-in-out infinite;
+}
+.floatcard strong { display:block; font-size:.9rem; }
+.floatcard small { display:block; color:#a99d93; font-size:.72rem; }
+.fc1 { top:18%; left:0; }
+.fc2 { right:-1%; bottom:18%; animation-delay:-2s; }
+@keyframes cardFloat { 50% { transform:translateY(-8px); } }
+/* Moving banner */
+.marquee {
+  border-block:1px solid var(--line);
+  background:#ffffff03;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.marqueein {
+  display:flex;
+  gap:35px;
+  width:max-content;
+  padding:16px 0;
+  animation:marquee 28s linear infinite;
+  color:#d4c1b4;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-size:.72rem;
+  font-weight:900;
+}
+.marquee b { color:var(--orange); }
+@keyframes marquee { to { transform:translateX(-50%); } }
+/* General sections */
+section { padding:100px 0; }
+.sectionhead { max-width:760px; margin-bottom:40px; }
+.kicker {
+  color:var(--orange);
+  font-size:.74rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+}
+h2 {
+  font-size:clamp(2.2rem,4.5vw,4rem);
+  line-height:1.02;
+  letter-spacing:-.065em;
+  margin:13px 0 18px;
+}
+.sectionhead p,.muted { color:var(--muted); }
+.grid3 {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.card {
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:27px;
+  background:linear-gradient(145deg,#171311d9,#0d0c0b);
+  position:relative;
+  overflow:hidden;
+  transition:transform .25s,border-color .25s;
+}
+.card:hover {
+  transform:translateY(-6px);
+  border-color:#ff754b55;
+}
+.iconbox {
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  background:linear-gradient(145deg,#ff593722,#ff9b2611);
+  border:1px solid #ff7b3430;
+  font-size:1.35rem;
+  margin-bottom:20px;
+}
+.card h3 { font-size:1.18rem; margin-bottom:9px; }
+.card p { color:var(--muted); font-size:.94rem; }
+.note {
+  margin-top:20px;
+  border:1px solid #ffb35b2a;
+  background:#ffad3b0b;
+  border-radius:15px;
+  padding:15px 18px;
+  color:#d6c2af;
+  font-size:.86rem;
+}
+/* Roadmap */
+.roadmap {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+.phase {
+  padding:24px 21px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#11100f;
+  min-height:255px;
+}
+.num { font-size:.73rem; color:var(--orange); letter-spacing:.13em; font-weight:900; }
+.phase h3 { font-size:1.12rem; margin:12px 0; }
+.phase ul { padding-left:18px; color:var(--muted); font-size:.86rem; }
+.phase li { margin:7px 0; }
+.status {
+  display:inline-block;
+  border:1px solid #ffffff16;
+  background:#ffffff06;
+  color:#c9b8aa;
+  border-radius:99px;
+  padding:5px 9px;
+  font-size:.65rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+}
+.status.planned {
+  color:#ffc07c;
+  border-color:#ffae4b38;
+  background:#ffae4b0b;
+}
+/* Wallet */
+.split { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.panel {
+  padding:30px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:linear-gradient(145deg,#171311,#0d0c0b);
+}
+.panel h3 { font-size:1.3rem; margin-bottom:12px; }
+.panel p { color:var(--muted); }
+.address {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:12px;
+  border:1px solid var(--line);
+  background:#080808;
+  border-radius:13px;
+  margin:18px 0;
+}
+.address code {
+  font-size:.82rem;
+  overflow-wrap:anywhere;
+  color:#ffd3ad;
+  flex:1;
+}
+.copy {
+  border:1px solid #ffffff1a;
+  background:#211915;
+  color:white;
+  border-radius:9px;
+  padding:8px 11px;
+  font-weight:800;
+  font-size:.78rem;
+}
+.walletstatus {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:.84rem;
+  margin:13px 0;
+}
+.dot { width:7px; height:7px; background:#a89a8d; border-radius:50%; }
+.dot.good { background:#73e4a0; box-shadow:0 0 12px #73e4a066; }
+.balance { font-size:2rem; font-weight:900; letter-spacing:-.06em; margin:7px 0; }
+.balance small { font-size:.8rem; color:var(--muted); letter-spacing:0; }
+.donations { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
+.amount {
+  border:1px solid var(--line);
+  background:#0a0908;
+  color:#e8ddd4;
+  border-radius:10px;
+  padding:9px 14px;
+  font-weight:800;
+}
+.amount.active { border-color:#ff714d; background:#ff4c2d1a; color:#ffc3a1; }
+.inputrow { display:flex; gap:9px; margin:14px 0; }
+.inputrow input {
+  min-width:0;
+  width:100%;
+  background:#090908;
+  border:1px solid var(--line);
+  color:white;
+  border-radius:11px;
+  padding:11px 12px;
+}
+.smallprint { font-size:.75rem; color:#9f9389; }
+/* Game banner */
+.gamebox {
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:20px;
+  padding:42px;
+  border-radius:28px;
+  border:1px solid #ff5a3c35;
+  background:radial-gradient(ellipse at 90% 50%,#ff48231a,transparent 42%),linear-gradient(120deg,#1b100e,#100e0c);
+}
+.gamebox h2 { margin-top:9px; font-size:clamp(2rem,4vw,3.3rem); }
+.gamebox p { color:var(--muted); max-width:660px; }
+/* FAQ and footer */
+.faq { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+details {
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#11100f;
+  padding:18px 20px;
+}
+summary {
+  cursor:pointer;
+  font-weight:800;
+  list-style:none;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
+summary::after { content:"+"; color:var(--orange); font-size:1.3rem; }
+details[open] summary::after { content:"−"; }
+details p { color:var(--muted); font-size:.9rem; margin-top:12px; }
+footer {
+  border-top:1px solid var(--line);
+  padding:35px 0 45px;
+  color:#9c9087;
+  font-size:.82rem;
+}
+.footerin {
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+}
+.footerlinks { display:flex; gap:18px; flex-wrap:wrap; }
+/* Scroll reveals */
+.reveal {
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+.toast {
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  z-index:100;
+  background:#201712;
+  border:1px solid #ff7b4b55;
+  color:#fff3e8;
+  border-radius:12px;
+  padding:12px 18px;
+  box-shadow:0 12px 35px #0008;
+  transition:.25s;
+  font-size:.88rem;
+}
+.toast.show { opacity:1; transform:translate(-50%,0); }
+/* Mobile */
+@media(max-width:900px) {
+  .hero { grid-template-columns:1fr; padding-top:65px; gap:5px; }
+  .hero-copy { text-align:center; }
+  .hero-copy p { margin-inline:auto; }
+  .heroactions,.trustrow { justify-content:center; }
+  .art { min-height:390px; }
+  .grid3 { grid-template-columns:1fr 1fr; }
+  .roadmap { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:650px) {
+  .wrap { width:min(var(--max),calc(100% - 28px)); }
+  .navin { height:66px; }
+  .navlinks {
+    display:none;
+    position:absolute;
+    left:14px;
+    right:14px;
+    top:70px;
+    padding:17px;
+    border:1px solid var(--line);
+    border-radius:15px;
+    background:#11100ff5;
+    flex-direction:column;
+    align-items:stretch;
+    gap:14px;
+  }
+  .navlinks.open { display:flex; }
+  .navlinks a { padding:5px; }
+  .menu { display:inline-block; }
+  .navcta { display:none; }
+  .hero { padding:54px 0 35px; min-height:0; }
+  h1 { font-size:clamp(3.3rem,17vw,5.2rem); }
+  .hero p { font-size:1rem; }
+  .art { min-height:330px; }
+  .mango { width:70%; max-width:275px; }
+  .floatcard { padding:9px 11px; }
+  .fc1 { top:12%; left:0; }
+  .fc2 { right:0; bottom:11%; }
+  section { padding:72px 0; }
+  .grid3,.roadmap,.split,.faq { grid-template-columns:1fr; }
+  .card { padding:23px; }
+  .phase { min-height:0; }
+  .gamebox { grid-template-columns:1fr; padding:27px; }
+  .gamebox .btn { width:100%; }
+  .footerin { flex-direction:column; }
+  .address { align-items:flex-start; }
+  .address code { font-size:.74rem; }
+  .inputrow { flex-direction:column; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+  .reveal { opacity:1; transform:none; }
+}
+</style>
 </head>
-
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">🥭</div>
-        <div class="brand-text">
-          <h2>The Red Mango</h2>
-          <p>Powered by Solana</p>
-        </div>
-      </div>
-
-      <nav class="nav">
-        <a href="#about">About</a>
-        <a href="#roadmap">Roadmap</a>
-        <a href="#wallet">Wallet</a>
-        <a href="game.html">Game</a>
-        <button class="wallet-btn" id="connectWalletBtn">Connect Wallet</button>
-      </nav>
-    </header>
-
-    <section class="hero">
-      <div class="hero-copy">
-        <h1>
-          Building the future.<br>
-          <span class="gradient">One mango at a time.</span>
-        </h1>
-
-        <p>
-          The Red Mango is a community-driven Solana project designed to build an entertaining,
-          recognizable, and scalable crypto brand around fun, loyalty, and long-term utility.
-        </p>
-
-        <p>
-          We are creating a vibrant ecosystem through community growth, website experiences,
-          mini-games, branding, marketing, and the eventual launch of a Red Mango token on Solana.
-        </p>
-
-        <div class="hero-actions">
-          <button class="primary-btn" id="openDonateBtn">🚀 Donate SOL</button>
-          <a href="game.html" class="secondary-btn">🎮 Play Mango Bird</a>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="label">Current Raise</div>
-            <div class="value" id="statRaised">0.00 SOL</div>
-          </div>
-
-          <div class="stat">
-            <div class="label">Goal</div>
-            <div class="value">1 SOL</div>
-          </div>
-
-          <div class="stat">
-            <div class="label">Network</div>
-            <div class="value">Solana</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-card">
-        <div class="mini-header">
-          <span>Funding progress</span>
-          <span id="tinyProgress">0%</span>
-        </div>
-
-        <div class="donation-box">
-          <div class="donation-amount">
-            <h3 id="raisedAmount">0.00</h3>
-            <span>SOL</span>
-          </div>
-
-          <div class="progress-wrap">
-            <div class="progress-bar">
-              <div class="progress-fill" id="progressFill"></div>
-            </div>
-
-            <div class="goal-text">
-              <span>Raised</span>
-              <span id="goalText">1 SOL goal</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="wallet-preview" id="walletAddress">
-          79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD
-        </div>
-
-        <div class="copy-row">
-          <button class="copy-btn" onclick="copyAddress()">Copy Wallet</button>
-          <button class="copy-btn" id="quickDonateBtn">Donate</button>
-        </div>
-
-        <div id="copied" class="success">✓ Wallet copied!</div>
-      </div>
-    </section>
-
-    <div class="donate-layout">
-      <div class="donate-visual">
-        <div class="donation-chip">Donation Drive</div>
-        <h4>Fast donation flow</h4>
-        <p>Enter the amount and approve it in Phantom. The total updates automatically.</p>
-      </div>
-
-      <div class="light-donate-card">
-        <div class="header">
-          <h3>Donate SOL</h3>
-          <span class="close" aria-label="close"></span>
-        </div>
-
-        <div class="field">
-          <input id="amountInput" type="number" min="0.001" step="0.001" placeholder="Amount in SOL" />
-        </div>
-
-        <div class="light-actions">
-          <button class="light-action" id="cancelBtn" type="button">Cancel</button>
-          <button class="light-action primary" id="sendBtn" type="button">Send via Phantom</button>
-        </div>
-
-        <div class="help-text">
-          <span class="help-dot"></span>
-          <span>Approve the donation in Phantom. The total updates from the Solana network.</span>
-        </div>
-
-        <div id="donateStatus" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:800;color:#0d7d43;"></div>
-      </div>
+<div class="ambient"><div class="orb one"></div><div class="orb two"></div></div>
+<header class="nav">
+  <div class="wrap navin">
+    <a class="brand" href="#top">
+      <span class="brandmark"><span>🥭</span></span>
+      <span>THE RED <span class="gradient">MANGO</span></span>
+    </a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#vision">Our vision</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#wallet">Wallet</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="navcta" href="#wallet">Explore the project ↗</a>
+    <button class="menu" id="menu" aria-label="Toggle navigation">☰</button>
+  </div>
+</header>
+<main id="top">
+<section class="wrap hero">
+  <div class="hero-copy reveal">
+    <div class="eyebrow"><span class="pulse"></span> A community-powered Solana project</div>
+    <h1>Not just a fruit.<br><span class="gradient">A whole vibe.</span></h1>
+    <p>
+      The Red Mango brings bold mango energy to the on-chain world:
+      a distinctive identity, a community-led journey, and a playful
+      gaming universe. Built to be explored, shaped, and grown together.
+    </p>
+    <div class="heroactions">
+      <a class="btn primary" href="#about">Discover the project ↘</a>
+      <a class="btn secondary" href="#wallet">View wallet details ↗</a>
     </div>
-
-    <section class="section" id="about">
-      <div class="section-heading">
-        <h3>About The Red Mango</h3>
-        <span class="pill">Community Vision</span>
-      </div>
-
-      <div class="about-grid">
-        <div>
-          <p>
-            The Red Mango is more than a meme project — it is a long-term community brand with
-            the ambition of becoming a recognizable, entertaining, and useful Solana ecosystem.
-          </p>
-
-          <p>
-            Our mission is to build a loyal community, craft memorable experiences, and establish
-            a foundation for future utility, rewards, branding, and token development.
-          </p>
-
-          <p>
-            We believe in sustainable growth, organic community building, and creating value for
-            people who believe in the project’s long-term direction.
-          </p>
-        </div>
-
-        <div class="feature-list">
-          <div class="feature">
-            <div class="feature-icon">🧠</div>
-            <div>
-              <h4>Brand Building</h4>
-              <p>Designing a memorable identity that stands out on Solana.</p>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="feature-icon">🎮</div>
-            <div>
-              <h4>Engagement</h4>
-              <p>Integrating fun interactive experiences and community-driven activities.</p>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="feature-icon">🚀</div>
-            <div>
-              <h4>Future Utility</h4>
-              <p>Creating the foundation for a token launch and future ecosystem growth.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="roadmap">
-      <div class="section-heading">
-        <h3>Roadmap</h3>
-        <span class="pill">Next Steps</span>
-      </div>
-
-      <div class="roadmap">
-        <div class="roadmap-item">
-          <div class="phase">Phase 1</div>
-          <h4>Website Launch</h4>
-          <p>Build the brand presence and establish a home for the community.</p>
-        </div>
-
-        <div class="roadmap-item">
-          <div class="phase">Phase 2</div>
-          <h4>Community Growth</h4>
-          <p>Expand awareness, attract supporters, and deepen community engagement.</p>
-        </div>
-
-        <div class="roadmap-item">
-          <div class="phase">Phase 3</div>
-          <h4>Initial Funding Goal</h4>
-          <p>Build a base of support and resources to continue the project roadmap.</p>
-        </div>
-
-        <div class="roadmap-item">
-          <div class="phase">Phase 4</div>
-          <h4>Token Development</h4>
-          <p>Prepare the ecosystem and design the long-term utility plan for a Solana token.</p>
-        </div>
-
-        <div class="roadmap-item">
-          <div class="phase">Phase 5</div>
-          <h4>Marketing Push</h4>
-          <p>Strengthen visibility, broaden reach, and activate community-driven campaigns.</p>
-        </div>
-
-        <div class="roadmap-item">
-          <div class="phase">Phase 6</div>
-          <h4>Utility &amp; Rewards</h4>
-          <p>Launch future utilities, rewards, experiences, and holder engagement programs.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-heading">
-        <h3>Why This Matters</h3>
-        <span class="pill">Mission</span>
-      </div>
-
-      <div class="support-grid">
-        <div class="support-card">
-          <h4>Community First</h4>
-          <p>Strong communities are what build long-term crypto brands that truly endure.</p>
-        </div>
-
-        <div class="support-card">
-          <h4>Fun + Utility</h4>
-          <p>We want to combine entertainment, culture, and real-world project ambition.</p>
-        </div>
-
-        <div class="support-card">
-          <h4>Long-Term Vision</h4>
-          <p>Our plan is not just hype — it is building momentum toward a larger ecosystem.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="wallet">
-      <div class="section-heading">
-        <h3>Support The Project</h3>
-        <span class="pill">Wallet</span>
-      </div>
-
-      <div class="wallet-box">
-        <div class="wallet-card">
-          <div class="label">Solana Wallet</div>
-          <div class="value">79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD</div>
-        </div>
-
-        <div class="wallet-card">
-          <div class="label">Donation Instructions</div>
-          <div class="value">
-            Send SOL to the wallet above. The total on this page updates automatically.
-          </div>
-        </div>
-      </div>
-
-      <div class="social-links">
-        <a href="https://x.com/the_redmango?s=11" target="_blank" rel="noopener">𝕏 Follow</a>
-        <a href="game.html">🎮 Mango Bird</a>
-      </div>
-    </section>
-
-    <div class="bottom-cta">
-      <div>
-        <h4>Support the mission</h4>
-        <p>Every contribution helps build the Red Mango ecosystem.</p>
-      </div>
-
-      <button class="primary-btn" id="bottomDonateBtn">Donate SOL</button>
-    </div>
-
-    <div class="footer">
-      The Red Mango • Built on Solana
+    <div class="trustrow">
+      <span><b class="tick">✦</b> Community-first vision</span>
+      <span><b class="tick">✦</b> Solana ecosystem</span>
+      <span><b class="tick">✦</b> Built to evolve</span>
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
-  <script>
-    const WALLET = "79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD";
-    const GOAL = 1;
-    // Free public Solana servers, tried in order. If they rate-limit you,
-    // put a free Helius/other RPC URL as the FIRST item in this list.
-    const RPCS = [
-      "https://api.mainnet-beta.solana.com",
-      "https://solana-rpc.publicnode.com"
-    ];
-
-    const amountInput = document.getElementById("amountInput");
-    const statusEl = document.getElementById("donateStatus");
-
-    function setStatus(msg) {
-      statusEl.textContent = msg;
-      statusEl.style.display = msg ? "block" : "none";
+  <div class="art reveal">
+    <div class="ring"></div>
+    <div class="ring r2"></div>
+    <div class="mango">
+      <div class="mangobody"></div>
+      <div class="leaf"></div>
+      <div class="face">RM</div>
+    </div>
+    <span class="spark s1">✦</span>
+    <span class="spark s2">✧</span>
+    <span class="spark s3">✦</span>
+    <div class="floatcard fc1"><strong>🥭 The Red Mango</strong><small>Big energy. Clear intentions.</small></div>
+    <div class="floatcard fc2"><strong>On-chain curious</strong><small>Explore at your own pace ↗</small></div>
+  </div>
+</section>
+<div class="marquee" aria-hidden="true">
+  <div class="marqueein">
+    <span>
+      THE RED MANGO <b>✦</b> COMMUNITY FIRST <b>✦</b>
+      BUILT ON SOLANA <b>✦</b> BIG MANGO ENERGY <b>✦</b>
+      PLAY • BUILD • EVOLVE <b>✦</b>
+      THE RED MANGO <b>✦</b> COMMUNITY FIRST <b>✦</b>
+      BUILT ON SOLANA <b>✦</b> BIG MANGO ENERGY <b>✦</b>
+      PLAY • BUILD • EVOLVE <b>✦</b>
+    </span>
+  </div>
+</div>
+<section id="about">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kicker">01 / The story</div>
+      <h2>Fresh identity.<br><span class="gradient">Real community energy.</span></h2>
+      <p>
+        The Red Mango is a creative crypto-community concept with a
+        memorable visual identity and room to grow into a wider experience.
+        The idea is simple: make the project recognisable, make information
+        easy to find, and give the community something fun to rally around.
+      </p>
+    </div>
+    <div class="grid3">
+      <article class="card reveal">
+        <div class="iconbox">🎨</div>
+        <h3>A brand with character</h3>
+        <p>
+          Red, gold, and mango-orange form a bold visual language.
+          The goal is a look people can recognise across the website,
+          community spaces, and future project materials.
+        </p>
+      </article>
+      <article class="card reveal">
+        <div class="iconbox">🤝</div>
+        <h3>Community-led growth</h3>
+        <p>
+          The project’s direction should be shaped through clear
+          communication, useful feedback, and realistic milestones—not
+          hype, pressure, or promises of guaranteed returns.
+        </p>
+      </article>
+      <article class="card reveal">
+        <div class="iconbox">🕹️</div>
+        <h3>A playful universe</h3>
+        <p>
+          The experience can extend beyond a landing page through Mango
+          Bird, unlockable cosmetics, challenges, and future activities
+          as they are built and tested.
+        </p>
+      </article>
+    </div>
+    <div class="note reveal">
+      <strong>Transparency matters:</strong> this page describes the
+      project’s vision, not a guarantee of future features, token value,
+      exchange listings, or financial returns. Only treat a feature as
+      live when it is actually available and verified.
+    </div>
+  </div>
+</section>
+<section id="vision">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kicker">02 / What matters</div>
+      <h2>Built around <span class="gradient">four principles.</span></h2>
+      <p>
+        A strong project needs more than a cool logo. These principles
+        are the standard The Red Mango should aim to meet as it develops.
+      </p>
+    </div>
+    <div class="grid3">
+      <article class="card reveal">
+        <div class="iconbox">🔎</div>
+        <h3>Clarity over confusion</h3>
+        <p>
+          Keep important information easy to find. Explain what exists
+          today, what is being worked on, and what remains an idea.
+          Avoid vague claims and misleading countdowns.
+        </p>
+      </article>
+      <article class="card reveal">
+        <div class="iconbox">🛡️</div>
+        <h3>Security-conscious</h3>
+        <p>
+          Never ask visitors for seed phrases or private keys.
+          Wallet connections should be optional, transactions should
+          be reviewed carefully, and users should understand what they approve.
+        </p>
+      </article>
+      <article class="card reveal">
+        <div class="iconbox">🌱</div>
+        <h3>Progress you can see</h3>
+        <p>
+          Share genuine updates, demos, and completed work. If a goal
+          changes, explain why. A roadmap is a plan—not proof that a
+          feature is finished or guaranteed.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kicker">03 / The journey</div>
+      <h2>One step at a time.<br><span class="gradient">Built in public.</span></h2>
+      <p>
+        This is a proposed roadmap for organising development. Status
+        labels are intentionally cautious; update them only when the
+        relevant work is actually complete.
+      </p>
+    </div>
+    <div class="roadmap">
+      <article class="phase reveal">
+        <div class="num">PHASE 01</div>
+        <h3>Foundation</h3>
+        <span class="status">Core setup</span>
+        <ul>
+          <li>Establish the project identity</li>
+          <li>Publish a clear landing page</li>
+          <li>Make wallet information visible</li>
+          <li>Explain safety basics</li>
+        </ul>
+      </article>
+      <article class="phase reveal">
+        <div class="num">PHASE 02</div>
+        <h3>Community</h3>
+        <span class="status planned">Planned</span>
+        <ul>
+          <li>Create consistent project updates</li>
+          <li>Collect community feedback</li>
+          <li>Document decisions and changes</li>
+          <li>Keep official links easy to verify</li>
+        </ul>
+      </article>
+      <article class="phase reveal">
+        <div class="num">PHASE 03</div>
+        <h3>Game experience</h3>
+        <span class="status planned">Planned / in development</span>
+        <ul>
+          <li>Improve Mango Bird gameplay</li>
+          <li>Build unlockable cosmetic content</li>
+          <li>Test scoring and progression</li>
+          <li>Polish mobile performance</li>
+        </ul>
+      </article>
+      <article class="phase reveal">
+        <div class="num">PHASE 04</div>
+        <h3>Long-term growth</h3>
+        <span class="status planned">Exploration</span>
+        <ul>
+          <li>Evaluate community ideas</li>
+          <li>Improve documentation</li>
+          <li>Review security and reliability</li>
+          <li>Share verified progress publicly</li>
+        </ul>
+      </article>
+    </div>
+    <div class="note reveal">
+      Roadmap note: phases are goals, not deadlines or guarantees.
+      No launch date, tokenomics, exchange listing, audit, or completed
+      milestone is claimed here.
+    </div>
+  </div>
+</section>
+<section id="wallet">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kicker">04 / On-chain details</div>
+      <h2>Clear information.<br><span class="gradient">You stay in control.</span></h2>
+      <p>
+        Use this section to inspect the configured Solana address and,
+        if you choose, connect a compatible wallet. Connecting a wallet
+        does not mean you need to send funds.
+      </p>
+    </div>
+    <div class="split">
+      <div class="panel reveal">
+        <h3>Project wallet</h3>
+        <p>
+          The address below is the wallet configured on this website.
+          Before sending SOL, independently verify that it is the intended
+          destination and that you trust the project.
+        </p>
+        <div class="address">
+          <code id="walletAddress">79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD</code>
+          <button class="copy" id="copyAddress">Copy</button>
+        </div>
+        <div class="walletstatus">
+          <span class="dot" id="connectionDot"></span>
+          <span id="walletStatus">Wallet not connected</span>
+        </div>
+        <div class="heroactions">
+          <button class="btn primary" id="connectWallet">Connect Phantom</button>
+          <button class="btn secondary" id="disconnectWallet" hidden>Disconnect</button>
+        </div>
+        <p class="smallprint">
+          This site will never need your recovery phrase or private key.
+          Do not share either with anyone.
+        </p>
+      </div>
+      <div class="panel reveal">
+        <h3>Wallet balance checker</h3>
+        <p>
+          Fetches the public SOL balance for the configured address.
+          A balance does not show who sent funds or prove that funds
+          are project revenue.
+        </p>
+        <div class="balance"><span id="balance">—</span> <small>SOL</small></div>
+        <div class="walletstatus">
+          <span class="dot" id="balanceDot"></span>
+          <span id="balanceStatus">Not checked yet</span>
+        </div>
+        <button class="btn secondary" id="refreshBalance">↻ Refresh public balance</button>
+        <p class="smallprint">
+          Public RPC providers can be slow or rate-limited. If the check
+          fails, try again later or verify the address using a trusted
+          Solana explorer.
+        </p>
+      </div>
+    </div>
+    <div class="panel reveal" style="margin-top:18px">
+      <h3>Optional SOL support</h3>
+      <p>
+        If you choose to support the project, check the destination address
+        and transaction details in your wallet before approving anything.
+        This is voluntary; never send money you cannot afford to lose.
+      </p>
+      <div class="donations" id="amounts">
+        <button class="amount" data-amount="0.01">0.01 SOL</button>
+        <button class="amount active" data-amount="0.05">0.05 SOL</button>
+        <button class="amount" data-amount="0.1">0.1 SOL</button>
+        <button class="amount" data-amount="0.25">0.25 SOL</button>
+      </div>
+      <div class="inputrow">
+        <input id="customAmount" type="number" min="0.001" max="5" step="0.001" value="0.05" inputmode="decimal" aria-label="SOL amount">
+        <button class="btn primary" id="sendSol">Review support transaction ↗</button>
+      </div>
+      <p class="smallprint">
+        The amount is a suggested voluntary transfer, not a purchase or
+        investment. A blockchain transaction may be irreversible and
+        network fees may apply. Confirm the address, amount, and fee
+        inside Phantom before approving it.
+      </p>
+    </div>
+  </div>
+</section>
+<section class="gameband" id="game">
+  <div class="wrap">
+    <div class="gamebox reveal">
+      <div>
+        <div class="kicker">05 / Side quest</div>
+        <h2>Ready for a little <span class="gradient">Mango Bird?</span></h2>
+        <p>
+          Take a break from the charts and jump into the game.
+          If game.html has been uploaded to the same GitHub Pages folder,
+          the button below will open it.
+        </p>
+      </div>
+      <a class="btn primary" href="game.html">Enter the game →</a>
+    </div>
+  </div>
+</section>
+<section id="faq">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kicker">06 / Quick answers</div>
+      <h2>Good questions.<br><span class="gradient">Straight answers.</span></h2>
+    </div>
+    <div class="faq">
+      <details class="reveal">
+        <summary>What is The Red Mango?</summary>
+        <p>
+          A community-oriented crypto project concept with a distinct
+          brand and a planned gaming side experience. Check project
+          updates for what is currently live.
+        </p>
+      </details>
+      <details class="reveal">
+        <summary>Does connecting Phantom send funds?</summary>
+        <p>
+          No. Connecting asks the wallet to establish a connection.
+          Sending SOL is a separate action requiring transaction approval.
+        </p>
+      </details>
+      <details class="reveal">
+        <summary>Is this a promise of profit?</summary>
+        <p>
+          No. Nothing on this page guarantees price increases, profit,
+          or a return. Crypto assets are volatile and you can lose money.
+        </p>
+      </details>
+      <details class="reveal">
+        <summary>Why might the balance checker fail?</summary>
+        <p>
+          Public RPC services can have outages, delays, or request limits.
+          A failed check does not necessarily mean the wallet has no balance.
+        </p>
+      </details>
+      <details class="reveal">
+        <summary>Will every roadmap feature happen?</summary>
+        <p>
+          No. The roadmap is a planning guide. Features can change,
+          be delayed, or be cancelled.
+        </p>
+      </details>
+      <details class="reveal">
+        <summary>How do I stay safe?</summary>
+        <p>
+          Verify links and addresses independently, never share a recovery
+          phrase, avoid unexpected wallet prompts, and read every transaction
+          before approving it.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap footerin">
+    <div>
+      <a class="brand" href="#top">
+        <span class="brandmark"><span>🥭</span></span>
+        <span>THE RED <span class="gradient">MANGO</span></span>
+      </a>
+      <p>Bold identity. Clear information. Community energy.</p>
+      <p class="smallprint">
+        Crypto involves risk. This website is informational and is not
+        financial advice. Verify all transaction details yourself.
+      </p>
+    </div>
+    <div class="footerlinks">
+      <a href="#about">About</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#wallet">Wallet</a>
+      <a href="#faq">FAQ</a>
+      <a href="game.html">Mango Bird ↗</a>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const PROJECT_WALLET =
+  "79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD";
+const $ = id => document.getElementById(id);
+let connectedPublicKey = null;
+let toastTimer;
+function toast(message) {
+  const el = $("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    el.classList.remove("show");
+  }, 3200);
+}
+/* Mobile navigation */
+$("menu").addEventListener("click", () => {
+  const open = $("navlinks").classList.toggle("open");
+  $("menu").setAttribute("aria-expanded", String(open));
+});
+document.querySelectorAll("#navlinks a").forEach(link => {
+  link.addEventListener("click", () => {
+    $("navlinks").classList.remove("open");
+    $("menu").setAttribute("aria-expanded", "false");
+  });
+});
+/* Copy wallet address */
+$("copyAddress").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(PROJECT_WALLET);
+    toast("Wallet address copied.");
+  } catch (error) {
+    const input = document.createElement("textarea");
+    input.value = PROJECT_WALLET;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    input.remove();
+    toast("Wallet address copied.");
+  }
+});
+/* Phantom connection */
+function setWalletState(connected, keyText = "") {
+  $("connectionDot").classList.toggle("good", connected);
+  $("walletStatus").textContent = connected
+    ? "Connected: " + keyText.slice(0, 4) + "…" + keyText.slice(-4)
+    : "Wallet not connected";
+  $("connectWallet").hidden = connected;
+  $("disconnectWallet").hidden = !connected;
+}
+function getPhantom() {
+  if (window.phantom?.solana?.isPhantom) {
+    return window.phantom.solana;
+  }
+  if (window.solana?.isPhantom) {
+    return window.solana;
+  }
+  return null;
+}
+$("connectWallet").addEventListener("click", async () => {
+  const provider = getPhantom();
+  if (!provider) {
+    toast("Phantom not detected. Open this page in the Phantom browser.");
+    return;
+  }
+  try {
+    const result = await provider.connect();
+    connectedPublicKey = result.publicKey.toString();
+    setWalletState(true, connectedPublicKey);
+    toast("Wallet connected. No funds were sent.");
+  } catch (error) {
+    toast("Connection cancelled or unavailable.");
+  }
+});
+$("disconnectWallet").addEventListener("click", async () => {
+  try {
+    const provider = getPhantom();
+    if (provider?.disconnect) {
+      await provider.disconnect();
     }
-
-    async function rpc(method, params) {
-      let lastErr;
-      for (const url of RPCS) {
-        try {
-          const res = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params })
-          });
-          const json = await res.json();
-          if (json.error) throw new Error(json.error.message);
-          return json.result;
-        } catch (e) { lastErr = e; }
-      }
-      throw lastErr;
-    }
-
-    function formatSOL(v) {
-      return Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 });
-    }
-
-    function render(raised) {
-      const percent = Math.min((raised / GOAL) * 100, 100);
-      document.getElementById("raisedAmount").textContent = formatSOL(raised);
-      document.getElementById("progressFill").style.width = Math.max(percent, 1) + "%";
-      document.getElementById("goalText").textContent = GOAL + " SOL goal";
-      document.getElementById("tinyProgress").textContent = Math.round(percent) + "%";
-      document.getElementById("statRaised").textContent = formatSOL(raised) + " SOL";
-    }
-
-    // Total raised = the real balance of the donation wallet on Solana.
-    async function refreshTotal() {
-      try {
-        const res = await rpc("getBalance", [WALLET, { commitment: "confirmed" }]);
-        const sol = res.value / 1e9;
-        try { localStorage.setItem("redMangoLastBalance", String(sol)); } catch (e) {}
-        render(sol);
-      } catch (e) { console.error("Could not load balance", e); }
-    }
-
-    function copyAddress() {
-      navigator.clipboard.writeText(WALLET)
-        .then(() => {
-          const copied = document.getElementById("copied");
-          copied.style.display = "block";
-          setTimeout(() => copied.style.display = "none", 1800);
+  } catch (error) {}
+  connectedPublicKey = null;
+  setWalletState(false);
+  toast("Wallet disconnected.");
+});
+/* Public SOL balance */
+async function getBalance() {
+  $("balanceStatus").textContent = "Checking public balance…";
+  $("balanceDot").classList.remove("good");
+  $("balance").textContent = "…";
+  const endpoints = [
+    "https://api.mainnet-beta.solana.com",
+    "https://solana-rpc.publicnode.com"
+  ];
+  for (const endpoint of endpoints) {
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "getBalance",
+          params: [
+            PROJECT_WALLET,
+            { commitment: "confirmed" }
+          ]
         })
-        .catch(() => alert("Copy failed. Send to: " + WALLET));
-    }
-
-    function getPhantom() {
-      if (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom) return window.phantom.solana;
-      if (window.solana && window.solana.isPhantom) return window.solana;
-      return null;
-    }
-
-    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
-
-    // Phone browsers (Safari) can't talk to Phantom, so reopen this page inside Phantom's own browser.
-    function openInPhantomBrowser(amount) {
-      const page = location.origin + location.pathname + (amount ? "?amount=" + amount : "");
-      location.href = "https://phantom.app/ul/browse/" + encodeURIComponent(page) +
-        "?ref=" + encodeURIComponent(location.origin);
-    }
-
-    async function donate(amount) {
-      const val = Number(amount);
-      if (!val || val < 0.001) {
-        setStatus("Enter an amount of at least 0.001 SOL.");
-        amountInput.focus();
-        return;
+      });
+      if (!response.ok) {
+        throw new Error("RPC response error");
       }
-
-      const provider = getPhantom();
-      if (!provider) {
-        if (isMobile) {
-          setStatus("Opening Phantom...");
-          openInPhantomBrowser(val);
-        } else {
-          setStatus("Phantom not found. Install the Phantom extension, or copy the wallet address and send SOL manually.");
-        }
-        return;
+      const data = await response.json();
+      if (data.error || !data.result) {
+        throw new Error("RPC returned an error");
       }
-
-      if (typeof solanaWeb3 === "undefined") {
-        setStatus("Could not load Solana tools. Refresh the page and try again.");
-        return;
-      }
-
-      try {
-        setStatus("Approve the donation in Phantom...");
-        const { publicKey } = await provider.connect();
-        const { Transaction, SystemProgram, PublicKey } = solanaWeb3;
-        const bh = await rpc("getLatestBlockhash", [{ commitment: "finalized" }]);
-
-        const tx = new Transaction();
-        tx.add(SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: new PublicKey(WALLET),
-          lamports: Math.round(val * 1e9)
-        }));
-        tx.feePayer = publicKey;
-        tx.recentBlockhash = bh.value.blockhash;
-
-        await provider.signAndSendTransaction(tx);
-        amountInput.value = "";
-        setStatus("Sent! Waiting for the network to confirm...");
-        setTimeout(refreshTotal, 5000);
-        setTimeout(async () => {
-          await refreshTotal();
-          setStatus("Thank you! Total refreshed from the Solana network.");
-        }, 12000);
-      } catch (e) {
-        console.error(e);
-        setStatus(e && e.code === 4001 ? "Donation cancelled." : "Something went wrong. Check Phantom to see if anything was sent.");
-      }
+      $("balance").textContent =
+        (data.result.value / 1e9).toLocaleString(
+          undefined,
+          { maximumFractionDigits: 5 }
+        );
+      $("balanceStatus").textContent =
+        "Balance fetched from public Solana RPC";
+      $("balanceDot").classList.add("good");
+      return;
+    } catch (error) {
+      // Try the next public endpoint.
     }
-
-    document.getElementById("sendBtn").addEventListener("click", () => donate(amountInput.value));
-    document.getElementById("quickDonateBtn").addEventListener("click", () => donate(amountInput.value || 0.01));
-    document.getElementById("openDonateBtn").addEventListener("click", () => donate(amountInput.value || 0.01));
-    document.getElementById("bottomDonateBtn").addEventListener("click", () => donate(amountInput.value || 0.01));
-
-    document.getElementById("cancelBtn").addEventListener("click", () => {
-      amountInput.value = "";
-      setStatus("");
+  }
+  $("balance").textContent = "—";
+  $("balanceStatus").textContent =
+    "Could not fetch balance. Try again later.";
+}
+$("refreshBalance").addEventListener("click", getBalance);
+/* Donation amount selection */
+document.querySelectorAll(".amount").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".amount").forEach(item => {
+      item.classList.remove("active");
     });
-
-    document.getElementById("connectWalletBtn").addEventListener("click", async () => {
-      const provider = getPhantom();
-      if (!provider) {
-        if (isMobile) { openInPhantomBrowser(""); return; }
-        alert("Phantom not detected. Copy wallet address instead.");
-        copyAddress();
-        return;
+    button.classList.add("active");
+    $("customAmount").value = button.dataset.amount;
+  });
+});
+/* Optional SOL transfer */
+$("sendSol").addEventListener("click", async () => {
+  const amount = Number($("customAmount").value);
+  if (!Number.isFinite(amount) || amount < 0.001 || amount > 5) {
+    toast("Enter an amount between 0.001 and 5 SOL.");
+    return;
+  }
+  const provider = getPhantom();
+  if (!provider) {
+    toast("Open this page with Phantom available to continue.");
+    return;
+  }
+  if (!connectedPublicKey) {
+    toast("Connect Phantom first. No transaction has been sent.");
+    return;
+  }
+  const confirmed = window.confirm(
+    "VOLUNTARY SUPPORT TRANSFER\n\n" +
+    "Destination:\n" + PROJECT_WALLET + "\n\n" +
+    "Amount: " + amount + " SOL\n\n" +
+    "You will need to review the final transaction in your wallet. " +
+    "Blockchain transactions may be irreversible.\n\n" +
+    "Continue to wallet review?"
+  );
+  if (!confirmed) {
+    return;
+  }
+  try {
+    toast("Preparing transaction. Review everything in Phantom.");
+    const library = await loadSolanaLibrary();
+    const Connection = library.Connection;
+    const PublicKey = library.PublicKey;
+    const Transaction = library.Transaction;
+    const SystemProgram = library.SystemProgram;
+    const LAMPORTS_PER_SOL = library.LAMPORTS_PER_SOL;
+    const connection = new Connection(
+      "https://api.mainnet-beta.solana.com",
+      "confirmed"
+    );
+    const sender = new PublicKey(connectedPublicKey);
+    const recipient = new PublicKey(PROJECT_WALLET);
+    const transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: sender,
+        toPubkey: recipient,
+        lamports: Math.round(amount * LAMPORTS_PER_SOL)
+      })
+    );
+    transaction.feePayer = sender;
+    transaction.recentBlockhash =
+      (await connection.getLatestBlockhash("confirmed")).blockhash;
+    const result = await provider.signAndSendTransaction(transaction);
+    toast("Transaction submitted. Check its status in your wallet.");
+    console.log("Submitted transaction:", result.signature || result);
+  } catch (error) {
+    console.error("Transaction error:", error);
+    toast(
+      "Transaction was not completed. Check your wallet for details."
+    );
+  }
+});
+/* Load Solana library only when needed */
+function loadSolanaLibrary() {
+  return new Promise((resolve, reject) => {
+    if (window.solanaWeb3) {
+      resolve(window.solanaWeb3);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src =
+      "https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js";
+    script.onload = () => {
+      if (window.solanaWeb3) {
+        resolve(window.solanaWeb3);
+      } else {
+        reject(new Error("Solana library did not load."));
       }
-      try {
-        const response = await provider.connect();
-        const pubkey = response.publicKey.toString();
-        alert("Connected: " + pubkey.slice(0, 6) + "..." + pubkey.slice(-4));
-      } catch (error) {
-        console.error(error);
-        alert("Wallet connection cancelled.");
+    };
+    script.onerror = () => {
+      reject(new Error("Could not load Solana library."));
+    };
+    document.head.appendChild(script);
+  });
+}
+/* Scroll reveal animations */
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
       }
     });
-
-    // Opened from the phone browser? Prefill the amount.
-    const amountFromLink = new URLSearchParams(location.search).get("amount");
-    if (amountFromLink && getPhantom()) {
-      amountInput.value = amountFromLink;
-      setStatus("You're in Phantom. Tap \"Send via Phantom\" to finish your donation.");
+  }, {
+    threshold: 0.12
+  });
+  document.querySelectorAll(".reveal").forEach(element => {
+    observer.observe(element);
+  });
+} else {
+  document.querySelectorAll(".reveal").forEach(element => {
+    element.classList.add("visible");
+  });
+}
+/* Keep the wallet connection display in sync */
+const initialProvider = getPhantom();
+if (initialProvider?.on) {
+  initialProvider.on("disconnect", () => {
+    connectedPublicKey = null;
+    setWalletState(false);
+  });
+  initialProvider.on("accountChanged", publicKey => {
+    if (!publicKey) {
+      connectedPublicKey = null;
+      setWalletState(false);
+      return;
     }
-
-    // Show the last known total instantly, then load the real one.
-    try { render(Number(localStorage.getItem("redMangoLastBalance")) || 0); } catch (e) { render(0); }
-    refreshTotal();
-    setInterval(refreshTotal, 30000);
-  </script>
+    connectedPublicKey = publicKey.toString();
+    setWalletState(true, connectedPublicKey);
+  });
+}
+/* Initial balance check */
+getBalance();
+</script>
 </body>
 </html>
