@@ -4,29 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mango Bird</title>
-
   <style>
-    :root {
-      --bg: #090909;
-      --panel: #121212;
-      --panel-2: #181818;
-      --line: #2a2a2a;
-      --text: #f7f7f7;
-      --muted: #b8b8b8;
-      --orange: #ff7b00;
-      --gold: #ffbd59;
-      --green: #14f195;
-      --purple: #9945ff;
-      --red: #ff5d5d;
-      --sky1: #1e2438;
-      --sky2: #111827;
-      --grass: #123d2d;
+    :root{
+      --bg: #0c0c0d;
+      --panel: #111214;
+      --panel-2: #1a1b1e;
+      --line: rgba(255,255,255,0.08);
+      --text: #f4f5f7;
+      --muted: #a8a8af;
+      --orange: #ff8b2b;
+      --gold: #ffc166;
+      --purple: #8c6ff2;
+      --green: #28f2a0;
+      --gray: #d9d9d9;
+      --shadow: rgba(0,0,0,0.35);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
@@ -34,204 +32,342 @@
     }
 
     body {
+      background: #000;
       font-family: Inter, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(153, 69, 255, 0.18), transparent 28%),
-        linear-gradient(180deg, #0a0a0a, #050505 70%);
-      color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      color: var(--text);
+      padding: 0;
     }
 
-    .wrap {
-      width: min(94vw, 560px);
+    .phone-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background: #111;
+      position: relative;
+      overflow: hidden;
     }
 
-    .topbar {
+    .statusbar {
+      height: 54px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 10px 18px 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f4f4f4;
+      background: #f4f4f4;
+      color: #111;
+    }
+
+    .status-left {
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+    }
+
+    .status-right {
+      display: flex;
       gap: 12px;
-      margin-bottom: 12px;
-      padding: 0 6px;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 700;
     }
 
-    .brand {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-    }
-
-    .brand span {
-      color: var(--orange);
-    }
-
-    .nav-buttons {
+    .signal {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 3px;
     }
 
-    .btn {
-      appearance: none;
-      border: none;
-      cursor: pointer;
-      border-radius: 12px;
-      font-weight: 800;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-      text-decoration: none;
-      display: inline-flex;
+    .signal span {
+      display: block;
+      width: 4px;
+      border-radius: 2px;
+      background: #111;
+    }
+
+    .signal span:nth-child(1) { height: 5px; opacity: 0.4; }
+    .signal span:nth-child(2) { height: 8px; opacity: 0.65; }
+    .signal span:nth-child(3) { height: 11px; opacity: 0.9; }
+    .signal span:nth-child(4) { height: 14px; }
+
+    .battery {
+      width: 22px;
+      height: 10px;
+      border: 2px solid #111;
+      border-radius: 3px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 2px;
+      width: 2px;
+      height: 4px;
+      background: #111;
+      border-radius: 1px;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      inset: 2px 2px 2px 2px;
+      background: #111;
+      border-radius: 1px;
+    }
+
+    .top-cta {
+      padding: 8px 16px 0;
+    }
+
+    .pill {
+      width: 100%;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 26px;
+      padding: 18px 18px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #f4f4f4;
+      display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
+    .pill .arrow {
+      font-size: 1.5rem;
+      color: rgba(255,255,255,0.9);
     }
 
-    .home-btn {
-      color: white;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--line);
-      padding: 10px 14px;
-      font-size: 0.9rem;
-    }
-
-    .game-shell {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
+    .game-board {
+      position: relative;
+      width: 100%;
+      height: 580px;
+      margin-top: 8px;
+      background: linear-gradient(180deg, #1d2635, #111a1c 60%, #0d0f0f);
+      border-top: 1px solid rgba(255,255,255,0.04);
       overflow: hidden;
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.42);
     }
 
     canvas {
-      display: block;
       width: 100%;
-      height: auto;
-      background: linear-gradient(180deg, var(--sky1), var(--sky2) 55%, #14221b);
-      border-bottom: 1px solid var(--line);
+      height: 100%;
+      display: block;
+      background: linear-gradient(180deg, #1d2635, #111a1c 60%, #0d0f0f);
       touch-action: manipulation;
     }
 
-    .hud {
+    .score-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #0c0c0c;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--line);
+      padding: 14px 18px 14px;
+      background: rgba(0,0,0,0.9);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 1.1rem;
       font-weight: 800;
-      font-size: 0.95rem;
+      letter-spacing: 0.02em;
     }
 
-    .score-box {
-      color: var(--green);
+    .score-left {
+      color: #18f1a4;
     }
 
-    .best-box {
-      color: #dfe7ef;
+    .score-right {
+      color: #f2f2f2;
     }
 
-    .controls {
-      display: flex;
-      gap: 10px;
-      padding: 14px 12px 12px;
-      background: #0b0b0b;
+    .control-stack {
+      padding: 14px 18px 18px;
+      background: rgba(0,0,0,0.9);
     }
 
-    .control-btn {
-      flex: 1;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 0.95rem;
+    .button {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 18px 16px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: white;
+      margin-bottom: 12px;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+      touch-action: manipulation;
+    }
+
+    .button:active {
+      transform: scale(0.99);
     }
 
     .start-btn {
-      background: linear-gradient(90deg, var(--orange), var(--gold));
-      color: white;
+      background: linear-gradient(90deg, #f39a2b, #f7c666);
+      box-shadow: 0 10px 24px rgba(243,154,43,0.25);
     }
 
     .restart-btn {
-      background: linear-gradient(90deg, var(--purple), var(--green));
+      background: linear-gradient(90deg, #8c6ff2, #4adab7);
+      box-shadow: 0 10px 24px rgba(140,111,242,0.25);
+    }
+
+    .bottom-bar {
+      position: relative;
+      background: linear-gradient(90deg, #7a63e8, #4adab7);
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      padding: 10px 12px 16px;
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 78px;
+    }
+
+    .bottom-bar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(140,111,242,0.9), rgba(74,218,183,0.9));
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      z-index: 0;
+    }
+
+    .nav-left, .nav-mid, .nav-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-left {
+      width: 42px;
+      height: 42px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 50%;
       color: white;
+      font-size: 1.8rem;
+      font-weight: 700;
     }
 
-    .donate-banner {
-      margin-top: 14px;
-      background: rgba(17,17,17,0.94);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px 14px 12px;
-      text-align: center;
-      box-shadow: 0 18px 32px rgba(0,0,0,0.25);
-    }
-
-    .donate-banner p {
-      color: var(--muted);
+    .nav-mid {
+      flex: 1;
+      justify-content: center;
+      color: #fefefe;
+      font-weight: 700;
       font-size: 0.82rem;
-      margin-bottom: 10px;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0 8px;
     }
 
-    .donate-banner a {
-      display: inline-block;
-      width: 100%;
-      background: linear-gradient(90deg, var(--purple), var(--green));
+    .nav-right {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-box {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-weight: 800;
-      text-decoration: none;
+      font-size: 1rem;
     }
 
-    @media (max-width: 480px) {
-      .controls {
-        flex-direction: column;
+    .donate-box {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      margin-top: 8px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, rgba(140,111,242,0.9), rgba(74,218,183,0.9));
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(35, 36, 42, 0.25);
+    }
+
+    .donate-box a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+    }
+
+    @media (max-width: 430px) {
+      .phone-shell {
+        min-height: 100vh;
       }
 
-      .brand {
-        font-size: 1rem;
-      }
-
-      .topbar {
-        align-items: flex-start;
-      }
-
-      .nav-buttons {
-        gap: 8px;
+      .game-board {
+        height: 540px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">Mango <span>Bird</span></div>
-
-      <div class="nav-buttons">
-        <a href="index.html" class="btn home-btn">← Home</a>
+  <div class="phone-shell">
+    <div class="statusbar">
+      <div class="status-left">14:57</div>
+      <div class="status-right">
+        <div class="signal">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="battery"></div>
       </div>
     </div>
 
-    <div class="game-shell">
-      <canvas id="gameCanvas" width="420" height="620" aria-label="Mango Bird game"></canvas>
-
-      <div class="hud">
-        <div class="score-box">Score: <span id="scoreValue">0</span></div>
-        <div class="best-box">High: <span id="bestValue">0</span></div>
-      </div>
-
-      <div class="controls">
-        <button class="btn control-btn start-btn" id="startBtn">Start</button>
-        <button class="btn control-btn restart-btn" id="restartBtn">Restart</button>
+    <div class="top-cta">
+      <div class="pill">
+        <span>Finance work experience</span>
+        <span class="arrow">›</span>
       </div>
     </div>
 
-    <div class="donate-banner">
-      <p>Support The Red Mango community</p>
+    <div class="game-board">
+      <canvas id="gameCanvas" width="420" height="520"></canvas>
+    </div>
+
+    <div class="score-row">
+      <div class="score-left">Score: <span id="scoreValue">0</span></div>
+      <div class="score-right">High: <span id="bestValue">0</span></div>
+    </div>
+
+    <div class="control-stack">
+      <button class="button start-btn" id="startBtn">Start</button>
+      <button class="button restart-btn" id="restartBtn">Restart</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="nav-left">‹</div>
+      <div class="nav-mid">nate182-dev.github.io</div>
+      <div class="nav-right">
+        <div class="icon-box">↻</div>
+        <div class="icon-box">▣</div>
+      </div>
+    </div>
+
+    <div class="donate-box">
       <a href="index.html#wallet">💚 Donate SOL</a>
     </div>
   </div>
@@ -244,15 +380,15 @@
     const startBtn = document.getElementById("startBtn");
     const restartBtn = document.getElementById("restartBtn");
 
-    const BEST_KEY = "redMangoBirdBest";
-    const HIGH_SCORE = Number(localStorage.getItem(BEST_KEY)) || 0;
-    bestValue.textContent = HIGH_SCORE;
+    const BEST_KEY = "mangoBirdHighScore";
+    const storedBest = Number(localStorage.getItem(BEST_KEY)) || 0;
+    bestValue.textContent = storedBest;
 
     const state = {
       running: false,
       over: false,
       score: 0,
-      best: HIGH_SCORE,
+      best: storedBest,
       gravity: 0.48,
       lift: -7.8,
       birdX: 110,
@@ -260,14 +396,21 @@
       birdRadius: 18,
       velocity: 0,
       pipeWidth: 64,
-      pipeGap: 165,
+      pipeGap: 170,
       pipeSpeed: 2.8,
       pipes: [],
       spawnTimer: 0,
-      groundY: canvas.height - 78,
-      cloudOffset: 0,
-      flashTimer: 0
+      groundY: canvas.height - 52,
+      cloudOffset: 0
     };
+
+    function updateBestScore() {
+      if (state.score > state.best) {
+        state.best = state.score;
+        localStorage.setItem(BEST_KEY, String(state.best));
+        bestValue.textContent = state.best;
+      }
+    }
 
     function resetGame() {
       state.running = false;
@@ -278,16 +421,7 @@
       state.pipes = [];
       state.spawnTimer = 0;
       state.cloudOffset = 0;
-      state.flashTimer = 0;
       scoreValue.textContent = "0";
-    }
-
-    function setBestScore() {
-      if (state.score > state.best) {
-        state.best = state.score;
-        localStorage.setItem(BEST_KEY, String(state.best));
-        bestValue.textContent = state.best;
-      }
     }
 
     function flap() {
@@ -300,15 +434,15 @@
       state.velocity = state.lift;
     }
 
-    function startFromScratch() {
+    function startAndFly() {
       resetGame();
       state.running = true;
       flap();
     }
 
     function createPipe() {
-      const minTop = 80;
-      const maxTop = state.groundY - state.pipeGap - 120;
+      const minTop = 70;
+      const maxTop = state.groundY - state.pipeGap - 100;
       const topHeight = minTop + Math.random() * (maxTop - minTop);
 
       state.pipes.push({
@@ -327,7 +461,7 @@
       state.birdY += state.velocity;
 
       state.spawnTimer += 1;
-      if (state.spawnTimer >= 95) {
+      if (state.spawnTimer >= 90) {
         createPipe();
         state.spawnTimer = 0;
       }
@@ -339,11 +473,11 @@
           pipe.passed = true;
           state.score += 1;
           scoreValue.textContent = state.score;
-          setBestScore();
+          updateBestScore();
         }
       }
 
-      state.pipes = state.pipes.filter(pipe => pipe.x + pipe.w > -20);
+      state.pipes = state.pipes.filter(pipe => pipe.x + pipe.w > -10);
 
       const birdLeft = state.birdX - state.birdRadius;
       const birdRight = state.birdX + state.birdRadius;
@@ -363,7 +497,7 @@
         if (intersectsX && (intersectsTop || intersectsBottom)) {
           state.over = true;
           state.running = false;
-          setBestScore();
+          updateBestScore();
           break;
         }
       }
@@ -371,7 +505,7 @@
       if (state.birdY + state.birdRadius >= state.groundY || state.birdY - state.birdRadius <= 0) {
         state.over = true;
         state.running = false;
-        setBestScore();
+        updateBestScore();
       }
     }
 
@@ -379,25 +513,204 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      sky.addColorStop(0, "#1c2640");
-      sky.addColorStop(0.42, "#202b3d");
-      sky.addColorStop(1, "#10201c");
+      sky.addColorStop(0, "#1f2a37");
+      sky.addColorStop(0.5, "#121c22");
+      sky.addColorStop(1, "#0d0d0d");
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // sun
-      ctx.fillStyle = "rgba(255, 191, 94, 0.9)";
+      // Sun glow
+      ctx.fillStyle = "rgba(255, 188, 92, 0.12)";
       ctx.beginPath();
-      ctx.arc(canvas.width - 70, 70, 38, 0, Math.PI * 2);
+      ctx.arc(canvas.width - 60, 70, 80, 0, Math.PI * 2);
       ctx.fill();
 
-      // clouds
+      // Clouds
       ctx.fillStyle = "rgba(255,255,255,0.08)";
-      for (let i = 0; i < 8; i++) {
-        const x = ((i * 80) - (state.cloudOffset % 80)) + 20;
-        const y = 55 + ((i * 17) % 70);
+      for (let i = 0; i < 7; i++) {
+        const x = ((i * 80) - (state.cloudOffset % 80)) + 25;
+        const y = 65 + (i % 3) * 25;
 
         ctx.beginPath();
         ctx.arc(x, y, 18, 0, Math.PI * 2);
-        ctx.arc(x + 18, y - 8, 20, 0, Math.PI * 2);*
-
+        ctx.arc(x + 18, y - 8, 20, 0, Math.PI * 2);
+        ctx.arc(x + 36, y, 18, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      state.cloudOffset += 0.5;
+
+      // Ground
+      ctx.fillStyle = "#1a2722";
+      ctx.fillRect(0, state.groundY, canvas.width, canvas.height - state.groundY);
+
+      ctx.fillStyle = "#2d4a3d";
+      for (let i = 0; i < canvas.width; i += 26) {
+        const x = i - ((state.cloudOffset * 1.8) % 26);
+        ctx.fillRect(x, state.groundY + 12, 16, 6);
+      }
+    }
+
+    function drawMangoBird() {
+      const x = state.birdX;
+      const y = state.birdY;
+
+      ctx.save();
+      ctx.translate(x, y);
+
+      const tilt = Math.max(-1.2, Math.min(1.2, state.velocity / 9));
+      ctx.rotate(tilt);
+
+      // body
+      ctx.fillStyle = "#ff9a2e";
+      ctx.beginPath();
+      ctx.arc(0, 0, state.birdRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // highlight
+      ctx.fillStyle = "#ffd38e";
+      ctx.beginPath();
+      ctx.arc(-7, -8, 8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // left wing
+      ctx.fillStyle = "#ff7a00";
+      ctx.beginPath();
+      ctx.ellipse(-10, 7, 14, 11, -0.7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // right wing
+      ctx.fillStyle = "#ffb24d";
+      ctx.beginPath();
+      ctx.ellipse(8, 8, 13, 10, 0.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // eye
+      ctx.fillStyle = "#101010";
+      ctx.beginPath();
+      ctx.arc(8, -4, 3.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // beak
+      ctx.fillStyle = "#ff6a00";
+      ctx.beginPath();
+      ctx.moveTo(17, 1);
+      ctx.lineTo(30, 3);
+      ctx.lineTo(17, 9);
+      ctx.closePath();
+      ctx.fill();
+
+      // little green leaf
+      ctx.fillStyle = "#33d98d";
+      ctx.beginPath();
+      ctx.moveTo(-13, -11);
+      ctx.quadraticCurveTo(-4, -18, 4, -13);
+      ctx.quadraticCurveTo(-5, -3, -13, -11);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawPipe(pipe) {
+      const topHeight = pipe.topHeight;
+      const bottomY = pipe.topHeight + pipe.gap;
+
+      ctx.fillStyle = "#18d673";
+      ctx.fillRect(pipe.x, 0, pipe.w, topHeight);
+      ctx.fillRect(pipe.x, bottomY, pipe.w, state.groundY - bottomY);
+
+      ctx.fillStyle = "#0da958";
+      ctx.fillRect(pipe.x - 4, topHeight - 18, pipe.w + 8, 18);
+      ctx.fillRect(pipe.x - 4, bottomY, pipe.w + 8, 18);
+
+      ctx.fillStyle = "#4fe38e";
+      ctx.fillRect(pipe.x + 6, topHeight - 18, pipe.w - 12, 10);
+      ctx.fillRect(pipe.x + 6, bottomY, pipe.w - 12, 10);
+    }
+
+    function drawStartScreen() {
+      if (state.running || state.over) return;
+
+      ctx.fillStyle = "rgba(0,0,0,0.10)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.font = "800 30px Arial";
+      ctx.fillText("Mango Bird", canvas.width / 2, canvas.height / 2 - 14);
+
+      ctx.font = "700 18px Arial";
+      ctx.fillStyle = "#f7f7f7";
+      ctx.fillText("Tap or press Space to flap", canvas.width / 2, canvas.height / 2 + 20);
+    }
+
+    function drawGameOver() {
+      if (!state.over) return;
+
+      ctx.fillStyle = "rgba(0,0,0,0.45)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.font = "800 34px Arial";
+      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 20);
+
+      ctx.font = "700 18px Arial";
+      ctx.fillText("Score: " + state.score, canvas.width / 2, canvas.height / 2 + 18);
+
+      ctx.fillStyle = "#ffcc73";
+      ctx.fillText("Tap / Space to retry", canvas.width / 2, canvas.height / 2 + 52);
+    }
+
+    function render() {
+      drawBackground();
+
+      for (const pipe of state.pipes) {
+        drawPipe(pipe);
+      }
+
+      drawMangoBird();
+      drawStartScreen();
+      drawGameOver();
+    }
+
+    function gameLoop() {
+      updateGame();
+      render();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function onTap() {
+      if (!state.running && !state.over) {
+        startAndFly();
+      } else if (state.over) {
+        startAndFly();
+      } else {
+        flap();
+      }
+    }
+
+    startBtn.addEventListener("click", startAndFly);
+    restartBtn.addEventListener("click", startAndFly);
+
+    canvas.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      onTap();
+    });
+
+    canvas.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      onTap();
+    }, { passive: false });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.code === "Space") {
+        event.preventDefault();
+        onTap();
+      }
+    });
+
+    resetGame();
+    gameLoop();
+  </script>
+</body>
+</html>
