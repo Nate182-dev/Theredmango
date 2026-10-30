@@ -279,6 +279,25 @@
       margin-bottom:0;
     }
 
+    .secondary-row{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .secondary-link{
+      flex:1;
+      display:block;
+      text-align:center;
+      text-decoration:none;
+      border-radius:14px;
+      font-weight:800;
+      color:#fff;
+      padding:14px 16px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.04);
+    }
+
     .donate-link{
       display:block;
       margin:8px 16px 18px;
@@ -289,13 +308,11 @@
       font-weight:900;
       color:#fff;
       background:linear-gradient(90deg, #7f61ef, #4ad9b2);
-      box-shadow:0 12px 22px rgba(35, 36, 42, 0.25);
+      box-shadow:0 12px 22px rgba(35,36,42,0.25);
     }
 
     @media (max-width:430px){
-      .game-area{
-        height:500px;
-      }
+      .game-area{ height:500px; }
     }
   </style>
 </head>
@@ -339,6 +356,11 @@
     <div class="controls">
       <button class="btn start-btn" id="startBtn">Start</button>
       <button class="btn restart-btn" id="restartBtn">Restart</button>
+
+      <div class="secondary-row">
+        <a href="crossy.html" class="secondary-link">Crossy</a>
+        <a href="index.html" class="secondary-link">Home</a>
+      </div>
     </div>
 
     <a class="donate-link" href="index.html#wallet">💚 Donate SOL</a>
@@ -368,10 +390,11 @@
       birdRadius: 16,
       velocity: 0,
       pipeWidth: 62,
-      pipeGap: 140,
+      pipeGap: 150,
       pipeSpeed: 3.25,
       spawnTimer: 0,
       pipes: [],
+      hazardBirds: [],
       cloudOffset: 0,
       groundY: canvas.height - 46
     };
@@ -391,9 +414,11 @@
       state.birdY = 220;
       state.velocity = 0;
       state.pipes = [];
+      state.hazardBirds = [];
       state.spawnTimer = 0;
       state.cloudOffset = 0;
       scoreValue.textContent = "0";
+      state.pipeSpeed = 3.25;
     }
 
     function flap() {
@@ -413,17 +438,63 @@
     }
 
     function createPipe() {
-      const minTop = 60;
+      const minTop = 50;
       const maxTop = state.groundY - state.pipeGap - 90;
       const topHeight = minTop + Math.random() * (maxTop - minTop);
 
-      state.pipes.push({
-        x: canvas.width + 30,
-        w: state.pipeWidth,
-        gap: state.pipeGap,
-        topHeight,
-        passed: false
-      });
+      const patternRoll = Math.random();
+
+      if (patternRoll > 0.7 && state.score > 6) {
+        const tighterGap = Math.max(90, state.pipeGap - 10);
+        state.pipes.push({
+          x: canvas.width + 30,
+          w: state.pipeWidth,
+          gap: tighterGap,
+          topHeight,
+          passed: false,
+          type: "tight"
+        });
+      } else if (patternRoll > 0.45 && state.score > 12) {
+        state.pipes.push({
+          x: canvas.width + 30,
+          w: state.pipeWidth,
+          gap: Math.max(86, state.pipeGap - 25),
+          topHeight: topHeight + 25,
+          passed: false,
+          type: "low"
+        });
+      } else {
+        state.pipes.push({
+          x: canvas.width + 30,
+          w: state.pipeWidth,
+          gap: state.pipeGap,
+          topHeight,
+          passed: false,
+          type: "normal"
+        });
+      }
+
+      if (state.score > 14 && Math.random() > 0.7) {
+        state.hazardBirds.push({
+          x: canvas.width + 30,
+          y: Math.random() * (state.groundY - 140) + 50,
+          w: 18,
+          h: 12,
+          dir: -1,
+          speed: 3.5 + state.score * 0.1
+        });
+      }
+
+      if (state.score > 20 && Math.random() > 0.75) {
+        state.pipes.push({
+          x: canvas.width + 80,
+          w: state.pipeWidth - 10,
+          gap: Math.max(72, state.pipeGap - 40),
+          topHeight: topHeight + 20,
+          passed: false,
+          type: "extra"
+        });
+      }
     }
 
     function updateGame() {
@@ -432,11 +503,22 @@
       state.velocity += state.gravity;
       state.birdY += state.velocity;
 
-      const speedBoost = Math.min(6.2, 3.25 + state.score * 0.22);
-      state.pipeSpeed = speedBoost;
+      const scoreFactor = Math.min(9.5, 3.25 + state.score * 0.28);
+      state.pipeSpeed = scoreFactor;
+
+      if (state.score >= 10) {
+        state.gravity = 0.68;
+        state.lift = -9.1;
+      }
+
+      if (state.score >= 20) {
+        state.gravity = 0.76;
+        state.lift = -9.6;
+      }
 
       state.spawnTimer += 1;
-      if (state.spawnTimer >= 76) {
+      const spawnRate = Math.max(46, 80 - state.score * 1.2);
+      if (state.spawnTimer >= spawnRate) {
         createPipe();
         state.spawnTimer = 0;
       }
@@ -452,7 +534,12 @@
         }
       }
 
+      for (const bird of state.hazardBirds) {
+        bird.x += bird.dir * bird.speed;
+      }
+
       state.pipes = state.pipes.filter(pipe => pipe.x + pipe.w > -10);
+      state.hazardBirds = state.hazardBirds.filter(bird => bird.x > -50);
 
       const birdLeft = state.birdX - state.birdRadius;
       const birdRight = state.birdX + state.birdRadius;
@@ -469,7 +556,27 @@
         const hitsTop = birdTop < topBottom;
         const hitsBottom = birdBottom > bottomTop;
 
-        if (hitsX && (hitsTop || intersectsBottom)) {
+        if (hitsX && (hitsTop || hitsBottom)) {
+          state.over = true;
+          state.running = false;
+          updateBest();
+          return;
+        }
+      }
+
+      for (const bird of state.hazardBirds) {
+        const birdBoxLeft = bird.x - bird.w / 2;
+        const birdBoxRight = bird.x + bird.w / 2;
+        const birdBoxTop = bird.y - bird.h / 2;
+        const birdBoxBottom = bird.y + bird.h / 2;
+
+        const hit =
+          birdBoxRight > birdLeft &&
+          birdBoxLeft < birdRight &&
+          birdBoxBottom > birdTop &&
+          birdBoxTop < birdBottom;
+
+        if (hit) {
           state.over = true;
           state.running = false;
           updateBest();
@@ -555,6 +662,47 @@
       ctx.fillStyle = "rgba(0,0,0,0.15)";
       ctx.fillRect(pipe.x + pipe.w - 8, 0, 8, topHeight);
       ctx.fillRect(pipe.x + pipe.w - 8, bottomY, 8, state.groundY - bottomY);
+    }
+
+    function drawHazardBird(bird) {
+      const x = bird.x;
+      const y = bird.y;
+
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.fillStyle = "#ff5d5d";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 15, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#f2f2f2";
+      ctx.beginPath();
+      ctx.arc(-4, -3, 2.6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#222";
+      ctx.beginPath();
+      ctx.arc(-3, -3, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#ff8b5e";
+      ctx.beginPath();
+      ctx.moveTo(10, 0);
+      ctx.lineTo(18, -2);
+      ctx.lineTo(10, 5);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = "#ff8b5e";
+      ctx.beginPath();
+      ctx.moveTo(-10, 2);
+      ctx.lineTo(-18, 7);
+      ctx.lineTo(-10, 9);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
     }
 
     function drawMangoBird() {
@@ -649,6 +797,10 @@
 
       for (const pipe of state.pipes) {
         drawPipe(pipe);
+      }
+
+      for (const bird of state.hazardBirds) {
+        drawHazardBird(bird);
       }
 
       drawMangoBird();
