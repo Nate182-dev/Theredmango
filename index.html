@@ -1,15 +1,481 @@
-<div class="modal" id="donateModal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h3>Donate SOL</h3>
-      <button class="close-btn" id="closeModalBtn">&times;</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance work experience</title>
+  <style>
+    :root{
+      --bg:#ececec;
+      --card:#d8d8d8;
+      --card-2:#cfcfcf;
+      --ink:#111111;
+      --muted:#6c6c6c;
+      --soft:#b9b9b9;
+      --line:#d1d1d1;
+      --button:#d2d2d2;
+      --button-2:#c9c9c9;
+      --glass:rgba(255,255,255,0.18);
+      --shadow:rgba(0,0,0,0.08);
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html, body{
+      height:100%;
+      background:var(--bg);
+      font-family: Inter, Arial, sans-serif;
+      color:var(--ink);
+    }
+
+    body{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      overflow:hidden;
+    }
+
+    .phone{
+      width:100%;
+      max-width:430px;
+      min-height:100vh;
+      background:var(--bg);
+      position:relative;
+      overflow:hidden;
+      padding-top:10px;
+    }
+
+    .statusbar{
+      height:42px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 18px 0 18px;
+      font-weight:700;
+      font-size:1.35rem;
+      letter-spacing:0.03em;
+    }
+
+    .status-left{
+      font-size:1.05rem;
+      font-weight:800;
+      color:#111;
+      letter-spacing:0.04em;
+    }
+
+    .status-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:0.9rem;
+      color:#111;
+    }
+
+    .signal{
+      display:flex;
+      align-items:flex-end;
+      gap:3px;
+      height:16px;
+    }
+
+    .signal span{
+      display:block;
+      width:4px;
+      border-radius:2px;
+      background:#111;
+    }
+
+    .signal span:nth-child(1){height:5px; opacity:0.55;}
+    .signal span:nth-child(2){height:8px; opacity:0.75;}
+    .signal span:nth-child(3){height:11px; opacity:0.9;}
+    .signal span:nth-child(4){height:14px;}
+
+    .battery{
+      width:24px;
+      height:11px;
+      border:2px solid #111;
+      border-radius:3px;
+      position:relative;
+      display:inline-block;
+    }
+
+    .battery::before{
+      content:"";
+      position:absolute;
+      inset:2px;
+      background:#111;
+      border-radius:2px;
+    }
+
+    .battery::after{
+      content:"";
+      position:absolute;
+      right:-5px;
+      top:2px;
+      width:2px;
+      height:5px;
+      background:#111;
+      border-radius:1px;
+    }
+
+    .moon{
+      width:15px;
+      height:15px;
+      border-radius:50%;
+      background:#111;
+      position:relative;
+      transform:scale(0.8);
+    }
+
+    .moon::after{
+      content:"";
+      position:absolute;
+      width:11px;
+      height:11px;
+      border-radius:50%;
+      background:var(--bg);
+      right:-2px;
+      top:1px;
+    }
+
+    .top-cta{
+      padding:0 18px;
+      margin-top:8px;
+    }
+
+    .pill{
+      width:100%;
+      background:linear-gradient(180deg, rgba(160,160,160,0.95), rgba(140,140,140,0.95));
+      border-radius:28px;
+      color:#111;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      font-size:2rem;
+      height:62px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px 0 18px;
+      box-shadow:0 2px 0 rgba(0,0,0,0.04);
+      border:1px solid rgba(0,0,0,0.04);
+    }
+
+    .pill .arrow{
+      font-size:2.2rem;
+      font-weight:700;
+      transform:translateY(-1px);
+    }
+
+    .main-area{
+      flex:1;
+      min-height:580px;
+      position:relative;
+    }
+
+    .donate-panel{
+      position:relative;
+      padding:18px 0 0 0;
+      margin-top:20px;
+    }
+
+    .donate-label{
+      font-size:1.1rem;
+      font-weight:900;
+      color:#111;
+      padding:0 18px 8px 18px;
+    }
+
+    .donate-box{
+      margin:0 18px;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .close-row{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      color:#333;
+      font-size:1.1rem;
+      padding:0 0 4px 0;
+      margin-bottom:2px;
+    }
+
+    .close-x{
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:rgba(0,0,0,0.08);
+      position:relative;
+      display:inline-block;
+    }
+
+    .close-x::before,
+    .close-x::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:12px;
+      height:2px;
+      background:#111;
+      border-radius:2px;
+      transform-origin:center;
+    }
+
+    .close-x::before{
+      transform:translate(-50%, -50%) rotate(45deg);
+    }
+
+    .close-x::after{
+      transform:translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .input-wrap{
+      display:flex;
+      align-items:center;
+      height:42px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:rgba(255,255,255,0.18);
+      overflow:hidden;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .input-wrap input{
+      flex:1;
+      height:100%;
+      background:transparent;
+      border:none;
+      outline:none;
+      font-size:1rem;
+      padding:0 12px;
+      color:#111;
+      font-family:inherit;
+    }
+
+    .input-wrap input::placeholder{
+      color:#7a7a7a;
+      font-weight:500;
+    }
+
+    .actions{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      margin-top:8px;
+    }
+
+    .mini-btn{
+      flex:1;
+      border:none;
+      background:transparent;
+      color:#111;
+      font-weight:700;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:0.95rem;
+    }
+
+    .mini-btn.primary{
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(0,0,0,0.04);
+    }
+
+    .mini-btn:hover{
+      filter:brightness(0.98);
+    }
+
+    .bottom-nav{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:0 18px 18px;
+    }
+
+    .nav-btn{
+      width:calc(50% - 18px);
+      height:72px;
+      background:linear-gradient(180deg, rgba(164,164,164,0.9), rgba(150,150,150,0.9));
+      border-radius:36px;
+      border:1px solid rgba(0,0,0,0.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 2px 0 rgba(0,0,0,0.03);
+      color:#111;
+      font-weight:800;
+      font-size:2.4rem;
+      position:relative;
+    }
+
+    .nav-btn.center{
+      width:82px;
+      height:72px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(164,164,164,0.9), rgba(150,150,150,0.9));
+    }
+
+    .nav-btn .chev{
+      display:inline-block;
+      width:18px;
+      height:18px;
+      border-left:4px solid #111;
+      border-bottom:4px solid #111;
+      transform:rotate(45deg);
+      margin-left:8px;
+    }
+
+    .nav-btn .chev.right{
+      transform:rotate(-135deg);
+      margin-left:-8px;
+    }
+
+    .nav-btn .menu{
+      width:26px;
+      height:18px;
+      position:relative;
+    }
+
+    .nav-btn .menu::before,
+    .nav-btn .menu::after,
+    .nav-btn .menu span{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      height:3px;
+      border-radius:2px;
+      background:#111;
+    }
+
+    .nav-btn .menu::before{ top:0; }
+    .nav-btn .menu span{ top:7px; }
+    .nav-btn .menu::after{ bottom:0; }
+
+    @media (max-width:430px){
+      .phone{
+        min-height:100vh;
+      }
+
+      .pill{
+        font-size:1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="statusbar">
+      <div class="status-left">18:49</div>
+      <div class="status-right">
+        <div class="signal">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="moon"></div>
+      </div>
     </div>
 
-    <input id="donationInput" type="number" min="0.01" step="0.01" placeholder="Amount in SOL" />
+    <div class="top-cta">
+      <div class="pill">
+        <span>Finance work experience</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>
 
-    <div class="modal-actions">
-      <button class="modal-cancel" id="cancelModalBtn" type="button">Cancel</button>
-      <button class="modal-confirm" id="sendViaPhantomBtn" type="button">Send via Phantom</button>
+    <div class="main-area">
+      <div class="donate-panel">
+        <div class="donate-label">Donate SOL</div>
+
+        <div class="donate-box">
+          <div class="close-row">
+            <span class="close-x"></span>
+          </div>
+
+          <div class="input-wrap">
+            <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="Amount in SOL" />
+          </div>
+
+          <div class="actions">
+            <button class="mini-btn" id="cancelBtn" type="button">Cancel</button>
+            <button class="mini-btn primary" id="sendBtn" type="button">Send via Phantom</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-btn" aria-label="Back">
+        <span class="chev"></span>
+      </div>
+
+      <div class="nav-btn center" aria-label="Menu">
+        <div class="menu">
+          <span></span>
+        </div>
+      </div>
+
+      <div class="nav-btn" aria-label="Next">
+        <span class="chev right"></span>
+      </div>
     </div>
   </div>
-</div>
+
+  <script>
+    const WALLET = "79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD";
+
+    const amountInput = document.getElementById("amountInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    function openPhantom(amount) {
+      const cleanAmount = Number(amount);
+
+      if (!cleanAmount || cleanAmount <= 0) {
+        alert("Please enter a valid amount in SOL.");
+        return;
+      }
+
+      const deepLink = `https://phantom.app/ul/browse/solana:${WALLET}?amount=${cleanAmount}`;
+
+      try {
+        window.location.href = deepLink;
+      } catch (error) {
+        navigator.clipboard.writeText(WALLET)
+          .then(() => alert("Phantom could not open. Wallet address copied to clipboard instead."))
+          .catch(() => alert("Phantom could not open. Please send to: " + WALLET));
+      }
+    }
+
+    sendBtn.addEventListener("click", () => {
+      openPhantom(amountInput.value);
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      amountInput.value = "";
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        openPhantom(amountInput.value);
+      }
+    });
+  </script>
+</body>
+</html>
