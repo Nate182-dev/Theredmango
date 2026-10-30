@@ -6,806 +6,113 @@
   <title>The Red Mango</title>
 
   <style>
-    :root{
-      --bg:#070b10;
-      --bg-2:#0d1218;
-      --bg-3:#121a22;
-      --panel:#111821;
-      --panel-2:#171f2a;
-      --panel-3:#1b2633;
-      --line:#2a3642;
-      --text:#edf4f8;
-      --muted:#a7b2bf;
-      --soft:#8190a0;
-      --orange:#ff8a2c;
-      --gold:#f7c36f;
-      --purple:#8d60ff;
-      --green:#20f2a1;
-      --green-2:#6ce8bc;
-      --red:#ff6d6d;
-      --shadow:rgba(0,0,0,0.28);
-    }
-
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
-
-    body{
-      font-family: Inter, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(141,96,255,0.18), transparent 24%),
-        radial-gradient(circle at bottom right, rgba(32,242,161,0.12), transparent 22%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.6;
-    }
-
-    a{
-      text-decoration:none;
-    }
-
-    .container{
-      max-width:1200px;
-      margin:0 auto;
-      padding:20px 18px 80px;
-    }
-
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      padding:10px 0 26px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .logo{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:24px;
-      background:linear-gradient(135deg, rgba(255,138,44,0.18), rgba(141,96,255,0.18));
-      border:1px solid rgba(255,255,255,0.06);
-    }
-
-    .brand-text h2{
-      font-size:1.08rem;
-      font-weight:800;
-      letter-spacing:-0.02em;
-    }
-
-    .brand-text p{
-      font-size:0.7rem;
-      color:var(--muted);
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-    }
-
-    .nav{
-      display:flex;
-      align-items:center;
-      gap:22px;
-      flex-wrap:wrap;
-    }
-
-    .nav a{
-      color:#d8e0ea;
-      font-size:0.92rem;
-      transition:0.2s ease;
-    }
-
-    .nav a:hover{
-      color:#fff;
-    }
-
-    .wallet-btn{
-      background:linear-gradient(90deg, var(--purple), var(--green));
-      color:#fff;
-      border:none;
-      border-radius:12px;
-      padding:11px 16px;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:0 14px 28px rgba(141,96,255,0.25);
-    }
-
-    .hero{
-      display:grid;
-      grid-template-columns:1.1fr 0.9fr;
-      gap:30px;
-      padding:28px 0 10px;
-      align-items:center;
-    }
-
-    .hero-copy h1{
-      font-size:clamp(2.7rem, 5vw, 5rem);
-      line-height:0.92;
-      letter-spacing:-0.07em;
-      margin-bottom:18px;
-      font-weight:900;
-    }
-
-    .gradient{
-      background:linear-gradient(90deg, var(--orange), var(--gold));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
-
-    .hero-copy p{
-      color:var(--muted);
-      font-size:1.06rem;
-      max-width:620px;
-      margin-bottom:26px;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:14px;
-      margin-bottom:26px;
-    }
-
-    .primary-btn,
-    .secondary-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:16px 24px;
-      border-radius:14px;
-      font-weight:800;
-      cursor:pointer;
-      transition:transform 0.15s ease;
-      border:none;
-    }
-
-    .primary-btn{
-      background:linear-gradient(90deg, var(--purple), var(--green));
-      color:#fff;
-      box-shadow:0 18px 35px rgba(141,96,255,0.27);
-    }
-
-    .secondary-btn{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.02);
-      color:var(--text);
-    }
-
-    .primary-btn:hover,
-    .secondary-btn:hover{
-      transform:translateY(-1px);
-    }
-
-    .stats{
-      display:flex;
-      flex-wrap:wrap;
-      gap:18px;
-    }
-
-    .stat{
-      min-width:140px;
-      background:rgba(255,255,255,0.02);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:14px 16px;
-    }
-
-    .stat .label{
-      color:var(--soft);
-      font-size:0.72rem;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      margin-bottom:4px;
-    }
-
-    .stat .value{
-      font-size:1.4rem;
-      font-weight:800;
-      color:var(--text);
-    }
-
-    .hero-card{
-      background:linear-gradient(180deg, rgba(17,20,24,0.96), rgba(14,18,24,0.96));
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:26px;
-      padding:22px;
-      box-shadow:0 24px 60px rgba(0,0,0,0.28);
-    }
-
-    .mini-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      color:var(--muted);
-      font-size:0.75rem;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      margin-bottom:18px;
-    }
-
-    .donation-box{
-      background:#0a0d12;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px 18px;
-      margin-bottom:18px;
-    }
-
-    .donation-amount{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:12px;
-      margin-bottom:16px;
-    }
-
-    .donation-amount h3{
-      font-size:2.2rem;
-      font-weight:900;
-      letter-spacing:-0.06em;
-    }
-
-    .donation-amount span{
-      color:var(--green);
-      font-size:0.9rem;
-      font-weight:700;
-    }
-
-    .progress-wrap{
-      margin-top:10px;
-    }
-
-    .progress-bar{
-      height:12px;
-      background:#161b22;
-      border-radius:999px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.05);
-    }
-
-    .progress-fill{
-      width:1%;
-      height:100%;
-      background:linear-gradient(90deg, var(--purple), var(--green));
-      border-radius:inherit;
-      transition:width 0.8s ease;
-    }
-
-    .goal-text{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:10px;
-      color:var(--muted);
-      font-size:0.82rem;
-    }
-
-    .wallet-preview{
-      background:#0b0d12;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:14px 16px;
-      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      word-break:break-all;
-      color:#edf2f8;
-      margin-bottom:10px;
-    }
-
-    .copy-row{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .copy-btn{
-      flex:1;
-      background:#1a212b;
-      border:1px solid var(--line);
-      border-radius:12px;
-      color:white;
-      padding:12px 14px;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .copy-btn:hover{
-      background:#212a34;
-    }
-
-    .success{
-      display:none;
-      color:var(--green);
-      font-weight:700;
-      margin-top:10px;
-      font-size:0.9rem;
-    }
-
-    .section{
-      margin-top:26px;
-      background:rgba(17,20,24,0.92);
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:24px 22px;
-      box-shadow:0 18px 40px rgba(0,0,0,0.18);
-    }
-
-    .section-heading{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
-    }
-
-    .section-heading h3{
-      font-size:1.45rem;
-      letter-spacing:-0.04em;
-      font-weight:800;
-    }
-
-    .pill{
-      background:rgba(255,255,255,0.03);
-      border:1px solid var(--line);
-      color:var(--muted);
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:0.76rem;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      font-weight:700;
-    }
-
-    .about-grid{
-      display:grid;
-      grid-template-columns:1.1fr 0.9fr;
-      gap:22px;
-      align-items:start;
-    }
-
-    .about-grid p{
-      color:var(--muted);
-      font-size:1rem;
-      margin-bottom:14px;
-    }
-
-    .feature-list{
-      display:grid;
-      gap:12px;
-    }
-
-    .feature{
-      display:flex;
-      align-items:flex-start;
-      gap:12px;
-      background:#0b0d12;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:14px 15px;
-    }
-
-    .feature-icon{
-      width:34px;
-      height:34px;
-      border-radius:12px;
-      background:linear-gradient(135deg, rgba(141,96,255,0.16), rgba(32,242,161,0.16));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:1.1rem;
-    }
-
-    .feature h4{
-      font-size:1rem;
-      margin-bottom:4px;
-    }
-
-    .feature p{
-      color:var(--muted);
-      font-size:0.9rem;
-      margin:0;
-    }
-
-    .roadmap{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:16px;
-      margin-top:10px;
-    }
-
-    .roadmap-item{
-      background:#0b0d12;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:18px 16px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .roadmap-item::before{
-      content:"";
-      position:absolute;
-      inset:0 auto 0 0;
-      width:4px;
-      background:linear-gradient(180deg, var(--orange), var(--green));
-    }
-
-    .roadmap-item .phase{
-      color:var(--soft);
-      font-size:0.7rem;
-      letter-spacing:0.1em;
-      text-transform:uppercase;
-      margin-bottom:8px;
-      font-weight:700;
-    }
-
-    .roadmap-item h4{
-      font-size:1.06rem;
-      margin-bottom:10px;
-    }
-
-    .roadmap-item p{
-      color:var(--muted);
-      font-size:0.9rem;
-    }
-
-    .support-grid{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:16px;
-      margin-top:8px;
-    }
-
-    .support-card{
-      background:#0b0d12;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:18px 16px;
-    }
-
-    .support-card h4{
-      font-size:1.1rem;
-      margin-bottom:8px;
-    }
-
-    .support-card p{
-      color:var(--muted);
-      font-size:0.9rem;
-    }
-
-    .wallet-box{
-      display:grid;
-      gap:12px;
-      margin-top:8px;
-    }
-
-    .wallet-card{
-      background:#0b0d12;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:18px 16px;
-    }
-
-    .wallet-card .label{
-      color:var(--muted);
-      font-size:0.75rem;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      margin-bottom:8px;
-      font-weight:700;
-    }
-
-    .wallet-card .value{
-      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size:0.96rem;
-      word-break:break-all;
-      color:var(--text);
-    }
-
-    .social-links{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:12px;
-    }
-
-    .social-links a{
-      background:rgba(255,255,255,0.02);
-      border:1px solid var(--line);
-      color:var(--text);
-      border-radius:12px;
-      padding:10px 14px;
-      font-weight:700;
-    }
-
-    .bottom-cta{
-      margin-top:28px;
-      background:linear-gradient(180deg, rgba(28,34,42,0.95), rgba(20,25,31,0.95));
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:18px 20px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      box-shadow:0 20px 40px rgba(0,0,0,0.15);
-    }
-
-    .bottom-cta h4{
-      font-size:1.1rem;
-      font-weight:800;
-    }
-
-    .bottom-cta p{
-      color:var(--muted);
-      font-size:0.88rem;
-    }
-
-    .footer{
-      padding:28px 0 0;
-      text-align:center;
-      color:var(--soft);
-      font-size:0.85rem;
-    }
-
-    .donate-layout{
-      display:grid;
-      grid-template-columns:0.8fr 1fr;
-      gap:18px;
-      align-items:center;
-      margin-top:30px;
-      margin-bottom:10px;
-    }
-
-    .donate-visual{
-      background:linear-gradient(135deg, rgba(141,96,255,0.12), rgba(32,242,161,0.10));
-      border:1px solid var(--line);
-      border-radius:20px;
-      min-height:180px;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:10px;
-    }
-
-    .donate-visual h4{
-      font-size:1.2rem;
-      font-weight:800;
-    }
-
-    .donate-visual p{
-      color:var(--muted);
-      font-size:0.92rem;
-    }
-
-    .donation-chip{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,0.04);
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 12px;
-      width:max-content;
-      font-weight:800;
-      font-size:0.8rem;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-    }
-
-    .light-donate-card{
-      background:linear-gradient(180deg, rgba(210,210,210,0.92), rgba(192,192,192,0.90));
-      border:1px solid rgba(0,0,0,0.05);
-      border-radius:22px;
-      padding:20px 18px 18px;
-      box-shadow:0 12px 30px rgba(0,0,0,0.08);
-      color:var(--light-text);
-    }
-
-    .light-donate-card .header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-    }
-
-    .light-donate-card h3{
-      font-size:1.6rem;
-      font-weight:900;
-      letter-spacing:-0.05em;
-    }
-
-    .light-donate-card .close{
-      width:26px;
-      height:26px;
-      border-radius:50%;
-      background:rgba(0,0,0,0.08);
-      position:relative;
-      display:inline-block;
-    }
-
-    .light-donate-card .close::before,
-    .light-donate-card .close::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:50%;
-      width:12px;
-      height:2px;
-      background:#111;
-      border-radius:2px;
-      transform-origin:center;
-    }
-
-    .light-donate-card .close::before{
-      transform:translate(-50%, -50%) rotate(45deg);
-    }
-
-    .light-donate-card .close::after{
-      transform:translate(-50%, -50%) rotate(-45deg);
-    }
-
-    .field{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      background:rgba(255,255,255,0.18);
-      border:1px solid rgba(0,0,0,0.06);
-      border-radius:12px;
-      padding:0 12px;
-      height:42px;
-      margin-top:8px;
-    }
-
-    .field input{
-      flex:1;
-      height:100%;
-      border:none;
-      background:transparent;
-      outline:none;
-      color:#111;
-      font-size:1rem;
-      font-family:inherit;
-    }
-
-    .field input::placeholder{
-      color:#5d5d5d;
-    }
-
-    .light-actions{
-      display:flex;
-      gap:12px;
-      margin-top:12px;
-    }
-
-    .light-action{
-      flex:1;
-      border:none;
-      border-radius:10px;
-      padding:10px 12px;
-      font-weight:700;
-      font-size:0.92rem;
-      cursor:pointer;
-      background:rgba(255,255,255,0.12);
-      border:1px solid rgba(0,0,0,0.04);
-      color:#111;
-    }
-
-    .light-action.primary{
-      background:rgba(255,255,255,0.22);
-    }
-
-    .help-text{
-      margin-top:10px;
-      font-size:0.8rem;
-      color:#4d4d4d;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .help-dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:#20a86b;
-      display:inline-block;
-    }
-
-    .checkbox-row{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-top:10px;
-      color:#1b1b1b;
-      font-size:0.88rem;
-      font-weight:700;
-    }
-
-    .checkbox-row input{
-      width:16px;
-      height:16px;
-      accent-color:#1f9f5f;
-    }
-
-    .success{
-      display:none;
-      color:#0d7d43;
-      font-weight:800;
-      margin-top:12px;
-      font-size:0.88rem;
-    }
-
+    :root{--bg:#070b10;--panel:#111821;--line:#2a3642;--text:#edf4f8;--muted:#a7b2bf;--soft:#8190a0;--orange:#ff8a2c;--gold:#f7c36f;--purple:#8d60ff;--green:#20f2a1}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top left,rgba(141,96,255,0.18),transparent 24%),radial-gradient(circle at bottom right,rgba(32,242,161,0.12),transparent 22%),var(--bg);color:var(--text);line-height:1.6}
+    a{text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:20px 18px 80px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 0 26px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(135deg,rgba(255,138,44,0.18),rgba(141,96,255,0.18));border:1px solid rgba(255,255,255,0.06)}
+    .brand-text h2{font-size:1.08rem;font-weight:800;letter-spacing:-0.02em}
+    .brand-text p{font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
+    .nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+    .nav a{color:#d8e0ea;font-size:0.92rem;transition:0.2s ease}
+    .nav a:hover{color:#fff}
+    .wallet-btn{background:linear-gradient(90deg,var(--purple),var(--green));color:#fff;border:none;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer;box-shadow:0 14px 28px rgba(141,96,255,0.25)}
+    .hero{display:grid;grid-template-columns:1.1fr 0.9fr;gap:30px;padding:28px 0 10px;align-items:center}
+    .hero-copy h1{font-size:clamp(2.7rem,5vw,5rem);line-height:0.92;letter-spacing:-0.07em;margin-bottom:18px;font-weight:900}
+    .gradient{background:linear-gradient(90deg,var(--orange),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-copy p{color:var(--muted);font-size:1.06rem;max-width:620px;margin-bottom:26px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:26px}
+    .primary-btn,.secondary-btn{display:inline-flex;align-items:center;justify-content:center;padding:16px 24px;border-radius:14px;font-weight:800;cursor:pointer;transition:transform 0.15s ease;border:none}
+    .primary-btn{background:linear-gradient(90deg,var(--purple),var(--green));color:#fff;box-shadow:0 18px 35px rgba(141,96,255,0.27)}
+    .secondary-btn{border:1px solid var(--line);background:rgba(255,255,255,0.02);color:var(--text)}
+    .primary-btn:hover,.secondary-btn:hover{transform:translateY(-1px)}
+    .stats{display:flex;flex-wrap:wrap;gap:18px}
+    .stat{min-width:140px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+    .stat .label{color:var(--soft);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+    .stat .value{font-size:1.4rem;font-weight:800;color:var(--text)}
+    .hero-card{background:linear-gradient(180deg,rgba(17,20,24,0.96),rgba(14,18,24,0.96));border:1px solid rgba(255,255,255,0.06);border-radius:26px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,0.28)}
+    .mini-header{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:18px}
+    .donation-box{background:#0a0d12;border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:18px}
+    .donation-amount{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}
+    .donation-amount h3{font-size:2.2rem;font-weight:900;letter-spacing:-0.06em}
+    .donation-amount span{color:var(--green);font-size:0.9rem;font-weight:700}
+    .progress-wrap{margin-top:10px}
+    .progress-bar{height:12px;background:#161b22;border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,0.05)}
+    .progress-fill{width:1%;height:100%;background:linear-gradient(90deg,var(--purple),var(--green));border-radius:inherit;transition:width 0.8s ease}
+    .goal-text{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:var(--muted);font-size:0.82rem}
+    .wallet-preview{background:#0b0d12;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-all;color:#edf2f8;margin-bottom:10px}
+    .copy-row{display:flex;gap:10px;margin-top:12px}
+    .copy-btn{flex:1;background:#1a212b;border:1px solid var(--line);border-radius:12px;color:white;padding:12px 14px;font-weight:700;cursor:pointer}
+    .copy-btn:hover{background:#212a34}
+    .success{display:none;color:#0d7d43;font-weight:800;margin-top:12px;font-size:0.88rem}
+    .section{margin-top:26px;background:rgba(17,20,24,0.92);border:1px solid var(--line);border-radius:22px;padding:24px 22px;box-shadow:0 18px 40px rgba(0,0,0,0.18)}
+    .section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .section-heading h3{font-size:1.45rem;letter-spacing:-0.04em;font-weight:800}
+    .pill{background:rgba(255,255,255,0.03);border:1px solid var(--line);color:var(--muted);padding:8px 12px;border-radius:999px;font-size:0.76rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700}
+    .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:22px;align-items:start}
+    .about-grid p{color:var(--muted);font-size:1rem;margin-bottom:14px}
+    .feature-list{display:grid;gap:12px}
+    .feature{display:flex;align-items:flex-start;gap:12px;background:#0b0d12;border:1px solid var(--line);border-radius:14px;padding:14px 15px}
+    .feature-icon{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,rgba(141,96,255,0.16),rgba(32,242,161,0.16));display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+    .feature h4{font-size:1rem;margin-bottom:4px}
+    .feature p{color:var(--muted);font-size:0.9rem;margin:0}
+    .roadmap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:10px}
+    .roadmap-item{background:#0b0d12;border:1px solid var(--line);border-radius:16px;padding:18px 16px;position:relative;overflow:hidden}
+    .roadmap-item::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(180deg,var(--orange),var(--green))}
+    .roadmap-item .phase{color:var(--soft);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;font-weight:700}
+    .roadmap-item h4{font-size:1.06rem;margin-bottom:10px}
+    .roadmap-item p{color:var(--muted);font-size:0.9rem}
+    .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:8px}
+    .support-card{background:#0b0d12;border:1px solid var(--line);border-radius:16px;padding:18px 16px}
+    .support-card h4{font-size:1.1rem;margin-bottom:8px}
+    .support-card p{color:var(--muted);font-size:0.9rem}
+    .wallet-box{display:grid;gap:12px;margin-top:8px}
+    .wallet-card{background:#0b0d12;border:1px solid var(--line);border-radius:16px;padding:18px 16px}
+    .wallet-card .label{color:var(--muted);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-weight:700}
+    .wallet-card .value{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.96rem;word-break:break-all;color:var(--text)}
+    .social-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+    .social-links a{background:rgba(255,255,255,0.02);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 14px;font-weight:700}
+    .bottom-cta{margin-top:28px;background:linear-gradient(180deg,rgba(28,34,42,0.95),rgba(20,25,31,0.95));border:1px solid var(--line);border-radius:20px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 20px 40px rgba(0,0,0,0.15)}
+    .bottom-cta h4{font-size:1.1rem;font-weight:800}
+    .bottom-cta p{color:var(--muted);font-size:0.88rem}
+    .footer{padding:28px 0 0;text-align:center;color:var(--soft);font-size:0.85rem}
+    .donate-layout{display:grid;grid-template-columns:0.8fr 1fr;gap:18px;align-items:center;margin-top:30px;margin-bottom:10px}
+    .donate-visual{background:linear-gradient(135deg,rgba(141,96,255,0.12),rgba(32,242,161,0.10));border:1px solid var(--line);border-radius:20px;min-height:180px;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+    .donate-visual h4{font-size:1.2rem;font-weight:800}
+    .donate-visual p{color:var(--muted);font-size:0.92rem}
+    .donation-chip{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:999px;padding:8px 12px;width:max-content;font-weight:800;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase}
+    .light-donate-card{background:linear-gradient(180deg,rgba(210,210,210,0.92),rgba(192,192,192,0.90));border:1px solid rgba(0,0,0,0.05);border-radius:22px;padding:20px 18px 18px;box-shadow:0 12px 30px rgba(0,0,0,0.08);color:#111}
+    .light-donate-card .header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .light-donate-card h3{font-size:1.6rem;font-weight:900;letter-spacing:-0.05em}
+    .light-donate-card .close{width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,0.08);position:relative;display:inline-block}
+    .light-donate-card .close::before,.light-donate-card .close::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:#111;border-radius:2px;transform-origin:center}
+    .light-donate-card .close::before{transform:translate(-50%,-50%) rotate(45deg)}
+    .light-donate-card .close::after{transform:translate(-50%,-50%) rotate(-45deg)}
+    .field{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.18);border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:0 12px;height:42px;margin-top:8px}
+    .field input{flex:1;height:100%;border:none;background:transparent;outline:none;color:#111;font-size:1rem;font-family:inherit}
+    .field input::placeholder{color:#5d5d5d}
+    .light-actions{display:flex;gap:12px;margin-top:12px}
+    .light-action{flex:1;border-radius:10px;padding:10px 12px;font-weight:700;font-size:0.92rem;cursor:pointer;background:rgba(255,255,255,0.12);border:1px solid rgba(0,0,0,0.04);color:#111}
+    .light-action.primary{background:rgba(255,255,255,0.22)}
+    .help-text{margin-top:10px;font-size:0.8rem;color:#4d4d4d;display:flex;align-items:center;gap:8px}
+    .help-dot{width:8px;height:8px;border-radius:50%;background:#20a86b;display:inline-block}
     @media (max-width:920px){
-      .hero{
-        grid-template-columns:1fr;
-      }
-
-      .donate-layout{
-        grid-template-columns:1fr;
-      }
-
-      .about-grid{
-        grid-template-columns:1fr;
-      }
-
-      .roadmap{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .support-grid{
-        grid-template-columns:1fr;
-      }
+      .hero,.donate-layout,.about-grid{grid-template-columns:1fr}
+      .roadmap{grid-template-columns:1fr 1fr}
+      .support-grid{grid-template-columns:1fr}
     }
-
     @media (max-width:620px){
-      header{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .nav{
-        width:100%;
-        justify-content:space-between;
-      }
-
-      .hero-actions{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .primary-btn,
-      .secondary-btn{
-        width:100%;
-      }
-
-      .roadmap{
-        grid-template-columns:1fr;
-      }
-
-      .stats{
-        grid-template-columns:1fr 1fr;
-        display:grid;
-      }
-
-      .bottom-cta{
-        flex-direction:column;
-        align-items:flex-start;
-      }
+      header{flex-direction:column;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .hero-actions{flex-direction:column;align-items:stretch}
+      .primary-btn,.secondary-btn{width:100%}
+      .roadmap{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr 1fr;display:grid}
+      .bottom-cta{flex-direction:column;align-items:flex-start}
     }
   </style>
 </head>
@@ -855,7 +162,7 @@
         <div class="stats">
           <div class="stat">
             <div class="label">Current Raise</div>
-            <div class="value" id="statRaised">0.01 SOL</div>
+            <div class="value" id="statRaised">0.00 SOL</div>
           </div>
 
           <div class="stat">
@@ -873,12 +180,12 @@
       <div class="hero-card">
         <div class="mini-header">
           <span>Funding progress</span>
-          <span id="tinyProgress">1%</span>
+          <span id="tinyProgress">0%</span>
         </div>
 
         <div class="donation-box">
           <div class="donation-amount">
-            <h3 id="raisedAmount">0.01</h3>
+            <h3 id="raisedAmount">0.00</h3>
             <span>SOL</span>
           </div>
 
@@ -911,7 +218,7 @@
       <div class="donate-visual">
         <div class="donation-chip">Donation Drive</div>
         <h4>Fast donation flow</h4>
-        <p>Enter the amount, send through Phantom, then return and confirm after sending.</p>
+        <p>Enter the amount and approve it in Phantom. The total updates automatically.</p>
       </div>
 
       <div class="light-donate-card">
@@ -921,7 +228,7 @@
         </div>
 
         <div class="field">
-          <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="Amount in SOL" />
+          <input id="amountInput" type="number" min="0.001" step="0.001" placeholder="Amount in SOL" />
         </div>
 
         <div class="light-actions">
@@ -929,21 +236,12 @@
           <button class="light-action primary" id="sendBtn" type="button">Send via Phantom</button>
         </div>
 
-        <label class="checkbox-row">
-          <input id="sentCheckbox" type="checkbox" />
-          <span>I sent SOL</span>
-        </label>
-
-        <div class="light-actions">
-          <button class="light-action" id="addToTotalBtn" type="button">Add to total</button>
-        </div>
-
         <div class="help-text">
           <span class="help-dot"></span>
-          <span>Open Phantom, send the SOL, then confirm here.</span>
+          <span>Approve the donation in Phantom. The total updates from the Solana network.</span>
         </div>
 
-        <div id="successMsg" class="success">Donation added to total.</div>
+        <div id="donateStatus" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:800;color:#0d7d43;"></div>
       </div>
     </div>
 
@@ -1038,7 +336,7 @@
 
         <div class="roadmap-item">
           <div class="phase">Phase 6</div>
-          <h4>Utility & Rewards</h4>
+          <h4>Utility &amp; Rewards</h4>
           <p>Launch future utilities, rewards, experiences, and holder engagement programs.</p>
         </div>
       </div>
@@ -1083,7 +381,7 @@
         <div class="wallet-card">
           <div class="label">Donation Instructions</div>
           <div class="value">
-            Send SOL to the wallet above. After you send it, return and check the box to confirm.
+            Send SOL to the wallet above. The total on this page updates automatically.
           </div>
         </div>
       </div>
@@ -1108,40 +406,63 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
   <script>
     const WALLET = "79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD";
     const GOAL = 1;
+    // Free public Solana servers, tried in order. If they rate-limit you,
+    // put a free Helius/other RPC URL as the FIRST item in this list.
+    const RPCS = [
+      "https://api.mainnet-beta.solana.com",
+      "https://solana-rpc.publicnode.com"
+    ];
 
     const amountInput = document.getElementById("amountInput");
-    const successMsg = document.getElementById("successMsg");
-    const sentCheckbox = document.getElementById("sentCheckbox");
+    const statusEl = document.getElementById("donateStatus");
 
-    function getStoredRaised() {
-      let value = Number(localStorage.getItem("redMangoRaised"));
-      if (!value || value <= 0) {
-        value = 0.01;
-        localStorage.setItem("redMangoRaised", String(value));
+    function setStatus(msg) {
+      statusEl.textContent = msg;
+      statusEl.style.display = msg ? "block" : "none";
+    }
+
+    async function rpc(method, params) {
+      let lastErr;
+      for (const url of RPCS) {
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params })
+          });
+          const json = await res.json();
+          if (json.error) throw new Error(json.error.message);
+          return json.result;
+        } catch (e) { lastErr = e; }
       }
-      return value;
+      throw lastErr;
     }
 
-    function formatSOL(value) {
-      return Number(value || 0).toFixed(2);
+    function formatSOL(v) {
+      return Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 });
     }
 
-    function updateProgress() {
-      const raised = getStoredRaised();
+    function render(raised) {
       const percent = Math.min((raised / GOAL) * 100, 100);
-      const raisedAmount = document.getElementById("raisedAmount");
-      const progressFill = document.getElementById("progressFill");
-      const statRaised = document.getElementById("statRaised");
-      const tinyProgress = document.getElementById("tinyProgress");
+      document.getElementById("raisedAmount").textContent = formatSOL(raised);
+      document.getElementById("progressFill").style.width = Math.max(percent, 1) + "%";
+      document.getElementById("goalText").textContent = GOAL + " SOL goal";
+      document.getElementById("tinyProgress").textContent = Math.round(percent) + "%";
+      document.getElementById("statRaised").textContent = formatSOL(raised) + " SOL";
+    }
 
-      raisedAmount.textContent = formatSOL(raised);
-      progressFill.style.width = percent + "%";
-      document.getElementById("goalText").textContent = "1 SOL goal";
-      tinyProgress.textContent = Math.round(percent) + "%";
-      statRaised.textContent = formatSOL(raised) + " SOL";
+    // Total raised = the real balance of the donation wallet on Solana.
+    async function refreshTotal() {
+      try {
+        const res = await rpc("getBalance", [WALLET, { commitment: "confirmed" }]);
+        const sol = res.value / 1e9;
+        try { localStorage.setItem("redMangoLastBalance", String(sol)); } catch (e) {}
+        render(sol);
+      } catch (e) { console.error("Could not load balance", e); }
     }
 
     function copyAddress() {
@@ -1151,72 +472,97 @@
           copied.style.display = "block";
           setTimeout(() => copied.style.display = "none", 1800);
         })
-        .catch(() => {
-          alert("Wallet copied failed. Send to: " + WALLET);
-        });
+        .catch(() => alert("Copy failed. Send to: " + WALLET));
     }
 
-    function openPhantom(amount) {
+    function getPhantom() {
+      if (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom) return window.phantom.solana;
+      if (window.solana && window.solana.isPhantom) return window.solana;
+      return null;
+    }
+
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+
+    // Phone browsers (Safari) can't talk to Phantom, so reopen this page inside Phantom's own browser.
+    function openInPhantomBrowser(amount) {
+      const page = location.origin + location.pathname + (amount ? "?amount=" + amount : "");
+      location.href = "https://phantom.app/ul/browse/" + encodeURIComponent(page) +
+        "?ref=" + encodeURIComponent(location.origin);
+    }
+
+    async function donate(amount) {
       const val = Number(amount);
-
-      if (!val || val <= 0) {
-        alert("Please enter a valid amount in SOL.");
+      if (!val || val < 0.001) {
+        setStatus("Enter an amount of at least 0.001 SOL.");
+        amountInput.focus();
         return;
       }
 
-      const deepLink = `https://phantom.app/ul/browse/solana:${WALLET}?amount=${val}`;
-      window.location.href = deepLink;
-    }
-
-    function addToTotal() {
-      const val = Number(amountInput.value);
-
-      if (!val || val <= 0) {
-        alert("Please enter a valid amount first.");
+      const provider = getPhantom();
+      if (!provider) {
+        if (isMobile) {
+          setStatus("Opening Phantom...");
+          openInPhantomBrowser(val);
+        } else {
+          setStatus("Phantom not found. Install the Phantom extension, or copy the wallet address and send SOL manually.");
+        }
         return;
       }
 
-      if (!sentCheckbox.checked) {
-        alert("Please check the box that says you sent SOL.");
-        return;
-      }
-
-      const current = getStoredRaised();
-      const next = Number((current + val).toFixed(2));
-      localStorage.setItem("redMangoRaised", String(next));
-
-      successMsg.style.display = "block";
-      successMsg.textContent = "Donation added to total.";
-      setTimeout(() => {
-        successMsg.style.display = "none";
-      }, 1800);
-
-      updateProgress();
-      amountInput.value = "";
-      sentCheckbox.checked = false;
-    }
-
-    document.getElementById("sendBtn").addEventListener("click", () => openPhantom(amountInput.value));
-    document.getElementById("quickDonateBtn").addEventListener("click", () => openPhantom(amountInput.value || 0.01));
-    document.getElementById("openDonateBtn").addEventListener("click", () => openPhantom(amountInput.value || 0.01));
-    document.getElementById("bottomDonateBtn").addEventListener("click", () => openPhantom(amountInput.value || 0.01));
-
-    document.getElementById("cancelBtn").addEventListener("click", () => {
-      amountInput.value = "";
-      sentCheckbox.checked = false;
-    });
-
-    document.getElementById("addToTotalBtn").addEventListener("click", addToTotal);
-
-    document.getElementById("connectWalletBtn").addEventListener("click", async () => {
-      if (!window.solana || !window.solana.isPhantom) {
-        alert("Phantom not detected. Copy wallet address instead.");
-        copyAddress();
+      if (typeof solanaWeb3 === "undefined") {
+        setStatus("Could not load Solana tools. Refresh the page and try again.");
         return;
       }
 
       try {
-        const response = await window.solana.connect();
+        setStatus("Approve the donation in Phantom...");
+        const { publicKey } = await provider.connect();
+        const { Transaction, SystemProgram, PublicKey } = solanaWeb3;
+        const bh = await rpc("getLatestBlockhash", [{ commitment: "finalized" }]);
+
+        const tx = new Transaction();
+        tx.add(SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(WALLET),
+          lamports: Math.round(val * 1e9)
+        }));
+        tx.feePayer = publicKey;
+        tx.recentBlockhash = bh.value.blockhash;
+
+        await provider.signAndSendTransaction(tx);
+        amountInput.value = "";
+        setStatus("Sent! Waiting for the network to confirm...");
+        setTimeout(refreshTotal, 5000);
+        setTimeout(async () => {
+          await refreshTotal();
+          setStatus("Thank you! Total refreshed from the Solana network.");
+        }, 12000);
+      } catch (e) {
+        console.error(e);
+        setStatus(e && e.code === 4001 ? "Donation cancelled." : "Something went wrong. Check Phantom to see if anything was sent.");
+      }
+    }
+
+    document.getElementById("sendBtn").addEventListener("click", () => donate(amountInput.value));
+    document.getElementById("quickDonateBtn").addEventListener("click", () => donate(amountInput.value || 0.01));
+    document.getElementById("openDonateBtn").addEventListener("click", () => donate(amountInput.value || 0.01));
+    document.getElementById("bottomDonateBtn").addEventListener("click", () => donate(amountInput.value || 0.01));
+
+    document.getElementById("cancelBtn").addEventListener("click", () => {
+      amountInput.value = "";
+      setStatus("");
+    });
+
+    document.getElementById("connectWalletBtn").addEventListener("click", async () => {
+      const provider = getPhantom();
+      if (!provider) {
+        if (isMobile) { openInPhantomBrowser(""); return; }
+        alert("Phantom not detected. Copy wallet address instead.");
+        copyAddress();
+        return;
+      }
+      try {
+        const response = await provider.connect();
         const pubkey = response.publicKey.toString();
         alert("Connected: " + pubkey.slice(0, 6) + "..." + pubkey.slice(-4));
       } catch (error) {
@@ -1225,11 +571,17 @@
       }
     });
 
-    if (!localStorage.getItem("redMangoRaised")) {
-      localStorage.setItem("redMangoRaised", "0.01");
+    // Opened from the phone browser? Prefill the amount.
+    const amountFromLink = new URLSearchParams(location.search).get("amount");
+    if (amountFromLink && getPhantom()) {
+      amountInput.value = amountFromLink;
+      setStatus("You're in Phantom. Tap \"Send via Phantom\" to finish your donation.");
     }
 
-    updateProgress();
+    // Show the last known total instantly, then load the real one.
+    try { render(Number(localStorage.getItem("redMangoLastBalance")) || 0); } catch (e) { render(0); }
+    refreshTotal();
+    setInterval(refreshTotal, 30000);
   </script>
 </body>
 </html>
