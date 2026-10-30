@@ -4,372 +4,344 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mango Bird</title>
+
   <style>
     :root{
-      --bg: #0c0c0d;
-      --panel: #111214;
-      --panel-2: #1a1b1e;
-      --line: rgba(255,255,255,0.08);
-      --text: #f4f5f7;
-      --muted: #a8a8af;
-      --orange: #ff8b2b;
-      --gold: #ffc166;
-      --purple: #8c6ff2;
-      --green: #28f2a0;
-      --gray: #d9d9d9;
-      --shadow: rgba(0,0,0,0.35);
+      --bg:#0b0d10;
+      --panel:#111214;
+      --panel-2:#17191d;
+      --line:rgba(255,255,255,0.08);
+      --text:#ffffff;
+      --muted:#dfe5ee;
+      --orange:#ff8e2d;
+      --gold:#ffcb65;
+      --green:#78d75f;
+      --green-2:#5abf3b;
+      --purple:#8a6df2;
+      --green-3:#18f4a6;
+      --sky1:#8dd8e8;
+      --sky2:#c7f3ff;
+      --ground:#8edd5d;
+      --grass:#69bb3c;
+      --shadow:rgba(0,0,0,0.35);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      -webkit-tap-highlight-color:transparent;
     }
 
-    html, body {
-      height: 100%;
+    html, body{
+      height:100%;
+      background:#000;
+      font-family:Inter, Arial, sans-serif;
     }
 
-    body {
-      background: #000;
-      font-family: Inter, Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text);
-      padding: 0;
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      overflow:hidden;
     }
 
-    .phone-shell {
-      width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      background: #111;
-      position: relative;
-      overflow: hidden;
+    .phone{
+      width:100%;
+      max-width:430px;
+      height:100vh;
+      background:#111214;
+      position:relative;
+      overflow:hidden;
+      border-left:1px solid #000;
+      border-right:1px solid #000;
     }
 
-    .statusbar {
-      height: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 18px 0;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #f4f4f4;
-      background: #f4f4f4;
-      color: #111;
+    .statusbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 18px 0 18px;
+      height:46px;
+      color:#111;
+      background:#f3f3f3;
+      font-weight:700;
+      font-size:1.1rem;
     }
 
-    .status-left {
-      font-size: 1.05rem;
-      letter-spacing: 0.02em;
+    .status-left{
+      letter-spacing:0.04em;
     }
 
-    .status-right {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      font-size: 0.9rem;
-      font-weight: 700;
+    .status-right{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      font-size:0.8rem;
     }
 
-    .signal {
-      display: flex;
-      align-items: center;
-      gap: 3px;
+    .signal{
+      display:flex;
+      align-items:flex-end;
+      gap:3px;
+      height:15px;
     }
 
-    .signal span {
-      display: block;
-      width: 4px;
-      border-radius: 2px;
-      background: #111;
+    .signal span{
+      display:block;
+      width:4px;
+      border-radius:2px;
+      background:#111;
     }
 
-    .signal span:nth-child(1) { height: 5px; opacity: 0.4; }
-    .signal span:nth-child(2) { height: 8px; opacity: 0.65; }
-    .signal span:nth-child(3) { height: 11px; opacity: 0.9; }
-    .signal span:nth-child(4) { height: 14px; }
+    .signal span:nth-child(1){ height:5px; opacity:0.45; }
+    .signal span:nth-child(2){ height:8px; opacity:0.65; }
+    .signal span:nth-child(3){ height:11px; opacity:0.85; }
+    .signal span:nth-child(4){ height:14px; }
 
-    .battery {
-      width: 22px;
-      height: 10px;
-      border: 2px solid #111;
-      border-radius: 3px;
-      position: relative;
-      display: inline-block;
+    .battery{
+      width:24px;
+      height:11px;
+      border:2px solid #111;
+      border-radius:3px;
+      position:relative;
+      display:inline-block;
+    }
+    .battery::before{
+      content:"";
+      position:absolute;
+      inset:2px;
+      background:#111;
+      border-radius:2px;
+    }
+    .battery::after{
+      content:"";
+      position:absolute;
+      right:-5px;
+      top:2px;
+      width:2px;
+      height:5px;
+      background:#111;
+      border-radius:1px;
     }
 
-    .battery::after {
-      content: "";
-      position: absolute;
-      right: -4px;
-      top: 2px;
-      width: 2px;
-      height: 4px;
-      background: #111;
-      border-radius: 1px;
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:#1c1d21;
+      padding:14px 18px 10px;
+      color:#f5f5f5;
+      border-bottom:1px solid rgba(255,255,255,0.05);
     }
 
-    .battery::before {
-      content: "";
-      position: absolute;
-      inset: 2px 2px 2px 2px;
-      background: #111;
-      border-radius: 1px;
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
     }
 
-    .top-cta {
-      padding: 8px 16px 0;
+    .back-btn{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:1.5rem;
+      font-weight:700;
+      text-decoration:none;
     }
 
-    .pill {
-      width: 100%;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 26px;
-      padding: 18px 18px;
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #f4f4f4;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    .game-label{
+      font-size:1.2rem;
+      letter-spacing:0.01em;
     }
 
-    .pill .arrow {
-      font-size: 1.5rem;
-      color: rgba(255,255,255,0.9);
+    .mini-icons{
+      display:flex;
+      align-items:center;
+      gap:8px;
     }
 
-    .game-board {
-      position: relative;
-      width: 100%;
-      height: 580px;
-      margin-top: 8px;
-      background: linear-gradient(180deg, #1d2635, #111a1c 60%, #0d0f0f);
-      border-top: 1px solid rgba(255,255,255,0.04);
-      overflow: hidden;
+    .mini-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.4);
     }
 
-    canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      background: linear-gradient(180deg, #1d2635, #111a1c 60%, #0d0f0f);
-      touch-action: manipulation;
+    .mini-dot:last-child{
+      width:26px;
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.4);
     }
 
-    .score-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 18px 14px;
-      background: rgba(0,0,0,0.9);
-      border-top: 1px solid rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: 0.02em;
+    .game-area{
+      position:relative;
+      width:100%;
+      height:520px;
+      background:linear-gradient(180deg, var(--sky1), var(--sky2) 62%, #c9f2dd 62%, #a6e8ab);
+      overflow:hidden;
+      border-bottom:1px solid rgba(0,0,0,0.25);
     }
 
-    .score-left {
-      color: #18f1a4;
+    canvas{
+      display:block;
+      width:100%;
+      height:100%;
+      background:linear-gradient(180deg, var(--sky1), var(--sky2) 62%, #d1f0cc 62%, #9ed26e);
+      touch-action:manipulation;
     }
 
-    .score-right {
-      color: #f2f2f2;
+    .hud{
+      position:absolute;
+      inset:0 0 auto 0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      padding:14px 16px 0;
+      pointer-events:none;
+      color:#fff;
+      font-weight:900;
+      text-shadow:0 2px 0 rgba(0,0,0,0.25);
+      z-index:3;
     }
 
-    .control-stack {
-      padding: 14px 18px 18px;
-      background: rgba(0,0,0,0.9);
+    .score-box{
+      font-size:1.05rem;
+      letter-spacing:0.02em;
+      color:#eafaf6;
+      background:rgba(0,0,0,0.15);
+      border-radius:10px;
+      padding:8px 10px;
     }
 
-    .button {
-      width: 100%;
-      border: none;
-      border-radius: 18px;
-      padding: 18px 16px;
-      font-size: 1.1rem;
-      font-weight: 800;
-      cursor: pointer;
-      color: white;
-      margin-bottom: 12px;
-      transition: transform 0.12s ease, opacity 0.12s ease;
-      touch-action: manipulation;
+    .score-box strong{
+      font-size:1.5rem;
+      font-weight:900;
     }
 
-    .button:active {
-      transform: scale(0.99);
+    .high-box{
+      font-size:1rem;
+      letter-spacing:0.02em;
+      color:#ffffff;
+      background:rgba(0,0,0,0.12);
+      border-radius:10px;
+      padding:8px 10px;
     }
 
-    .start-btn {
-      background: linear-gradient(90deg, #f39a2b, #f7c666);
-      box-shadow: 0 10px 24px rgba(243,154,43,0.25);
+    .high-box span{
+      color:#7ef6bf;
+      font-weight:900;
+      font-size:1.3rem;
     }
 
-    .restart-btn {
-      background: linear-gradient(90deg, #8c6ff2, #4adab7);
-      box-shadow: 0 10px 24px rgba(140,111,242,0.25);
+    .controls{
+      padding:10px 16px 18px;
+      background:#111214;
     }
 
-    .bottom-bar {
-      position: relative;
-      background: linear-gradient(90deg, #7a63e8, #4adab7);
-      border-top-left-radius: 22px;
-      border-top-right-radius: 22px;
-      padding: 10px 12px 16px;
-      margin-top: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      min-height: 78px;
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      width:100%;
+      border-radius:18px;
+      color:#fff;
+      font-weight:900;
+      font-size:1.05rem;
+      padding:18px 18px;
+      transition:transform 0.1s ease, filter 0.1s ease;
+      touch-action:manipulation;
     }
 
-    .bottom-bar::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(140,111,242,0.9), rgba(74,218,183,0.9));
-      border-top-left-radius: 22px;
-      border-top-right-radius: 22px;
-      z-index: 0;
+    .btn:active{
+      transform:scale(0.99);
+      filter:brightness(0.98);
     }
 
-    .nav-left, .nav-mid, .nav-right {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .start-btn{
+      background:linear-gradient(90deg, var(--orange), var(--gold));
+      box-shadow:0 12px 28px rgba(255,146,42,0.25);
+      margin-bottom:12px;
     }
 
-    .nav-left {
-      width: 42px;
-      height: 42px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 50%;
-      color: white;
-      font-size: 1.8rem;
-      font-weight: 700;
+    .restart-btn{
+      background:linear-gradient(90deg, var(--purple), var(--green-3));
+      box-shadow:0 12px 28px rgba(120,113,234,0.22);
+      margin-bottom:0;
     }
 
-    .nav-mid {
-      flex: 1;
-      justify-content: center;
-      color: #fefefe;
-      font-weight: 700;
-      font-size: 0.82rem;
-      text-align: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      padding: 0 8px;
+    .donate-link{
+      display:block;
+      margin:8px 16px 18px;
+      padding:15px 18px;
+      border-radius:16px;
+      text-align:center;
+      text-decoration:none;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(90deg, #7f61ef, #4ad9b2);
+      box-shadow:0 12px 22px rgba(64,64,80,0.25);
     }
 
-    .nav-right {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .icon-box {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1rem;
-    }
-
-    .donate-box {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      margin-top: 8px;
-      border-radius: 16px;
-      background: linear-gradient(90deg, rgba(140,111,242,0.9), rgba(74,218,183,0.9));
-      padding: 12px 16px;
-      text-align: center;
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: #fff;
-      box-shadow: 0 12px 24px rgba(35, 36, 42, 0.25);
-    }
-
-    .donate-box a {
-      color: white;
-      text-decoration: none;
-      display: block;
-      width: 100%;
-    }
-
-    @media (max-width: 430px) {
-      .phone-shell {
-        min-height: 100vh;
-      }
-
-      .game-board {
-        height: 540px;
+    @media (max-width:430px){
+      .game-area{
+        height:500px;
       }
     }
   </style>
 </head>
+
 <body>
-  <div class="phone-shell">
+  <div class="phone">
     <div class="statusbar">
-      <div class="status-left">14:57</div>
+      <div class="status-left">15:07</div>
       <div class="status-right">
         <div class="signal">
-          <span></span><span></span><span></span><span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
         <div class="battery"></div>
       </div>
     </div>
 
-    <div class="top-cta">
-      <div class="pill">
-        <span>Finance work experience</span>
-        <span class="arrow">›</span>
+    <div class="topbar">
+      <div class="topbar-left">
+        <a class="back-btn" href="index.html" aria-label="Back home">‹</a>
+        <div class="game-label">Mango Bird</div>
+      </div>
+
+      <div class="mini-icons">
+        <div class="mini-dot"></div>
+        <div class="mini-dot"></div>
       </div>
     </div>
 
-    <div class="game-board">
-      <canvas id="gameCanvas" width="420" height="520"></canvas>
-    </div>
-
-    <div class="score-row">
-      <div class="score-left">Score: <span id="scoreValue">0</span></div>
-      <div class="score-right">High: <span id="bestValue">0</span></div>
-    </div>
-
-    <div class="control-stack">
-      <button class="button start-btn" id="startBtn">Start</button>
-      <button class="button restart-btn" id="restartBtn">Restart</button>
-    </div>
-
-    <div class="bottom-bar">
-      <div class="nav-left">‹</div>
-      <div class="nav-mid">nate182-dev.github.io</div>
-      <div class="nav-right">
-        <div class="icon-box">↻</div>
-        <div class="icon-box">▣</div>
+    <div class="game-area">
+      <div class="hud">
+        <div class="score-box">Score: <strong id="scoreValue">0</strong></div>
+        <div class="high-box">High: <span id="bestValue">0</span></div>
       </div>
+
+      <canvas id="gameCanvas" width="430" height="520"></canvas>
     </div>
 
-    <div class="donate-box">
-      <a href="index.html#wallet">💚 Donate SOL</a>
+    <div class="controls">
+      <button class="btn start-btn" id="startBtn">Start</button>
+      <button class="btn restart-btn" id="restartBtn">Restart</button>
     </div>
+
+    <a class="donate-link" href="index.html#wallet">💚 Donate SOL</a>
   </div>
 
   <script>
@@ -380,34 +352,34 @@
     const startBtn = document.getElementById("startBtn");
     const restartBtn = document.getElementById("restartBtn");
 
-    const BEST_KEY = "mangoBirdHighScore";
-    const storedBest = Number(localStorage.getItem(BEST_KEY)) || 0;
-    bestValue.textContent = storedBest;
+    const HIGH_SCORE_KEY = "mangoBirdHighScore";
+    const storedHigh = Number(localStorage.getItem(HIGH_SCORE_KEY)) || 0;
+    bestValue.textContent = storedHigh;
 
     const state = {
       running: false,
       over: false,
       score: 0,
-      best: storedBest,
+      best: storedHigh,
       gravity: 0.48,
-      lift: -7.8,
+      lift: -7.6,
       birdX: 110,
       birdY: 220,
-      birdRadius: 18,
+      birdRadius: 16,
       velocity: 0,
       pipeWidth: 64,
       pipeGap: 170,
-      pipeSpeed: 2.8,
-      pipes: [],
+      pipeSpeed: 2.7,
       spawnTimer: 0,
-      groundY: canvas.height - 52,
-      cloudOffset: 0
+      pipes: [],
+      cloudOffset: 0,
+      groundY: canvas.height - 46
     };
 
-    function updateBestScore() {
+    function updateBest() {
       if (state.score > state.best) {
         state.best = state.score;
-        localStorage.setItem(BEST_KEY, String(state.best));
+        localStorage.setItem(HIGH_SCORE_KEY, String(state.best));
         bestValue.textContent = state.best;
       }
     }
@@ -441,12 +413,12 @@
     }
 
     function createPipe() {
-      const minTop = 70;
-      const maxTop = state.groundY - state.pipeGap - 100;
+      const minTop = 60;
+      const maxTop = state.groundY - state.pipeGap - 90;
       const topHeight = minTop + Math.random() * (maxTop - minTop);
 
       state.pipes.push({
-        x: canvas.width + 20,
+        x: canvas.width + 30,
         w: state.pipeWidth,
         gap: state.pipeGap,
         topHeight,
@@ -459,6 +431,9 @@
 
       state.velocity += state.gravity;
       state.birdY += state.velocity;
+
+      const speedBoost = Math.min(3.6, 2.7 + state.score * 0.12);
+      state.pipeSpeed = speedBoost;
 
       state.spawnTimer += 1;
       if (state.spawnTimer >= 90) {
@@ -473,7 +448,7 @@
           pipe.passed = true;
           state.score += 1;
           scoreValue.textContent = state.score;
-          updateBestScore();
+          updateBest();
         }
       }
 
@@ -487,25 +462,25 @@
       for (const pipe of state.pipes) {
         const pipeLeft = pipe.x;
         const pipeRight = pipe.x + pipe.w;
-        const pipeTopBottom = pipe.topHeight;
-        const pipeBottomTop = pipe.topHeight + pipe.gap;
+        const topBottom = pipe.topHeight;
+        const bottomTop = pipe.topHeight + pipe.gap;
 
-        const intersectsX = birdRight > pipeLeft && birdLeft < pipeRight;
-        const intersectsTop = birdTop < pipeTopBottom;
-        const intersectsBottom = birdBottom > pipeBottomTop;
+        const hitsX = birdRight > pipeLeft && birdLeft < pipeRight;
+        const hitsTop = birdTop < topBottom;
+        const hitsBottom = birdBottom > bottomTop;
 
-        if (intersectsX && (intersectsTop || intersectsBottom)) {
+        if (hitsX && (hitsTop || hitsBottom)) {
           state.over = true;
           state.running = false;
-          updateBestScore();
-          break;
+          updateBest();
+          return;
         }
       }
 
       if (state.birdY + state.birdRadius >= state.groundY || state.birdY - state.birdRadius <= 0) {
         state.over = true;
         state.running = false;
-        updateBestScore();
+        updateBest();
       }
     }
 
@@ -513,41 +488,81 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      sky.addColorStop(0, "#1f2a37");
-      sky.addColorStop(0.5, "#121c22");
-      sky.addColorStop(1, "#0d0d0d");
+      sky.addColorStop(0, "#87d5e9");
+      sky.addColorStop(0.7, "#9feaf4");
+      sky.addColorStop(1, "#9ae2b8");
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Sun glow
-      ctx.fillStyle = "rgba(255, 188, 92, 0.12)";
-      ctx.beginPath();
-      ctx.arc(canvas.width - 60, 70, 80, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Clouds
-      ctx.fillStyle = "rgba(255,255,255,0.08)";
-      for (let i = 0; i < 7; i++) {
-        const x = ((i * 80) - (state.cloudOffset % 80)) + 25;
-        const y = 65 + (i % 3) * 25;
+      // clouds
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      for (let i = 0; i < 8; i++) {
+        const x = ((i * 80) - (state.cloudOffset % 80)) + 24;
+        const y = 40 + (i % 3) * 26;
 
         ctx.beginPath();
         ctx.arc(x, y, 18, 0, Math.PI * 2);
-        ctx.arc(x + 18, y - 8, 20, 0, Math.PI * 2);
+        ctx.arc(x + 18, y - 10, 20, 0, Math.PI * 2);
         ctx.arc(x + 36, y, 18, 0, Math.PI * 2);
         ctx.fill();
       }
-      state.cloudOffset += 0.5;
+      state.cloudOffset += 0.6;
 
-      // Ground
-      ctx.fillStyle = "#1a2722";
-      ctx.fillRect(0, state.groundY, canvas.width, canvas.height - state.groundY);
-
-      ctx.fillStyle = "#2d4a3d";
-      for (let i = 0; i < canvas.width; i += 26) {
-        const x = i - ((state.cloudOffset * 1.8) % 26);
-        ctx.fillRect(x, state.groundY + 12, 16, 6);
+      // city silhouette in the distance
+      ctx.fillStyle = "rgba(88,114,133,0.45)";
+      const skylineY = 300;
+      for (let i = 0; i < 18; i++) {
+        const x = i * 26;
+        const height = 30 + ((i % 5) * 10);
+        ctx.fillRect(x, skylineY - height, 18, height);
       }
+
+      // ground
+      ctx.fillStyle = "#86d258";
+      ctx.fillRect(0, canvas.height - 46, canvas.width, 46);
+
+      ctx.fillStyle = "#7ebd4a";
+      for (let x = -15; x < canvas.width + 40; x += 24) {
+        ctx.fillRect(x - (state.cloudOffset * 2 % 24), canvas.height - 28, 16, 6);
+      }
+
+      // green stripe / grass
+      ctx.fillStyle = "#5b9f37";
+      ctx.fillRect(0, canvas.height - 60, canvas.width, 14);
+
+      ctx.fillStyle = "#72c95d";
+      for (let x = -30; x < canvas.width + 50; x += 18) {
+        ctx.fillRect(x - (state.cloudOffset * 2 % 18), canvas.height - 64, 11, 7);
+      }
+    }
+
+    function drawPipe(pipe) {
+      const topHeight = pipe.topHeight;
+      const bottomY = pipe.topHeight + pipe.gap;
+
+      // pipe body
+      ctx.fillStyle = "#6fbf45";
+      ctx.fillRect(pipe.x, 0, pipe.w, topHeight);
+      ctx.fillRect(pipe.x, bottomY, pipe.w, state.groundY - bottomY);
+
+      // highlight / shading
+      ctx.fillStyle = "#8bdb60";
+      ctx.fillRect(pipe.x + 8, 0, 7, topHeight);
+      ctx.fillRect(pipe.x + 8, bottomY, 7, state.groundY - bottomY);
+
+      // caps
+      ctx.fillStyle = "#5aa73e";
+      ctx.fillRect(pipe.x - 8, topHeight - 18, pipe.w + 16, 18);
+      ctx.fillRect(pipe.x - 8, bottomY, pipe.w + 16, 18);
+
+      ctx.fillStyle = "#7ad15a";
+      ctx.fillRect(pipe.x + 8, topHeight - 18, pipe.w - 16, 8);
+      ctx.fillRect(pipe.x + 8, bottomY, pipe.w - 16, 8);
+
+      // pipe inner shadow
+      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.fillRect(pipe.x + pipe.w - 8, 0, 8, topHeight);
+      ctx.fillRect(pipe.x + pipe.w - 8, bottomY, 8, state.groundY - bottomY);
     }
 
     function drawMangoBird() {
@@ -561,104 +576,87 @@
       ctx.rotate(tilt);
 
       // body
-      ctx.fillStyle = "#ff9a2e";
+      ctx.fillStyle = "#ff8a2f";
       ctx.beginPath();
       ctx.arc(0, 0, state.birdRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      // highlight
-      ctx.fillStyle = "#ffd38e";
+      // head highlight
+      ctx.fillStyle = "#ffbf6d";
       ctx.beginPath();
-      ctx.arc(-7, -8, 8, 0, Math.PI * 2);
+      ctx.arc(-6, -7, 8, 0, Math.PI * 2);
       ctx.fill();
 
       // left wing
-      ctx.fillStyle = "#ff7a00";
+      ctx.fillStyle = "#e66d00";
       ctx.beginPath();
-      ctx.ellipse(-10, 7, 14, 11, -0.7, 0, Math.PI * 2);
+      ctx.ellipse(-11, 5, 14, 10, -0.75, 0, Math.PI * 2);
       ctx.fill();
 
       // right wing
-      ctx.fillStyle = "#ffb24d";
+      ctx.fillStyle = "#ffb24b";
       ctx.beginPath();
-      ctx.ellipse(8, 8, 13, 10, 0.8, 0, Math.PI * 2);
+      ctx.ellipse(8, 8, 12, 9, 0.9, 0, Math.PI * 2);
       ctx.fill();
 
       // eye
-      ctx.fillStyle = "#101010";
+      ctx.fillStyle = "#0d0d0d";
       ctx.beginPath();
-      ctx.arc(8, -4, 3.2, 0, Math.PI * 2);
+      ctx.arc(8, -5, 3.0, 0, Math.PI * 2);
       ctx.fill();
 
       // beak
-      ctx.fillStyle = "#ff6a00";
+      ctx.fillStyle = "#ff5b00";
       ctx.beginPath();
-      ctx.moveTo(17, 1);
-      ctx.lineTo(30, 3);
-      ctx.lineTo(17, 9);
+      ctx.moveTo(17, 0);
+      ctx.lineTo(28, 3);
+      ctx.lineTo(17, 8);
       ctx.closePath();
       ctx.fill();
 
-      // little green leaf
-      ctx.fillStyle = "#33d98d";
+      // little leaf
+      ctx.fillStyle = "#20d17a";
       ctx.beginPath();
-      ctx.moveTo(-13, -11);
-      ctx.quadraticCurveTo(-4, -18, 4, -13);
-      ctx.quadraticCurveTo(-5, -3, -13, -11);
+      ctx.moveTo(-12, -10);
+      ctx.quadraticCurveTo(-4, -18, 4, -12);
+      ctx.quadraticCurveTo(-5, -2, -12, -10);
       ctx.fill();
 
       ctx.restore();
     }
 
-    function drawPipe(pipe) {
-      const topHeight = pipe.topHeight;
-      const bottomY = pipe.topHeight + pipe.gap;
-
-      ctx.fillStyle = "#18d673";
-      ctx.fillRect(pipe.x, 0, pipe.w, topHeight);
-      ctx.fillRect(pipe.x, bottomY, pipe.w, state.groundY - bottomY);
-
-      ctx.fillStyle = "#0da958";
-      ctx.fillRect(pipe.x - 4, topHeight - 18, pipe.w + 8, 18);
-      ctx.fillRect(pipe.x - 4, bottomY, pipe.w + 8, 18);
-
-      ctx.fillStyle = "#4fe38e";
-      ctx.fillRect(pipe.x + 6, topHeight - 18, pipe.w - 12, 10);
-      ctx.fillRect(pipe.x + 6, bottomY, pipe.w - 12, 10);
-    }
-
-    function drawStartScreen() {
-      if (state.running || state.over) return;
-
-      ctx.fillStyle = "rgba(0,0,0,0.10)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#fff";
-      ctx.textAlign = "center";
-      ctx.font = "800 30px Arial";
-      ctx.fillText("Mango Bird", canvas.width / 2, canvas.height / 2 - 14);
-
-      ctx.font = "700 18px Arial";
-      ctx.fillStyle = "#f7f7f7";
-      ctx.fillText("Tap or press Space to flap", canvas.width / 2, canvas.height / 2 + 20);
-    }
-
-    function drawGameOver() {
+    function drawEndText() {
       if (!state.over) return;
 
-      ctx.fillStyle = "rgba(0,0,0,0.45)";
+      ctx.fillStyle = "rgba(0,0,0,0.28)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "#fff";
       ctx.textAlign = "center";
-      ctx.font = "800 34px Arial";
-      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 20);
+      ctx.font = "900 28px Arial";
+      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 18);
 
       ctx.font = "700 18px Arial";
+      ctx.fillStyle = "#eaeaea";
       ctx.fillText("Score: " + state.score, canvas.width / 2, canvas.height / 2 + 18);
 
-      ctx.fillStyle = "#ffcc73";
-      ctx.fillText("Tap / Space to retry", canvas.width / 2, canvas.height / 2 + 52);
+      ctx.fillStyle = "#ffdd8a";
+      ctx.fillText("Tap or Space to retry", canvas.width / 2, canvas.height / 2 + 54);
+    }
+
+    function drawStartText() {
+      if (state.running || state.over) return;
+
+      ctx.fillStyle = "rgba(0,0,0,0.07)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 30px Arial";
+      ctx.fillText("Mango Bird", canvas.width / 2, canvas.height / 2 - 12);
+
+      ctx.font = "700 18px Arial";
+      ctx.fillText("Tap or press Space to flap", canvas.width / 2, canvas.height / 2 + 22);
     }
 
     function render() {
@@ -669,8 +667,8 @@
       }
 
       drawMangoBird();
-      drawStartScreen();
-      drawGameOver();
+      drawStartText();
+      drawEndText();
     }
 
     function gameLoop() {
@@ -692,19 +690,19 @@
     startBtn.addEventListener("click", startAndFly);
     restartBtn.addEventListener("click", startAndFly);
 
-    canvas.addEventListener("pointerdown", (event) => {
-      event.preventDefault();
+    canvas.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
       onTap();
     });
 
-    canvas.addEventListener("touchstart", (event) => {
-      event.preventDefault();
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
       onTap();
     }, { passive: false });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.code === "Space") {
-        event.preventDefault();
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
         onTap();
       }
     });
