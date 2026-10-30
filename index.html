@@ -3,20 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finance work experience</title>
+  <title>The Red Mango</title>
+
   <style>
     :root{
-      --bg:#ececec;
-      --card:#d8d8d8;
-      --card-2:#cfcfcf;
-      --ink:#111111;
-      --muted:#6c6c6c;
-      --soft:#b9b9b9;
-      --line:#d1d1d1;
-      --button:#d2d2d2;
-      --button-2:#c9c9c9;
-      --glass:rgba(255,255,255,0.18);
-      --shadow:rgba(0,0,0,0.08);
+      --bg:#070b10;
+      --bg-2:#0d1218;
+      --bg-3:#121a22;
+      --panel:#111821;
+      --panel-2:#171f2a;
+      --panel-3:#1b2633;
+      --line:#2a3642;
+      --text:#edf4f8;
+      --muted:#a7b2bf;
+      --soft:#8190a0;
+      --orange:#ff8a2c;
+      --gold:#f7c36f;
+      --purple:#8d60ff;
+      --green:#20f2a1;
+      --green-2:#6ce8bc;
+      --red:#ff6d6d;
+      --light-card:#d7d7d7;
+      --light-text:#111;
+      --light-muted:#4a4a4a;
+      --shadow:rgba(0,0,0,0.28);
     }
 
     *{
@@ -25,200 +35,614 @@
       padding:0;
     }
 
-    html, body{
-      height:100%;
-      background:var(--bg);
-      font-family: Inter, Arial, sans-serif;
-      color:var(--ink);
+    html{
+      scroll-behavior:smooth;
     }
 
     body{
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      overflow:hidden;
+      font-family: Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(141,96,255,0.18), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(32,242,161,0.12), transparent 22%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.6;
     }
 
-    .phone{
-      width:100%;
-      max-width:430px;
-      min-height:100vh;
-      background:var(--bg);
-      position:relative;
-      overflow:hidden;
-      padding-top:10px;
+    a{
+      text-decoration:none;
     }
 
-    .statusbar{
-      height:42px;
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:20px 18px 80px;
+    }
+
+    header{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:0 18px 0 18px;
-      font-weight:700;
-      font-size:1.35rem;
-      letter-spacing:0.03em;
+      gap:18px;
+      padding:10px 0 26px;
     }
 
-    .status-left{
-      font-size:1.05rem;
-      font-weight:800;
-      color:#111;
-      letter-spacing:0.04em;
-    }
-
-    .status-right{
+    .brand{
       display:flex;
       align-items:center;
       gap:12px;
-      font-size:0.9rem;
-      color:#111;
     }
 
-    .signal{
-      display:flex;
-      align-items:flex-end;
-      gap:3px;
-      height:16px;
-    }
-
-    .signal span{
-      display:block;
-      width:4px;
-      border-radius:2px;
-      background:#111;
-    }
-
-    .signal span:nth-child(1){height:5px; opacity:0.55;}
-    .signal span:nth-child(2){height:8px; opacity:0.75;}
-    .signal span:nth-child(3){height:11px; opacity:0.9;}
-    .signal span:nth-child(4){height:14px;}
-
-    .battery{
-      width:24px;
-      height:11px;
-      border:2px solid #111;
-      border-radius:3px;
-      position:relative;
-      display:inline-block;
-    }
-
-    .battery::before{
-      content:"";
-      position:absolute;
-      inset:2px;
-      background:#111;
-      border-radius:2px;
-    }
-
-    .battery::after{
-      content:"";
-      position:absolute;
-      right:-5px;
-      top:2px;
-      width:2px;
-      height:5px;
-      background:#111;
-      border-radius:1px;
-    }
-
-    .moon{
-      width:15px;
-      height:15px;
-      border-radius:50%;
-      background:#111;
-      position:relative;
-      transform:scale(0.8);
-    }
-
-    .moon::after{
-      content:"";
-      position:absolute;
-      width:11px;
-      height:11px;
-      border-radius:50%;
-      background:var(--bg);
-      right:-2px;
-      top:1px;
-    }
-
-    .top-cta{
-      padding:0 18px;
-      margin-top:8px;
-    }
-
-    .pill{
-      width:100%;
-      background:linear-gradient(180deg, rgba(160,160,160,0.95), rgba(140,140,140,0.95));
-      border-radius:28px;
-      color:#111;
-      font-weight:800;
-      letter-spacing:-0.04em;
-      font-size:2rem;
-      height:62px;
+    .logo{
+      width:42px;
+      height:42px;
+      border-radius:14px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      padding:0 20px 0 18px;
-      box-shadow:0 2px 0 rgba(0,0,0,0.04);
-      border:1px solid rgba(0,0,0,0.04);
+      justify-content:center;
+      font-size:24px;
+      background:linear-gradient(135deg, rgba(255,138,44,0.18), rgba(141,96,255,0.18));
+      border:1px solid rgba(255,255,255,0.06);
     }
 
-    .pill .arrow{
-      font-size:2.2rem;
-      font-weight:700;
+    .brand-text h2{
+      font-size:1.08rem;
+      font-weight:800;
+      letter-spacing:-0.02em;
+    }
+
+    .brand-text p{
+      font-size:0.7rem;
+      color:var(--muted);
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:22px;
+      flex-wrap:wrap;
+    }
+
+    .nav a{
+      color:#d8e0ea;
+      font-size:0.92rem;
+      transition:0.2s ease;
+    }
+
+    .nav a:hover{
+      color:#fff;
+    }
+
+    .wallet-btn{
+      background:linear-gradient(90deg, var(--purple), var(--green));
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      padding:11px 16px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 14px 28px rgba(141,96,255,0.25);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:30px;
+      padding:28px 0 10px;
+      align-items:center;
+    }
+
+    .hero-copy h1{
+      font-size:clamp(2.7rem, 5vw, 5rem);
+      line-height:0.92;
+      letter-spacing:-0.07em;
+      margin-bottom:18px;
+      font-weight:900;
+    }
+
+    .gradient{
+      background:linear-gradient(90deg, var(--orange), var(--gold));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .hero-copy p{
+      color:var(--muted);
+      font-size:1.06rem;
+      max-width:620px;
+      margin-bottom:26px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:26px;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px 24px;
+      border-radius:14px;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform 0.15s ease;
+      border:none;
+    }
+
+    .primary-btn{
+      background:linear-gradient(90deg, var(--purple), var(--green));
+      color:#fff;
+      box-shadow:0 18px 35px rgba(141,96,255,0.27);
+    }
+
+    .secondary-btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.02);
+      color:var(--text);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover{
       transform:translateY(-1px);
     }
 
-    .main-area{
-      flex:1;
-      min-height:580px;
-      position:relative;
-    }
-
-    .donate-panel{
-      position:relative;
-      padding:18px 0 0 0;
-      margin-top:20px;
-    }
-
-    .donate-label{
-      font-size:1.1rem;
-      font-weight:900;
-      color:#111;
-      padding:0 18px 8px 18px;
-    }
-
-    .donate-box{
-      margin:0 18px;
-      padding:0;
+    .stats{
       display:flex;
-      flex-direction:column;
-      gap:8px;
+      flex-wrap:wrap;
+      gap:18px;
     }
 
-    .close-row{
+    .stat{
+      min-width:140px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px 16px;
+    }
+
+    .stat .label{
+      color:var(--soft);
+      font-size:0.72rem;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      margin-bottom:4px;
+    }
+
+    .stat .value{
+      font-size:1.4rem;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .hero-card{
+      background:linear-gradient(180deg, rgba(17,20,24,0.96), rgba(14,18,24,0.96));
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:26px;
+      padding:22px;
+      box-shadow:0 24px 60px rgba(0,0,0,0.28);
+    }
+
+    .mini-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      margin-bottom:18px;
+    }
+
+    .donation-box{
+      background:#0a0d12;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px 18px;
+      margin-bottom:18px;
+    }
+
+    .donation-amount{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .donation-amount h3{
+      font-size:2.2rem;
+      font-weight:900;
+      letter-spacing:-0.06em;
+    }
+
+    .donation-amount span{
+      color:var(--green);
+      font-size:0.9rem;
+      font-weight:700;
+    }
+
+    .progress-wrap{
+      margin-top:10px;
+    }
+
+    .progress-bar{
+      height:12px;
+      background:#161b22;
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .progress-fill{
+      width:1%;
+      height:100%;
+      background:linear-gradient(90deg, var(--purple), var(--green));
+      border-radius:inherit;
+      transition:width 0.8s ease;
+    }
+
+    .goal-text{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:0.82rem;
+    }
+
+    .wallet-preview{
+      background:#0b0d12;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px 16px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      word-break:break-all;
+      color:#edf2f8;
+      margin-bottom:10px;
+    }
+
+    .copy-row{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .copy-btn{
+      flex:1;
+      background:#1a212b;
+      border:1px solid var(--line);
+      border-radius:12px;
+      color:white;
+      padding:12px 14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .copy-btn:hover{
+      background:#212a34;
+    }
+
+    .success{
+      display:none;
+      color:var(--green);
+      font-weight:700;
+      margin-top:10px;
+      font-size:0.9rem;
+    }
+
+    .section{
+      margin-top:26px;
+      background:rgba(17,20,24,0.92);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:24px 22px;
+      box-shadow:0 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .section-heading{
       display:flex;
       align-items:center;
-      justify-content:flex-start;
-      gap:10px;
-      color:#333;
-      font-size:1.1rem;
-      padding:0 0 4px 0;
-      margin-bottom:2px;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
     }
 
-    .close-x{
-      width:22px;
-      height:22px;
+    .section-heading h3{
+      font-size:1.45rem;
+      letter-spacing:-0.04em;
+      font-weight:800;
+    }
+
+    .pill{
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--line);
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:0.76rem;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:22px;
+      align-items:start;
+    }
+
+    .about-grid p{
+      color:var(--muted);
+      font-size:1rem;
+      margin-bottom:14px;
+    }
+
+    .feature-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .feature{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      background:#0b0d12;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px 15px;
+    }
+
+    .feature-icon{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      background:linear-gradient(135deg, rgba(141,96,255,0.16), rgba(32,242,161,0.16));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.1rem;
+    }
+
+    .feature h4{
+      font-size:1rem;
+      margin-bottom:4px;
+    }
+
+    .feature p{
+      color:var(--muted);
+      font-size:0.9rem;
+      margin:0;
+    }
+
+    .roadmap{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:16px;
+      margin-top:10px;
+    }
+
+    .roadmap-item{
+      background:#0b0d12;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px 16px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .roadmap-item::before{
+      content:"";
+      position:absolute;
+      inset:0 auto 0 0;
+      width:4px;
+      background:linear-gradient(180deg, var(--orange), var(--green));
+    }
+
+    .roadmap-item .phase{
+      color:var(--soft);
+      font-size:0.7rem;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+      font-weight:700;
+    }
+
+    .roadmap-item h4{
+      font-size:1.06rem;
+      margin-bottom:10px;
+    }
+
+    .roadmap-item p{
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    .support-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:16px;
+      margin-top:8px;
+    }
+
+    .support-card{
+      background:#0b0d12;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px 16px;
+    }
+
+    .support-card h4{
+      font-size:1.1rem;
+      margin-bottom:8px;
+    }
+
+    .support-card p{
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    .wallet-box{
+      display:grid;
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .wallet-card{
+      background:#0b0d12;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px 16px;
+    }
+
+    .wallet-card .label{
+      color:var(--muted);
+      font-size:0.75rem;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+      font-weight:700;
+    }
+
+    .wallet-card .value{
+      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:0.96rem;
+      word-break:break-all;
+      color:var(--text);
+    }
+
+    .social-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .social-links a{
+      background:rgba(255,255,255,0.02);
+      border:1px solid var(--line);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 14px;
+      font-weight:700;
+    }
+
+    .bottom-cta{
+      margin-top:28px;
+      background:linear-gradient(180deg, rgba(28,34,42,0.95), rgba(20,25,31,0.95));
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .bottom-cta h4{
+      font-size:1.1rem;
+      font-weight:800;
+    }
+
+    .bottom-cta p{
+      color:var(--muted);
+      font-size:0.88rem;
+    }
+
+    .footer{
+      padding:28px 0 0;
+      text-align:center;
+      color:var(--soft);
+      font-size:0.85rem;
+    }
+
+    .donate-layout{
+      display:grid;
+      grid-template-columns:0.8fr 1fr;
+      gap:18px;
+      align-items:center;
+      margin-top:30px;
+      margin-bottom:10px;
+    }
+
+    .donate-visual{
+      background:linear-gradient(135deg, rgba(141,96,255,0.12), rgba(32,242,161,0.10));
+      border:1px solid var(--line);
+      border-radius:20px;
+      min-height:180px;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:10px;
+    }
+
+    .donate-visual h4{
+      font-size:1.2rem;
+      font-weight:800;
+    }
+
+    .donate-visual p{
+      color:var(--muted);
+      font-size:0.92rem;
+    }
+
+    .donation-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 12px;
+      width:max-content;
+      font-weight:800;
+      font-size:0.8rem;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+
+    .light-donate-card{
+      background:linear-gradient(180deg, rgba(210,210,210,0.92), rgba(192,192,192,0.90));
+      border:1px solid rgba(0,0,0,0.05);
+      border-radius:22px;
+      padding:20px 18px 18px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
+      color:var(--light-text);
+    }
+
+    .light-donate-card .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .light-donate-card h3{
+      font-size:1.6rem;
+      font-weight:900;
+      letter-spacing:-0.05em;
+    }
+
+    .light-donate-card .close{
+      width:26px;
+      height:26px;
       border-radius:50%;
       background:rgba(0,0,0,0.08);
       position:relative;
       display:inline-block;
     }
 
-    .close-x::before,
-    .close-x::after{
+    .light-donate-card .close::before,
+    .light-donate-card .close::after{
       content:"";
       position:absolute;
       left:50%;
@@ -230,252 +654,564 @@
       transform-origin:center;
     }
 
-    .close-x::before{
+    .light-donate-card .close::before{
       transform:translate(-50%, -50%) rotate(45deg);
     }
 
-    .close-x::after{
+    .light-donate-card .close::after{
       transform:translate(-50%, -50%) rotate(-45deg);
     }
 
-    .input-wrap{
+    .field{
       display:flex;
       align-items:center;
-      height:42px;
-      border-radius:12px;
-      border:1px solid rgba(0,0,0,0.06);
+      gap:8px;
       background:rgba(255,255,255,0.18);
-      overflow:hidden;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,0.2);
-    }
-
-    .input-wrap input{
-      flex:1;
-      height:100%;
-      background:transparent;
-      border:none;
-      outline:none;
-      font-size:1rem;
+      border:1px solid rgba(0,0,0,0.06);
+      border-radius:12px;
       padding:0 12px;
-      color:#111;
-      font-family:inherit;
-    }
-
-    .input-wrap input::placeholder{
-      color:#7a7a7a;
-      font-weight:500;
-    }
-
-    .actions{
-      display:flex;
-      justify-content:space-between;
-      gap:14px;
+      height:42px;
       margin-top:8px;
     }
 
-    .mini-btn{
+    .field input{
       flex:1;
+      height:100%;
       border:none;
       background:transparent;
+      outline:none;
       color:#111;
-      font-weight:700;
-      border-radius:10px;
-      padding:8px 10px;
-      cursor:pointer;
-      font-size:0.95rem;
+      font-size:1rem;
+      font-family:inherit;
     }
 
-    .mini-btn.primary{
+    .field input::placeholder{
+      color:#5d5d5d;
+    }
+
+    .light-actions{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .light-action{
+      flex:1;
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-weight:700;
+      font-size:0.92rem;
+      cursor:pointer;
       background:rgba(255,255,255,0.12);
       border:1px solid rgba(0,0,0,0.04);
+      color:#111;
     }
 
-    .mini-btn:hover{
-      filter:brightness(0.98);
+    .light-action.primary{
+      background:rgba(255,255,255,0.22);
     }
 
-    .bottom-nav{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
+    .help-text{
+      margin-top:10px;
+      font-size:0.8rem;
+      color:var(--light-muted);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .help-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#20a86b;
+      display:inline-block;
+    }
+
+    .status-line{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:18px;
-      padding:0 18px 18px;
+      gap:12px;
+      font-size:0.82rem;
+      color:var(--muted);
+      margin-top:12px;
     }
 
-    .nav-btn{
-      width:calc(50% - 18px);
-      height:72px;
-      background:linear-gradient(180deg, rgba(164,164,164,0.9), rgba(150,150,150,0.9));
-      border-radius:36px;
-      border:1px solid rgba(0,0,0,0.04);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 2px 0 rgba(0,0,0,0.03);
-      color:#111;
-      font-weight:800;
-      font-size:2.4rem;
-      position:relative;
-    }
-
-    .nav-btn.center{
-      width:82px;
-      height:72px;
-      border-radius:28px;
-      background:linear-gradient(180deg, rgba(164,164,164,0.9), rgba(150,150,150,0.9));
-    }
-
-    .nav-btn .chev{
-      display:inline-block;
-      width:18px;
-      height:18px;
-      border-left:4px solid #111;
-      border-bottom:4px solid #111;
-      transform:rotate(45deg);
-      margin-left:8px;
-    }
-
-    .nav-btn .chev.right{
-      transform:rotate(-135deg);
-      margin-left:-8px;
-    }
-
-    .nav-btn .menu{
-      width:26px;
-      height:18px;
-      position:relative;
-    }
-
-    .nav-btn .menu::before,
-    .nav-btn .menu::after,
-    .nav-btn .menu span{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      height:3px;
-      border-radius:2px;
-      background:#111;
-    }
-
-    .nav-btn .menu::before{ top:0; }
-    .nav-btn .menu span{ top:7px; }
-    .nav-btn .menu::after{ bottom:0; }
-
-    @media (max-width:430px){
-      .phone{
-        min-height:100vh;
+    @media (max-width:920px){
+      .hero{
+        grid-template-columns:1fr;
       }
 
-      .pill{
-        font-size:1.8rem;
+      .donate-layout{
+        grid-template-columns:1fr;
+      }
+
+      .about-grid{
+        grid-template-columns:1fr;
+      }
+
+      .roadmap{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .support-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:620px){
+      header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .nav{
+        width:100%;
+        justify-content:space-between;
+      }
+
+      .hero-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .primary-btn,
+      .secondary-btn{
+        width:100%;
+      }
+
+      .roadmap{
+        grid-template-columns:1fr;
+      }
+
+      .stats{
+        grid-template-columns:1fr 1fr;
+        display:grid;
+      }
+
+      .bottom-cta{
+        flex-direction:column;
+        align-items:flex-start;
       }
     }
   </style>
 </head>
+
 <body>
-  <div class="phone">
-    <div class="statusbar">
-      <div class="status-left">18:49</div>
-      <div class="status-right">
-        <div class="signal">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <div class="moon"></div>
-      </div>
-    </div>
-
-    <div class="top-cta">
-      <div class="pill">
-        <span>Finance work experience</span>
-        <span class="arrow">›</span>
-      </div>
-    </div>
-
-    <div class="main-area">
-      <div class="donate-panel">
-        <div class="donate-label">Donate SOL</div>
-
-        <div class="donate-box">
-          <div class="close-row">
-            <span class="close-x"></span>
-          </div>
-
-          <div class="input-wrap">
-            <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="Amount in SOL" />
-          </div>
-
-          <div class="actions">
-            <button class="mini-btn" id="cancelBtn" type="button">Cancel</button>
-            <button class="mini-btn primary" id="sendBtn" type="button">Send via Phantom</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bottom-nav">
-      <div class="nav-btn" aria-label="Back">
-        <span class="chev"></span>
-      </div>
-
-      <div class="nav-btn center" aria-label="Menu">
-        <div class="menu">
-          <span></span>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">🥭</div>
+        <div class="brand-text">
+          <h2>The Red Mango</h2>
+          <p>Powered by Solana</p>
         </div>
       </div>
 
-      <div class="nav-btn" aria-label="Next">
-        <span class="chev right"></span>
+      <nav class="nav">
+        <a href="#about">About</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#wallet">Wallet</a>
+        <a href="game.html">Game</a>
+        <button class="wallet-btn" id="connectWalletBtn">Connect Wallet</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>
+          Building the future.<br>
+          <span class="gradient">One mango at a time.</span>
+        </h1>
+
+        <p>
+          The Red Mango is a community-driven Solana project designed to build an entertaining,
+          recognizable, and scalable crypto brand around fun, loyalty, and long-term utility.
+        </p>
+
+        <p>
+          We are creating a vibrant ecosystem through community growth, website experiences,
+          mini-games, branding, marketing, and the eventual launch of a Red Mango token on Solana.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-btn" id="openDonateBtn">🚀 Donate SOL</button>
+          <a href="game.html" class="secondary-btn">🎮 Play Mango Bird</a>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Current Raise</div>
+            <div class="value" id="statRaised">0.01 SOL</div>
+          </div>
+
+          <div class="stat">
+            <div class="label">Goal</div>
+            <div class="value">1 SOL</div>
+          </div>
+
+          <div class="stat">
+            <div class="label">Network</div>
+            <div class="value">Solana</div>
+          </div>
+        </div>
       </div>
+
+      <div class="hero-card">
+        <div class="mini-header">
+          <span>Funding progress</span>
+          <span id="tinyProgress">1%</span>
+        </div>
+
+        <div class="donation-box">
+          <div class="donation-amount">
+            <h3 id="raisedAmount">0.01</h3>
+            <span>SOL</span>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="goal-text">
+              <span>Raised</span>
+              <span id="goalText">1 SOL goal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="wallet-preview" id="walletAddress">
+          79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD
+        </div>
+
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copyAddress()">Copy Wallet</button>
+          <button class="copy-btn" id="quickDonateBtn">Donate</button>
+        </div>
+
+        <div id="copied" class="success">✓ Wallet copied!</div>
+      </div>
+    </section>
+
+    <div class="donate-layout">
+      <div class="donate-visual">
+        <div class="donation-chip">Donation Drive</div>
+        <h4>Fast donation flow</h4>
+        <p>Click donate, send through Phantom, then come back and confirm once it’s sent.</p>
+      </div>
+
+      <div class="light-donate-card">
+        <div class="header">
+          <h3>Donate SOL</h3>
+          <span class="close" aria-label="close"></span>
+        </div>
+
+        <div class="field">
+          <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="Amount in SOL" />
+        </div>
+
+        <div class="light-actions">
+          <button class="light-action" id="cancelBtn" type="button">Cancel</button>
+          <button class="light-action primary" id="sendBtn" type="button">Send via Phantom</button>
+        </div>
+
+        <div class="light-actions">
+          <button class="light-action" id="cancelTotalBtn" type="button">I sent SOL</button>
+          <button class="light-action primary" id="addToTotalBtn" type="button">Add to total</button>
+        </div>
+
+        <div class="help-text">
+          <span class="help-dot"></span>
+          <span>Send via Phantom, then confirm after sending.</span>
+        </div>
+
+        <div id="successMsg" class="success">Donation added to total.</div>
+      </div>
+    </div>
+
+    <section class="section" id="about">
+      <div class="section-heading">
+        <h3>About The Red Mango</h3>
+        <span class="pill">Community Vision</span>
+      </div>
+
+      <div class="about-grid">
+        <div>
+          <p>
+            The Red Mango is more than a meme project — it is a long-term community brand with
+            the ambition of becoming a recognizable, entertaining, and useful Solana ecosystem.
+          </p>
+
+          <p>
+            Our mission is to build a loyal community, craft memorable experiences, and establish
+            a foundation for future utility, rewards, branding, and token development.
+          </p>
+
+          <p>
+            We believe in sustainable growth, organic community building, and creating value for
+            people who believe in the project’s long-term direction.
+          </p>
+        </div>
+
+        <div class="feature-list">
+          <div class="feature">
+            <div class="feature-icon">🧠</div>
+            <div>
+              <h4>Brand Building</h4>
+              <p>Designing a memorable identity that stands out on Solana.</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🎮</div>
+            <div>
+              <h4>Engagement</h4>
+              <p>Integrating fun interactive experiences and community-driven activities.</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🚀</div>
+            <div>
+              <h4>Future Utility</h4>
+              <p>Creating the foundation for a token launch and future ecosystem growth.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="section-heading">
+        <h3>Roadmap</h3>
+        <span class="pill">Next Steps</span>
+      </div>
+
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="phase">Phase 1</div>
+          <h4>Website Launch</h4>
+          <p>Build the brand presence and establish a home for the community.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="phase">Phase 2</div>
+          <h4>Community Growth</h4>
+          <p>Expand awareness, attract supporters, and deepen community engagement.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="phase">Phase 3</div>
+          <h4>Initial Funding Goal</h4>
+          <p>Build a base of support and resources to continue the project roadmap.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="phase">Phase 4</div>
+          <h4>Token Development</h4>
+          <p>Prepare the ecosystem and design the long-term utility plan for a Solana token.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="phase">Phase 5</div>
+          <h4>Marketing Push</h4>
+          <p>Strengthen visibility, broaden reach, and activate community-driven campaigns.</p>
+        </div>
+
+        <div class="roadmap-item">
+          <div class="phase">Phase 6</div>
+          <h4>Utility & Rewards</h4>
+          <p>Launch future utilities, rewards, experiences, and holder engagement programs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <h3>Why This Matters</h3>
+        <span class="pill">Mission</span>
+      </div>
+
+      <div class="support-grid">
+        <div class="support-card">
+          <h4>Community First</h4>
+          <p>Strong communities are what build long-term crypto brands that truly endure.</p>
+        </div>
+
+        <div class="support-card">
+          <h4>Fun + Utility</h4>
+          <p>We want to combine entertainment, culture, and real-world project ambition.</p>
+        </div>
+
+        <div class="support-card">
+          <h4>Long-Term Vision</h4>
+          <p>Our plan is not just hype — it is building momentum toward a larger ecosystem.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="wallet">
+      <div class="section-heading">
+        <h3>Support The Project</h3>
+        <span class="pill">Wallet</span>
+      </div>
+
+      <div class="wallet-box">
+        <div class="wallet-card">
+          <div class="label">Solana Wallet</div>
+          <div class="value">79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD</div>
+        </div>
+
+        <div class="wallet-card">
+          <div class="label">Donation Instructions</div>
+          <div class="value">
+            Send SOL to the wallet above. After you send it, return and click “Add to total.”
+          </div>
+        </div>
+      </div>
+
+      <div class="social-links">
+        <a href="https://x.com/the_redmango?s=11" target="_blank" rel="noopener">𝕏 Follow</a>
+        <a href="game.html">🎮 Mango Bird</a>
+      </div>
+    </section>
+
+    <div class="bottom-cta">
+      <div>
+        <h4>Support the mission</h4>
+        <p>Every contribution helps build the Red Mango ecosystem.</p>
+      </div>
+
+      <button class="primary-btn" id="bottomDonateBtn">Donate SOL</button>
+    </div>
+
+    <div class="footer">
+      The Red Mango • Built on Solana
     </div>
   </div>
 
   <script>
     const WALLET = "79mKAmddMZ6RaEeop5w1WfD6tZaLBHybdgJQycJpRGiD";
+    const GOAL = 1;
 
     const amountInput = document.getElementById("amountInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
+    const successMsg = document.getElementById("successMsg");
+
+    function getStoredRaised() {
+      let value = Number(localStorage.getItem("redMangoRaised"));
+      if (!value || value <= 0) {
+        value = 0.01;
+        localStorage.setItem("redMangoRaised", String(value));
+      }
+      return value;
+    }
+
+    function formatSOL(value) {
+      return Number(value || 0).toFixed(2);
+    }
+
+    function updateProgress() {
+      const raised = getStoredRaised();
+      const percent = Math.min((raised / GOAL) * 100, 100);
+      const raisedAmount = document.getElementById("raisedAmount");
+      const progressFill = document.getElementById("progressFill");
+      const statRaised = document.getElementById("statRaised");
+      const tinyProgress = document.getElementById("tinyProgress");
+
+      raisedAmount.textContent = formatSOL(raised);
+      progressFill.style.width = percent + "%";
+      document.getElementById("goalText").textContent = "1 SOL goal";
+      tinyProgress.textContent = Math.round(percent) + "%";
+      statRaised.textContent = formatSOL(raised) + " SOL";
+    }
+
+    function copyAddress() {
+      navigator.clipboard.writeText(WALLET)
+        .then(() => {
+          const copied = document.getElementById("copied");
+          copied.style.display = "block";
+          setTimeout(() => copied.style.display = "none", 1800);
+        })
+        .catch(() => {
+          alert("Wallet copied failed. Send to: " + WALLET);
+        });
+    }
 
     function openPhantom(amount) {
-      const cleanAmount = Number(amount);
+      const val = Number(amount);
 
-      if (!cleanAmount || cleanAmount <= 0) {
+      if (!val || val <= 0) {
         alert("Please enter a valid amount in SOL.");
         return;
       }
 
-      const deepLink = `https://phantom.app/ul/browse/solana:${WALLET}?amount=${cleanAmount}`;
-
-      try {
-        window.location.href = deepLink;
-      } catch (error) {
-        navigator.clipboard.writeText(WALLET)
-          .then(() => alert("Phantom could not open. Wallet address copied to clipboard instead."))
-          .catch(() => alert("Phantom could not open. Please send to: " + WALLET));
-      }
+      const deepLink = `https://phantom.app/ul/browse/solana:${WALLET}?amount=${val}`;
+      window.location.href = deepLink;
     }
 
-    sendBtn.addEventListener("click", () => {
-      openPhantom(amountInput.value);
-    });
+    function addToTotal() {
+      const val = Number(amountInput.value);
 
-    cancelBtn.addEventListener("click", () => {
+      if (!val || val <= 0) {
+        alert("Please enter a valid amount first.");
+        return;
+      }
+
+      const current = getStoredRaised();
+      const next = Number((current + val).toFixed(2));
+      localStorage.setItem("redMangoRaised", String(next));
+
+      successMsg.style.display = "block";
+      successMsg.textContent = "Donation added to total.";
+      setTimeout(() => {
+        successMsg.style.display = "none";
+      }, 1800);
+
+      updateProgress();
+      amountInput.value = "";
+    }
+
+    document.getElementById("sendBtn").addEventListener("click", () => openPhantom(amountInput.value));
+    document.getElementById("quickDonateBtn").addEventListener("click", () => openPhantom(amountInput.value || 0.01));
+    document.getElementById("openDonateBtn").addEventListener("click", () => openPhantom(amountInput.value || 0.01));
+    document.getElementById("bottomDonateBtn").addEventListener("click", () => openPhantom(amountInput.value || 0.01));
+
+    document.getElementById("cancelBtn").addEventListener("click", () => {
       amountInput.value = "";
     });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        openPhantom(amountInput.value);
+    document.getElementById("cancelTotalBtn").addEventListener("click", () => {
+      amountInput.value = "";
+      successMsg.style.display = "none";
+    });
+
+    document.getElementById("addToTotalBtn").addEventListener("click", addToTotal);
+
+    document.getElementById("connectWalletBtn").addEventListener("click", async () => {
+      if (!window.solana || !window.solana.isPhantom) {
+        alert("Phantom not detected. Copy wallet address instead.");
+        copyAddress();
+        return;
+      }
+
+      try {
+        const response = await window.solana.connect();
+        const pubkey = response.publicKey.toString();
+        alert("Connected: " + pubkey.slice(0, 6) + "..." + pubkey.slice(-4));
+      } catch (error) {
+        console.error(error);
+        alert("Wallet connection cancelled.");
       }
     });
+
+    if (!localStorage.getItem("redMangoRaised")) {
+      localStorage.setItem("redMangoRaised", "0.01");
+    }
+
+    updateProgress();
   </script>
 </body>
 </html>
