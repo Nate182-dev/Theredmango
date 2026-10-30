@@ -243,6 +243,22 @@
       font-size:1.3rem;
     }
 
+    .weather-label{
+      position:absolute;
+      left:50%;
+      top:18px;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,0.18);
+      color:#fff;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:0.74rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      z-index:4;
+    }
+
     .controls{
       padding:10px 16px 18px;
       background:#111214;
@@ -352,6 +368,8 @@
         <div class="high-box">High: <span id="bestValue">0</span></div>
       </div>
 
+      <div id="weatherLabel" class="weather-label">Sunny</div>
+
       <canvas id="gameCanvas" width="430" height="520"></canvas>
     </div>
 
@@ -373,6 +391,7 @@
     const ctx = canvas.getContext("2d");
     const scoreValue = document.getElementById("scoreValue");
     const bestValue = document.getElementById("bestValue");
+    const weatherLabel = document.getElementById("weatherLabel");
     const startBtn = document.getElementById("startBtn");
     const restartBtn = document.getElementById("restartBtn");
 
@@ -385,21 +404,56 @@
       over: false,
       score: 0,
       best: storedHigh,
-      gravity: 0.62,
-      lift: -8.9,
+      gravity: 0.58,
+      lift: -8.1,
       birdX: 110,
       birdY: 220,
       birdRadius: 16,
       velocity: 0,
       pipeWidth: 62,
-      pipeGap: 150,
-      pipeSpeed: 3.25,
+      pipeGap: 160,
+      pipeSpeed: 3.2,
       spawnTimer: 0,
       pipes: [],
       hazardBirds: [],
       cloudOffset: 0,
-      groundY: canvas.height - 46
+      groundY: canvas.height - 46,
+      weather: "Sunny"
     };
+
+    function getLevel() {
+      return Math.min(5, Math.floor(state.score / 25));
+    }
+
+    function updateWeatherLabel() {
+      const score = state.score;
+      let weather = "Sunny";
+
+      if (score >= 0 && score < 25) weather = "Sunny";
+      else if (score >= 25 && score < 50) weather = "Cloudy";
+      else if (score >= 50 && score < 75) weather = "Rain";
+      else if (score >= 75 && score < 100) weather = "Storm";
+      else weather = "Night";
+
+      state.weather = weather;
+      weatherLabel.textContent = weather;
+    }
+
+    function applyWeatherTheme() {
+      updateWeatherLabel();
+
+      if (state.weather === "Sunny") {
+        canvas.style.background = "linear-gradient(180deg, #8dd8e8, #c7f3ff 62%, #d1f0cc 62%, #9ed26e)";
+      } else if (state.weather === "Cloudy") {
+        canvas.style.background = "linear-gradient(180deg, #7fa3ba, #d4e0eb 62%, #d3e5c8 62%, #8eb96b)";
+      } else if (state.weather === "Rain") {
+        canvas.style.background = "linear-gradient(180deg, #3f566e, #9bb1be 62%, #7da48b 62%, #5d8a65)";
+      } else if (state.weather === "Storm") {
+        canvas.style.background = "linear-gradient(180deg, #1f2430, #49586c 62%, #445451 62%, #2f3f3e)";
+      } else {
+        canvas.style.background = "linear-gradient(180deg, #0f1725, #1f2d3b 62%, #223b39 62%, #0f242a)";
+      }
+    }
 
     function updateBest() {
       if (state.score > state.best) {
@@ -419,11 +473,12 @@
       state.hazardBirds = [];
       state.spawnTimer = 0;
       state.cloudOffset = 0;
+      state.pipeGap = 160;
+      state.pipeSpeed = 3.2;
+      state.gravity = 0.58;
+      state.lift = -8.1;
       scoreValue.textContent = "0";
-      state.pipeSpeed = 3.25;
-      state.pipeGap = 150;
-      state.gravity = 0.62;
-      state.lift = -8.9;
+      applyWeatherTheme();
     }
 
     function flap() {
@@ -438,27 +493,26 @@
       flap();
     }
 
-    function getDifficultyLevel() {
-      return Math.min(10, Math.floor(state.score / 10));
-    }
-
     function updateDifficulty() {
-      const level = getDifficultyLevel();
+      const level = getLevel();
+      const score = Math.min(100, state.score);
 
-      // max hard at 100
-      const safeScore = Math.min(100, state.score);
+      state.gravity = 0.58 + level * 0.08 + (score * 0.0025);
+      state.lift = -(8.1 + level * 0.42 + score * 0.02);
 
-      state.gravity = 0.62 + level * 0.08 + safeScore * 0.004;
-      state.lift = -(8.9 + level * 0.45 + safeScore * 0.02);
+      state.pipeGap = Math.max(72, 160 - level * 15 - score * 0.35);
+      state.pipeSpeed = Math.min(9.2, 3.2 + level * 0.95 + score * 0.045);
 
-      state.pipeGap = Math.max(70, 150 - level * 10 - safeScore * 0.35);
-      state.pipeSpeed = Math.min(9.5, 3.25 + level * 0.9 + safeScore * 0.055);
+      if (score >= 90) {
+        state.gravity = 0.87;
+        state.lift = -11.2;
+        state.pipeGap = 70;
+        state.pipeSpeed = 8.8;
+      }
 
-      if (state.score >= 90) {
-        state.gravity = 0.9;
-        state.lift = -11.4;
-        state.pipeGap = 74;
-        state.pipeSpeed = 8.6;
+      if (score >= 100) {
+        state.pipeGap = 62;
+        state.pipeSpeed = 9.2;
       }
     }
 
@@ -467,77 +521,55 @@
       const maxTop = state.groundY - state.pipeGap - 90;
       const topHeight = minTop + Math.random() * (maxTop - minTop);
 
-      const level = getDifficultyLevel();
+      const shiftChance = Math.random();
+      let shift = 0;
 
-      let gap = state.pipeGap;
-      let topShift = 0;
+      if (shiftChance > 0.75 && state.score > 20) shift = 18 + Math.random() * 22;
+      else if (shiftChance > 0.52 && state.score > 40) shift = -16 - Math.random() * 18;
 
-      if (state.score >= 30) {
-        gap = Math.max(72, state.pipeGap - 10);
-      }
-
-      if (state.score >= 50) {
-        gap = Math.max(68, state.pipeGap - 18);
-      }
-
-      if (state.score >= 80) {
-        gap = Math.max(62, state.pipeGap - 28);
-      }
-
-      if (state.score >= 90) {
-        gap = 60;
-      }
-
-      const patternRoll = Math.random();
-      if (patternRoll > 0.75 && state.score > 20) {
-        topShift = 18 + Math.random() * 22;
-      } else if (patternRoll > 0.5 && state.score > 40) {
-        topShift = -18 - Math.random() * 18;
-      }
+      const finalTop = Math.max(40, Math.min(state.groundY - state.pipeGap - 40, topHeight + shift));
 
       state.pipes.push({
         x: canvas.width + 30,
         w: state.pipeWidth,
-        gap: gap,
-        topHeight: Math.max(40, Math.min(state.groundY - gap - 40, topHeight + topShift)),
-        passed: false,
-        type: "normal"
+        gap: state.pipeGap,
+        topHeight: finalTop,
+        passed: false
       });
 
       if (state.score >= 20 && Math.random() > 0.78) {
         state.pipes.push({
           x: canvas.width + 90,
           w: state.pipeWidth - 8,
-          gap: Math.max(58, gap - 20),
-          topHeight: Math.max(35, Math.min(state.groundY - gap - 35, topHeight + 10)),
-          passed: false,
-          type: "extra"
+          gap: Math.max(58, state.pipeGap - 20),
+          topHeight: Math.max(32, Math.min(state.groundY - state.pipeGap - 30, finalTop + 12)),
+          passed: false
         });
       }
 
-      if (state.score >= 30 && Math.random() > 0.82) {
+      if (state.score >= 35 && Math.random() > 0.8) {
         state.hazardBirds.push({
           x: canvas.width + 30,
           y: Math.random() * (state.groundY - 120) + 50,
           w: 18,
           h: 12,
           dir: -1,
-          speed: 3.8 + level * 0.8 + state.score * 0.08
+          speed: 3.5 + state.score * 0.07
         });
       }
 
       if (state.score >= 60 && Math.random() > 0.7) {
         state.hazardBirds.push({
           x: canvas.width + 60,
-          y: Math.random() * (state.groundY - 140) + 45,
+          y: Math.random() * (state.groundY - 140) + 50,
           w: 18,
           h: 12,
           dir: -1,
-          speed: 4.5 + level * 1.1 + state.score * 0.09
+          speed: 4.2 + state.score * 0.08
         });
       }
 
-      if (state.score >= 90 && Math.random() > 0.45) {
+      if (state.score >= 90 && Math.random() > 0.52) {
         state.hazardBirds.push({
           x: canvas.width + 90,
           y: Math.random() * (state.groundY - 150) + 40,
@@ -559,7 +591,7 @@
 
       state.spawnTimer += 1;
 
-      const spawnRate = Math.max(28, 82 - state.score * 1.28 - getDifficultyLevel() * 3.5);
+      const spawnRate = Math.max(28, 80 - state.score * 1.15 - getLevel() * 3.2);
       if (state.spawnTimer >= spawnRate) {
         createPipe();
         state.spawnTimer = 0;
@@ -573,6 +605,7 @@
           state.score += 1;
           scoreValue.textContent = state.score;
           updateBest();
+          applyWeatherTheme();
         }
       }
 
@@ -643,11 +676,21 @@
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      if (state.weather === "Cloudy") {
+        ctx.fillStyle = "rgba(255,255,255,0.34)";
+      } else if (state.weather === "Rain") {
+        ctx.fillStyle = "rgba(255,255,255,0.2)";
+      } else if (state.weather === "Storm") {
+        ctx.fillStyle = "rgba(200,220,255,0.12)";
+      } else if (state.weather === "Night") {
+        ctx.fillStyle = "rgba(255,255,255,0.08)";
+      } else {
+        ctx.fillStyle = "rgba(255,255,255,0.55)";
+      }
+
       for (let i = 0; i < 8; i++) {
         const x = ((i * 80) - (state.cloudOffset % 80)) + 24;
         const y = 40 + (i % 3) * 26;
-
         ctx.beginPath();
         ctx.arc(x, y, 18, 0, Math.PI * 2);
         ctx.arc(x + 18, y - 10, 20, 0, Math.PI * 2);
@@ -886,6 +929,7 @@
       }
     });
 
+    applyWeatherTheme();
     resetGame();
     gameLoop();
   </script>
