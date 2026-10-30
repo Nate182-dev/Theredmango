@@ -1,937 +1,961 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mango Bird</title>
-
-  <style>
-    :root{
-      --bg:#0b0d10;
-      --panel:#111214;
-      --panel-2:#17191d;
-      --line:rgba(255,255,255,0.08);
-      --text:#ffffff;
-      --muted:#dfe5ee;
-      --orange:#ff8e2d;
-      --gold:#ffcb65;
-      --green:#78d75f;
-      --green-2:#5abf3b;
-      --purple:#8a6df2;
-      --green-3:#18f4a6;
-      --sky1:#8dd8e8;
-      --sky2:#c7f3ff;
-      --ground:#8edd5d;
-      --grass:#69bb3c;
-      --shadow:rgba(0,0,0,0.35);
-    }
-
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      -webkit-tap-highlight-color:transparent;
-    }
-
-    html, body{
-      height:100%;
-      background:#000;
-      font-family:Inter, Arial, sans-serif;
-    }
-
-    body{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:0;
-      overflow:hidden;
-    }
-
-    .phone{
-      width:100%;
-      max-width:430px;
-      height:100vh;
-      background:#111214;
-      position:relative;
-      overflow:hidden;
-      border-left:1px solid #000;
-      border-right:1px solid #000;
-    }
-
-    .statusbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px 18px 0 18px;
-      height:46px;
-      color:#111;
-      background:#f3f3f3;
-      font-weight:700;
-      font-size:1.1rem;
-    }
-
-    .status-left{
-      letter-spacing:0.04em;
-    }
-
-    .status-right{
-      display:flex;
-      align-items:center;
-      gap:9px;
-      font-size:0.8rem;
-    }
-
-    .signal{
-      display:flex;
-      align-items:flex-end;
-      gap:3px;
-      height:15px;
-    }
-
-    .signal span{
-      display:block;
-      width:4px;
-      border-radius:2px;
-      background:#111;
-    }
-
-    .signal span:nth-child(1){ height:5px; opacity:0.45; }
-    .signal span:nth-child(2){ height:8px; opacity:0.65; }
-    .signal span:nth-child(3){ height:11px; opacity:0.85; }
-    .signal span:nth-child(4){ height:14px; }
-
-    .battery{
-      width:24px;
-      height:11px;
-      border:2px solid #111;
-      border-radius:3px;
-      position:relative;
-      display:inline-block;
-    }
-    .battery::before{
-      content:"";
-      position:absolute;
-      inset:2px;
-      background:#111;
-      border-radius:2px;
-    }
-    .battery::after{
-      content:"";
-      position:absolute;
-      right:-5px;
-      top:2px;
-      width:2px;
-      height:5px;
-      background:#111;
-      border-radius:1px;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:#1c1d21;
-      padding:14px 18px 10px;
-      color:#f5f5f5;
-      border-bottom:1px solid rgba(255,255,255,0.05);
-    }
-
-    .topbar-left{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      font-weight:800;
-    }
-
-    .back-btn{
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.07);
-      border:1px solid rgba(255,255,255,0.08);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-size:1.5rem;
-      font-weight:700;
-      text-decoration:none;
-    }
-
-    .game-label{
-      font-size:1.2rem;
-      letter-spacing:0.01em;
-    }
-
-    .mini-icons{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .mini-dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.4);
-    }
-
-    .mini-dot:last-child{
-      width:26px;
-      height:10px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.4);
-    }
-
-    .game-area{
-      position:relative;
-      width:100%;
-      height:520px;
-      background:linear-gradient(180deg, var(--sky1), var(--sky2) 62%, #c9f2dd 62%, #a6e8ab);
-      overflow:hidden;
-      border-bottom:1px solid rgba(0,0,0,0.25);
-    }
-
-    canvas{
-      display:block;
-      width:100%;
-      height:100%;
-      background:linear-gradient(180deg, var(--sky1), var(--sky2) 62%, #d1f0cc 62%, #9ed26e);
-      touch-action:manipulation;
-    }
-
-    .hud{
-      position:absolute;
-      inset:0 0 auto 0;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      padding:14px 16px 0;
-      pointer-events:none;
-      color:#fff;
-      font-weight:900;
-      text-shadow:0 2px 0 rgba(0,0,0,0.25);
-      z-index:3;
-    }
-
-    .score-box{
-      font-size:1.05rem;
-      letter-spacing:0.02em;
-      color:#eafaf6;
-      background:rgba(0,0,0,0.15);
-      border-radius:10px;
-      padding:8px 10px;
-    }
-
-    .score-box strong{
-      font-size:1.5rem;
-      font-weight:900;
-    }
-
-    .high-box{
-      font-size:1rem;
-      letter-spacing:0.02em;
-      color:#ffffff;
-      background:rgba(0,0,0,0.12);
-      border-radius:10px;
-      padding:8px 10px;
-    }
-
-    .high-box span{
-      color:#7ef6bf;
-      font-weight:900;
-      font-size:1.3rem;
-    }
-
-    .weather-label{
-      position:absolute;
-      left:50%;
-      top:18px;
-      transform:translateX(-50%);
-      background:rgba(0,0,0,0.18);
-      color:#fff;
-      border-radius:999px;
-      padding:6px 12px;
-      font-size:0.74rem;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      z-index:4;
-    }
-
-    .controls{
-      padding:10px 16px 18px;
-      background:#111214;
-    }
-
-    .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
-      width:100%;
-      border-radius:18px;
-      color:#fff;
-      font-weight:900;
-      font-size:1.05rem;
-      padding:18px 18px;
-      transition:transform 0.1s ease, filter 0.1s ease;
-      touch-action:manipulation;
-    }
-
-    .btn:active{
-      transform:scale(0.99);
-      filter:brightness(0.98);
-    }
-
-    .start-btn{
-      background:linear-gradient(90deg, var(--orange), var(--gold));
-      box-shadow:0 12px 28px rgba(255,146,42,0.25);
-      margin-bottom:12px;
-    }
-
-    .restart-btn{
-      background:linear-gradient(90deg, var(--purple), var(--green-3));
-      box-shadow:0 12px 28px rgba(120,113,234,0.22);
-      margin-bottom:0;
-    }
-
-    .secondary-row{
-      display:flex;
-      gap:10px;
-      margin-top:10px;
-    }
-
-    .secondary-link{
-      flex:1;
-      display:block;
-      text-align:center;
-      text-decoration:none;
-      border-radius:14px;
-      font-weight:800;
-      color:#fff;
-      padding:14px 16px;
-      border:1px solid rgba(255,255,255,0.08);
-      background:rgba(255,255,255,0.04);
-    }
-
-    .donate-link{
-      display:block;
-      margin:8px 16px 18px;
-      padding:15px 18px;
-      border-radius:16px;
-      text-align:center;
-      text-decoration:none;
-      font-weight:900;
-      color:#fff;
-      background:linear-gradient(90deg, #7f61ef, #4ad9b2);
-      box-shadow:0 12px 22px rgba(35,36,42,0.25);
-    }
-
-    @media (max-width:430px){
-      .game-area{
-        height:500px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mango Bird DX</title>
+<style>
+:root {
+  --bg:#10101e;
+  --panel:#1c1c32;
+  --gold:#ffd34e;
+  --text:#f7f5ff;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:system-ui,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at top,#292452 0%,#10101e 65%);
+  min-height:100vh;
+}
+button { cursor:pointer; font:inherit; }
+button:disabled { opacity:.45; cursor:not-allowed; }
+header {
+  text-align:center;
+  padding:22px 12px 12px;
+}
+header h1 {
+  margin:0;
+  font-size:clamp(30px,6vw,48px);
+  color:var(--gold);
+  text-shadow:0 0 25px #ffb52e66;
+}
+header p { margin:5px; color:#c4c0e7; }
+.stats {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:14px;
+}
+.stat {
+  background:#24243c;
+  border:1px solid #454365;
+  border-radius:14px;
+  padding:10px 18px;
+  font-weight:800;
+}
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  padding:8px;
+}
+.tab {
+  background:#24243c;
+  border:1px solid #454365;
+  color:white;
+  border-radius:11px;
+  padding:11px 17px;
+}
+.tab.active {
+  background:var(--gold);
+  color:#211b27;
+  border-color:var(--gold);
+  font-weight:900;
+}
+main {
+  width:min(1050px,95%);
+  margin:10px auto 45px;
+}
+.panel {
+  background:#19192bd9;
+  border:1px solid #373652;
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 12px 35px #0002;
+}
+h2 { margin:0 0 12px; }
+.muted { color:#bcb9d6; font-size:14px; }
+button.primary {
+  background:linear-gradient(135deg,#ffe778,#ffae32);
+  color:#2a1c18;
+  border:0;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:900;
+}
+button.secondary {
+  background:#30304d;
+  color:white;
+  border:1px solid #525274;
+  padding:10px 15px;
+  border-radius:10px;
+}
+button.danger {
+  background:#642d4a;
+  color:white;
+  border:1px solid #a14e72;
+  padding:10px 15px;
+  border-radius:10px;
+}
+.hidden { display:none!important; }
+#gameCanvas {
+  display:block;
+  width:100%;
+  max-width:600px;
+  height:auto;
+  margin:auto;
+  border-radius:15px;
+  background:#8ce3ef;
+  touch-action:manipulation;
+}
+.game-controls {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:12px;
+}
+.skin-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:12px;
+}
+.skin-card {
+  position:relative;
+  min-width:0;
+  background:#22223a;
+  border:1px solid #44435f;
+  border-radius:15px;
+  padding:13px 8px;
+  text-align:center;
+  overflow:hidden;
+}
+.skin-card.equipped {
+  border:2px solid var(--gold);
+  box-shadow:0 0 18px #ffd34e20;
+}
+.skin-icon {
+  font-size:46px;
+  line-height:1.5;
+  filter:drop-shadow(0 5px 8px #0005);
+}
+.skin-name { font-weight:900; overflow-wrap:anywhere; }
+.rarity {
+  display:inline-block;
+  margin:5px 0;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.Common { color:#d5d5e4; }
+.Rare { color:#55baff; }
+.Epic { color:#c58aff; }
+.Legendary { color:#ffb84f; }
+.Mythical { color:#ff6be0; }
+.skin-card p {
+  font-size:12px;
+  color:#c5c1dc;
+  min-height:35px;
+}
+.skin-card button { width:100%; font-size:12px; }
+.locked-icon { filter:grayscale(1); opacity:.35; }
+.locked-label { color:#aaa8c6; font-size:12px; }
+.pack-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+}
+.pack {
+  padding:18px;
+  text-align:center;
+  background:linear-gradient(150deg,#29294a,#19192b);
+  border:1px solid #4b486c;
+  border-radius:17px;
+}
+.pack-art { font-size:55px; margin:7px; }
+.pack h3 { margin:5px; }
+.probabilities {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  text-align:left;
+  font-size:12px;
+  margin:12px 0;
+}
+.wheel-shell {
+  position:relative;
+  overflow:hidden;
+  border-radius:16px;
+  background:#10101e;
+  border:1px solid #4b496a;
+  padding:12px 0;
+  margin:16px 0;
+}
+.wheel {
+  display:flex;
+  gap:10px;
+  width:max-content;
+  transform:translateX(0);
+  will-change:transform;
+}
+.wheel-item {
+  width:105px;
+  height:125px;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #47445f;
+  background:#24243a;
+  border-radius:12px;
+  font-size:12px;
+  text-align:center;
+}
+.wheel-item .skin-icon { font-size:34px; }
+.wheel-pointer {
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:3px;
+  transform:translateX(-50%);
+  background:#fff1a1;
+  box-shadow:0 0 12px #ffd34e;
+  z-index:2;
+}
+.wheel-pointer:before {
+  content:"▼";
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  color:#ffe778;
+}
+.result {
+  text-align:center;
+  padding:16px;
+  border-radius:15px;
+  background:#24243c;
+}
+.result .big { font-size:70px; }
+.result h3 { margin:3px; font-size:24px; }
+#toast {
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  background:#ffe778;
+  color:#241c27;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:900;
+  transition:.25s;
+  z-index:20;
+  text-align:center;
+  width:max-content;
+  max-width:90%;
+}
+#toast.show { opacity:1; transform:translate(-50%,0); }
+.ability-box {
+  background:#292744;
+  border:1px solid #565078;
+  border-radius:13px;
+  padding:12px;
+  margin:10px 0;
+}
+#abilityButton { width:100%; margin-top:8px; }
+footer {
+  text-align:center;
+  padding:0 15px 30px;
+  color:#8886a8;
+  font-size:12px;
+}
+@media(max-width:500px) {
+  .panel { padding:13px; }
+  .stat { padding:8px 12px; }
+  .skin-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+</style>
 </head>
-
 <body>
-  <div class="phone">
-    <div class="statusbar">
-      <div class="status-left">15:07</div>
-      <div class="status-right">
-        <div class="signal">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <div class="battery"></div>
-      </div>
-    </div>
-
-    <div class="topbar">
-      <div class="topbar-left">
-        <a class="back-btn" href="index.html" aria-label="Back home">‹</a>
-        <div class="game-label">Mango Bird</div>
-      </div>
-
-      <div class="mini-icons">
-        <div class="mini-dot"></div>
-        <div class="mini-dot"></div>
-      </div>
-    </div>
-
-    <div class="game-area">
-      <div class="hud">
-        <div class="score-box">Score: <strong id="scoreValue">0</strong></div>
-        <div class="high-box">High: <span id="bestValue">0</span></div>
-      </div>
-
-      <div id="weatherLabel" class="weather-label">Sunny</div>
-
-      <canvas id="gameCanvas" width="430" height="520"></canvas>
-    </div>
-
-    <div class="controls">
-      <button class="btn start-btn" id="startBtn">Start</button>
-      <button class="btn restart-btn" id="restartBtn">Restart</button>
-
-      <div class="secondary-row">
-        <a href="crossy.html" class="secondary-link">Crossy</a>
-        <a href="index.html" class="secondary-link">Home</a>
-      </div>
-    </div>
-
-    <a class="donate-link" href="index.html#wallet">💚 Donate SOL</a>
+<header>
+  <h1>🥭 MANGO BIRD DX</h1>
+  <p>Fly farther. Collect points. Become legendary.</p>
+  <div class="stats">
+    <div class="stat">🪙 <span id="points">0</span> Points</div>
+    <div class="stat">👕 <span id="skinCount">1</span>/40 Skins</div>
+    <div class="stat">🏆 Best: <span id="best">0</span></div>
   </div>
-
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const scoreValue = document.getElementById("scoreValue");
-    const bestValue = document.getElementById("bestValue");
-    const weatherLabel = document.getElementById("weatherLabel");
-    const startBtn = document.getElementById("startBtn");
-    const restartBtn = document.getElementById("restartBtn");
-
-    const HIGH_SCORE_KEY = "mangoBirdHighScore";
-    const storedHigh = Number(localStorage.getItem(HIGH_SCORE_KEY)) || 0;
-    bestValue.textContent = storedHigh;
-
-    const state = {
-      running: false,
-      over: false,
-      score: 0,
-      best: storedHigh,
-      gravity: 0.58,
-      lift: -8.1,
-      birdX: 110,
-      birdY: 220,
-      birdRadius: 16,
-      velocity: 0,
-      pipeWidth: 62,
-      pipeGap: 160,
-      pipeSpeed: 3.2,
-      spawnTimer: 0,
-      pipes: [],
-      hazardBirds: [],
-      cloudOffset: 0,
-      groundY: canvas.height - 46,
-      weather: "Sunny"
-    };
-
-    function getLevel() {
-      return Math.min(5, Math.floor(state.score / 25));
-    }
-
-    function updateWeatherLabel() {
-      const score = state.score;
-      let weather = "Sunny";
-
-      if (score >= 0 && score < 25) weather = "Sunny";
-      else if (score >= 25 && score < 50) weather = "Cloudy";
-      else if (score >= 50 && score < 75) weather = "Rain";
-      else if (score >= 75 && score < 100) weather = "Storm";
-      else weather = "Night";
-
-      state.weather = weather;
-      weatherLabel.textContent = weather;
-    }
-
-    function applyWeatherTheme() {
-      updateWeatherLabel();
-
-      if (state.weather === "Sunny") {
-        canvas.style.background = "linear-gradient(180deg, #8dd8e8, #c7f3ff 62%, #d1f0cc 62%, #9ed26e)";
-      } else if (state.weather === "Cloudy") {
-        canvas.style.background = "linear-gradient(180deg, #7fa3ba, #d4e0eb 62%, #d3e5c8 62%, #8eb96b)";
-      } else if (state.weather === "Rain") {
-        canvas.style.background = "linear-gradient(180deg, #3f566e, #9bb1be 62%, #7da48b 62%, #5d8a65)";
-      } else if (state.weather === "Storm") {
-        canvas.style.background = "linear-gradient(180deg, #1f2430, #49586c 62%, #445451 62%, #2f3f3e)";
-      } else {
-        canvas.style.background = "linear-gradient(180deg, #0f1725, #1f2d3b 62%, #223b39 62%, #0f242a)";
-      }
-    }
-
-    function updateBest() {
-      if (state.score > state.best) {
-        state.best = state.score;
-        localStorage.setItem(HIGH_SCORE_KEY, String(state.best));
-        bestValue.textContent = state.best;
-      }
-    }
-
-    function resetGame() {
-      state.running = false;
-      state.over = false;
-      state.score = 0;
-      state.birdY = 220;
-      state.velocity = 0;
-      state.pipes = [];
-      state.hazardBirds = [];
-      state.spawnTimer = 0;
-      state.cloudOffset = 0;
-      state.pipeGap = 160;
-      state.pipeSpeed = 3.2;
-      state.gravity = 0.58;
-      state.lift = -8.1;
-      scoreValue.textContent = "0";
-      applyWeatherTheme();
-    }
-
-    function flap() {
-      if (state.over) return;
-      if (!state.running) state.running = true;
-      state.velocity = state.lift;
-    }
-
-    function startAndFly() {
-      resetGame();
-      state.running = true;
-      flap();
-    }
-
-    function updateDifficulty() {
-      const level = getLevel();
-      const score = Math.min(100, state.score);
-
-      state.gravity = 0.58 + level * 0.08 + (score * 0.0025);
-      state.lift = -(8.1 + level * 0.42 + score * 0.02);
-
-      state.pipeGap = Math.max(72, 160 - level * 15 - score * 0.35);
-      state.pipeSpeed = Math.min(9.2, 3.2 + level * 0.95 + score * 0.045);
-
-      if (score >= 90) {
-        state.gravity = 0.87;
-        state.lift = -11.2;
-        state.pipeGap = 70;
-        state.pipeSpeed = 8.8;
-      }
-
-      if (score >= 100) {
-        state.pipeGap = 62;
-        state.pipeSpeed = 9.2;
-      }
-    }
-
-    function createPipe() {
-      const minTop = 50;
-      const maxTop = state.groundY - state.pipeGap - 90;
-      const topHeight = minTop + Math.random() * (maxTop - minTop);
-
-      const shiftChance = Math.random();
-      let shift = 0;
-
-      if (shiftChance > 0.75 && state.score > 20) shift = 18 + Math.random() * 22;
-      else if (shiftChance > 0.52 && state.score > 40) shift = -16 - Math.random() * 18;
-
-      const finalTop = Math.max(40, Math.min(state.groundY - state.pipeGap - 40, topHeight + shift));
-
-      state.pipes.push({
-        x: canvas.width + 30,
-        w: state.pipeWidth,
-        gap: state.pipeGap,
-        topHeight: finalTop,
-        passed: false
-      });
-
-      if (state.score >= 20 && Math.random() > 0.78) {
-        state.pipes.push({
-          x: canvas.width + 90,
-          w: state.pipeWidth - 8,
-          gap: Math.max(58, state.pipeGap - 20),
-          topHeight: Math.max(32, Math.min(state.groundY - state.pipeGap - 30, finalTop + 12)),
-          passed: false
-        });
-      }
-
-      if (state.score >= 35 && Math.random() > 0.8) {
-        state.hazardBirds.push({
-          x: canvas.width + 30,
-          y: Math.random() * (state.groundY - 120) + 50,
-          w: 18,
-          h: 12,
-          dir: -1,
-          speed: 3.5 + state.score * 0.07
-        });
-      }
-
-      if (state.score >= 60 && Math.random() > 0.7) {
-        state.hazardBirds.push({
-          x: canvas.width + 60,
-          y: Math.random() * (state.groundY - 140) + 50,
-          w: 18,
-          h: 12,
-          dir: -1,
-          speed: 4.2 + state.score * 0.08
-        });
-      }
-
-      if (state.score >= 90 && Math.random() > 0.52) {
-        state.hazardBirds.push({
-          x: canvas.width + 90,
-          y: Math.random() * (state.groundY - 150) + 40,
-          w: 18,
-          h: 12,
-          dir: -1,
-          speed: 5.8 + state.score * 0.09
-        });
-      }
-    }
-
-    function updateGame() {
-      if (!state.running || state.over) return;
-
-      updateDifficulty();
-
-      state.velocity += state.gravity;
-      state.birdY += state.velocity;
-
-      state.spawnTimer += 1;
-
-      const spawnRate = Math.max(28, 80 - state.score * 1.15 - getLevel() * 3.2);
-      if (state.spawnTimer >= spawnRate) {
-        createPipe();
-        state.spawnTimer = 0;
-      }
-
-      for (const pipe of state.pipes) {
-        pipe.x -= state.pipeSpeed;
-
-        if (!pipe.passed && pipe.x + pipe.w < state.birdX) {
-          pipe.passed = true;
-          state.score += 1;
-          scoreValue.textContent = state.score;
-          updateBest();
-          applyWeatherTheme();
-        }
-      }
-
-      for (const bird of state.hazardBirds) {
-        bird.x += bird.dir * bird.speed;
-      }
-
-      state.pipes = state.pipes.filter(pipe => pipe.x + pipe.w > -20);
-      state.hazardBirds = state.hazardBirds.filter(bird => bird.x > -60);
-
-      const birdLeft = state.birdX - state.birdRadius;
-      const birdRight = state.birdX + state.birdRadius;
-      const birdTop = state.birdY - state.birdRadius;
-      const birdBottom = state.birdY + state.birdRadius;
-
-      for (const pipe of state.pipes) {
-        const pipeLeft = pipe.x;
-        const pipeRight = pipe.x + pipe.w;
-        const topBottom = pipe.topHeight;
-        const bottomTop = pipe.topHeight + pipe.gap;
-
-        const hitsX = birdRight > pipeLeft && birdLeft < pipeRight;
-        const hitsTop = birdTop < topBottom;
-        const hitsBottom = birdBottom > bottomTop;
-
-        if (hitsX && (hitsTop || hitsBottom)) {
-          state.over = true;
-          state.running = false;
-          updateBest();
-          return;
-        }
-      }
-
-      for (const bird of state.hazardBirds) {
-        const birdBoxLeft = bird.x - bird.w / 2;
-        const birdBoxRight = bird.x + bird.w / 2;
-        const birdBoxTop = bird.y - bird.h / 2;
-        const birdBoxBottom = bird.y + bird.h / 2;
-
-        const hit =
-          birdBoxRight > birdLeft &&
-          birdBoxLeft < birdRight &&
-          birdBoxBottom > birdTop &&
-          birdBoxTop < birdBottom;
-
-        if (hit) {
-          state.over = true;
-          state.running = false;
-          updateBest();
-          return;
-        }
-      }
-
-      if (state.birdY + state.birdRadius >= state.groundY || state.birdY - state.birdRadius <= 0) {
-        state.over = true;
-        state.running = false;
-        updateBest();
-      }
-    }
-
-    function drawBackground() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      sky.addColorStop(0, "#87d5e9");
-      sky.addColorStop(0.7, "#9feaf4");
-      sky.addColorStop(1, "#9ae2b8");
-      ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      if (state.weather === "Cloudy") {
-        ctx.fillStyle = "rgba(255,255,255,0.34)";
-      } else if (state.weather === "Rain") {
-        ctx.fillStyle = "rgba(255,255,255,0.2)";
-      } else if (state.weather === "Storm") {
-        ctx.fillStyle = "rgba(200,220,255,0.12)";
-      } else if (state.weather === "Night") {
-        ctx.fillStyle = "rgba(255,255,255,0.08)";
-      } else {
-        ctx.fillStyle = "rgba(255,255,255,0.55)";
-      }
-
-      for (let i = 0; i < 8; i++) {
-        const x = ((i * 80) - (state.cloudOffset % 80)) + 24;
-        const y = 40 + (i % 3) * 26;
-        ctx.beginPath();
-        ctx.arc(x, y, 18, 0, Math.PI * 2);
-        ctx.arc(x + 18, y - 10, 20, 0, Math.PI * 2);
-        ctx.arc(x + 36, y, 18, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      state.cloudOffset += 0.8;
-
-      ctx.fillStyle = "rgba(88,114,133,0.45)";
-      const skylineY = 300;
-      for (let i = 0; i < 18; i++) {
-        const x = i * 26;
-        const h = 30 + ((i % 5) * 10);
-        ctx.fillRect(x, skylineY - h, 18, h);
-      }
-
-      ctx.fillStyle = "#86d258";
-      ctx.fillRect(0, canvas.height - 46, canvas.width, 46);
-
-      ctx.fillStyle = "#7ebd4a";
-      for (let x = -15; x < canvas.width + 40; x += 24) {
-        ctx.fillRect(x - (state.cloudOffset * 2 % 24), canvas.height - 28, 16, 6);
-      }
-
-      ctx.fillStyle = "#5b9f37";
-      ctx.fillRect(0, canvas.height - 60, canvas.width, 14);
-
-      ctx.fillStyle = "#72c95d";
-      for (let x = -30; x < canvas.width + 50; x += 18) {
-        ctx.fillRect(x - (state.cloudOffset * 2 % 18), canvas.height - 64, 11, 7);
-      }
-    }
-
-    function drawPipe(pipe) {
-      const topHeight = pipe.topHeight;
-      const bottomY = pipe.topHeight + pipe.gap;
-
-      ctx.fillStyle = "#6fbf45";
-      ctx.fillRect(pipe.x, 0, pipe.w, topHeight);
-      ctx.fillRect(pipe.x, bottomY, pipe.w, state.groundY - bottomY);
-
-      ctx.fillStyle = "#8bdb60";
-      ctx.fillRect(pipe.x + 8, 0, 7, topHeight);
-      ctx.fillRect(pipe.x + 8, bottomY, 7, state.groundY - bottomY);
-
-      ctx.fillStyle = "#5aa73e";
-      ctx.fillRect(pipe.x - 8, topHeight - 18, pipe.w + 16, 18);
-      ctx.fillRect(pipe.x - 8, bottomY, pipe.w + 16, 18);
-
-      ctx.fillStyle = "#7ad15a";
-      ctx.fillRect(pipe.x + 8, topHeight - 18, pipe.w - 16, 8);
-      ctx.fillRect(pipe.x + 8, bottomY, pipe.w - 16, 8);
-
-      ctx.fillStyle = "rgba(0,0,0,0.15)";
-      ctx.fillRect(pipe.x + pipe.w - 8, 0, 8, topHeight);
-      ctx.fillRect(pipe.x + pipe.w - 8, bottomY, 8, state.groundY - bottomY);
-    }
-
-    function drawHazardBird(bird) {
-      const x = bird.x;
-      const y = bird.y;
-
-      ctx.save();
-      ctx.translate(x, y);
-
-      ctx.fillStyle = "#ff5d5d";
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 15, 8, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#f2f2f2";
-      ctx.beginPath();
-      ctx.arc(-4, -3, 2.6, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#222";
-      ctx.beginPath();
-      ctx.arc(-3, -3, 1.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#ff8b5e";
-      ctx.beginPath();
-      ctx.moveTo(10, 0);
-      ctx.lineTo(18, -2);
-      ctx.lineTo(10, 5);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = "#ff8b5e";
-      ctx.beginPath();
-      ctx.moveTo(-10, 2);
-      ctx.lineTo(-18, 7);
-      ctx.lineTo(-10, 9);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.restore();
-    }
-
-    function drawMangoBird() {
-      const x = state.birdX;
-      const y = state.birdY;
-
-      ctx.save();
-      ctx.translate(x, y);
-
-      const tilt = Math.max(-1.2, Math.min(1.2, state.velocity / 9));
-      ctx.rotate(tilt);
-
-      ctx.fillStyle = "#ff8a2f";
-      ctx.beginPath();
-      ctx.arc(0, 0, state.birdRadius, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#ffbf6d";
-      ctx.beginPath();
-      ctx.arc(-6, -7, 8, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#e66d00";
-      ctx.beginPath();
-      ctx.ellipse(-11, 5, 14, 10, -0.75, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#ffb24b";
-      ctx.beginPath();
-      ctx.ellipse(8, 8, 12, 9, 0.9, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#0d0d0d";
-      ctx.beginPath();
-      ctx.arc(8, -5, 3.0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#ff5b00";
-      ctx.beginPath();
-      ctx.moveTo(17, 0);
-      ctx.lineTo(28, 3);
-      ctx.lineTo(17, 8);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = "#20d17a";
-      ctx.beginPath();
-      ctx.moveTo(-12, -10);
-      ctx.quadraticCurveTo(-4, -18, 4, -13);
-      ctx.quadraticCurveTo(-5, -2, -12, -10);
-      ctx.fill();
-
-      ctx.restore();
-    }
-
-    function drawEndText() {
-      if (!state.over) return;
-
-      ctx.fillStyle = "rgba(0,0,0,0.28)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#fff";
-      ctx.textAlign = "center";
-      ctx.font = "900 28px Arial";
-      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 18);
-
-      ctx.font = "700 18px Arial";
-      ctx.fillStyle = "#eaeaea";
-      ctx.fillText("Score: " + state.score, canvas.width / 2, canvas.height / 2 + 18);
-
-      ctx.fillStyle = "#ffdd8a";
-      ctx.fillText("Tap or Space to retry", canvas.width / 2, canvas.height / 2 + 54);
-    }
-
-    function drawStartText() {
-      if (state.running || state.over) return;
-
-      ctx.fillStyle = "rgba(0,0,0,0.07)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "900 30px Arial";
-      ctx.fillText("Mango Bird", canvas.width / 2, canvas.height / 2 - 12);
-
-      ctx.font = "700 18px Arial";
-      ctx.fillText("Tap or press Space to flap", canvas.width / 2, canvas.height / 2 + 22);
-    }
-
-    function render() {
-      drawBackground();
-
-      for (const pipe of state.pipes) {
-        drawPipe(pipe);
-      }
-
-      for (const bird of state.hazardBirds) {
-        drawHazardBird(bird);
-      }
-
-      drawMangoBird();
-      drawStartText();
-      drawEndText();
-    }
-
-    function gameLoop() {
-      updateGame();
-      render();
-      requestAnimationFrame(gameLoop);
-    }
-
-    function onTap() {
-      if (!state.running && !state.over) {
-        startAndFly();
-      } else if (state.over) {
-        startAndFly();
-      } else {
-        flap();
-      }
-    }
-
-    startBtn.addEventListener("click", startAndFly);
-    restartBtn.addEventListener("click", startAndFly);
-
-    canvas.addEventListener("pointerdown", (e) => {
-      e.preventDefault();
-      onTap();
-    });
-
-    canvas.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      onTap();
-    }, { passive: false });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Space") {
-        e.preventDefault();
-        onTap();
-      }
-    });
-
-    applyWeatherTheme();
-    resetGame();
-    gameLoop();
-  </script>
+</header>
+<nav>
+  <button class="tab active" data-tab="play">🎮 Play</button>
+  <button class="tab" data-tab="packs">🎁 Skin Packs</button>
+  <button class="tab" data-tab="collection">👕 Collection</button>
+  <button class="tab" data-tab="showcase">✨ Showcase</button>
+</nav>
+<main>
+  <section id="play" class="page">
+    <div class="panel">
+      <h2>🥭 Mango Run</h2>
+      <p class="muted">Tap, click or press Space to fly through the pipes. Each pipe you pass adds distance. Your points are awarded when the round ends.</p>
+      <canvas id="gameCanvas" width="600" height="420"></canvas>
+      <div class="game-controls">
+        <button class="primary" id="startButton">▶ Start Run</button>
+        <button class="secondary" id="flyButton">⬆ FLAP</button>
+      </div>
+      <div class="ability-box">
+        <strong id="equippedName">🥭 Classic Mango</strong>
+        <div class="muted" id="equippedAbility">Ability: None</div>
+        <button class="secondary" id="abilityButton">⚡ Use Ability</button>
+        <div class="muted" id="cooldownText">Abilities recharge during your run.</div>
+      </div>
+      <p class="muted" id="gameMessage" aria-live="polite">Press Start Run when you're ready.</p>
+    </div>
+    <div class="panel">
+      <h2>📜 How points work</h2>
+      <p>Finish a run and earn <strong>5 points per distance point</strong>, plus a small bonus for each pipe you pass. Every run counts!</p>
+    </div>
+  </section>
+  <section id="packs" class="page hidden">
+    <div class="panel">
+      <h2>🎁 Mango Mystery Packs</h2>
+      <p class="muted">Spend points to unlock a random skin. The wheel displays the actual reward and stops on the skin you receive. Duplicate skins give you a points refund.</p>
+      <div class="pack-grid" id="packGrid"></div>
+    </div>
+    <div class="panel hidden" id="openingPanel">
+      <h2>🎰 Opening pack...</h2>
+      <p class="muted">Watch the wheel. What will you unlock?</p>
+      <div class="wheel-shell" id="wheelShell">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="wheel"></div>
+      </div>
+      <div id="reveal" class="result hidden"></div>
+    </div>
+  </section>
+  <section id="collection" class="page hidden">
+    <div class="panel">
+      <h2>👕 Your Skin Collection</h2>
+      <p class="muted">Unlock skins from packs, inspect their abilities and equip your favourite.</p>
+      <div class="skin-grid" id="collectionGrid"></div>
+    </div>
+  </section>
+  <section id="showcase" class="page hidden">
+    <div class="panel">
+      <h2>✨ Skin Showcase</h2>
+      <p class="muted">Your equipped skin, displayed in its own spotlight.</p>
+      <div class="result" id="showcaseCard"></div>
+      <div class="game-controls">
+        <button class="secondary" id="previousSkin">← Previous unlocked</button>
+        <button class="secondary" id="nextSkin">Next unlocked →</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>🏆 Collection Progress</h2>
+      <div id="progressText"></div>
+      <div style="height:12px;background:#33314c;border-radius:99px;overflow:hidden;margin-top:12px">
+        <div id="progressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#ffe778,#ff6be0);transition:width .4s"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Mango Bird DX · Your progress is saved on this device.</footer>
+<div id="toast"></div>
+<script>
+"use strict";
+/* =========================
+   SKIN DATABASE: 40 SKINS
+========================= */
+const skins = [
+ {id:0,name:"Classic Mango",emoji:"🥭",rarity:"Common",ability:"No special ability."},
+ {id:1,name:"Sunny Mango",emoji:"🌞",rarity:"Common",ability:"A sunny look. No special power."},
+ {id:2,name:"Lime Pop",emoji:"🍋",rarity:"Common",ability:"Fresh green style."},
+ {id:3,name:"Strawberry Pop",emoji:"🍓",rarity:"Common",ability:"Berry-bright style."},
+ {id:4,name:"Blueberry",emoji:"🫐",rarity:"Common",ability:"Cool berry style."},
+ {id:5,name:"Watermelon",emoji:"🍉",rarity:"Common",ability:"Summer fruit style."},
+ {id:6,name:"Coconut",emoji:"🥥",rarity:"Common",ability:"Tropical style."},
+ {id:7,name:"Peachy",emoji:"🍑",rarity:"Common",ability:"Peachy style."},
+ {id:8,name:"Pineapple",emoji:"🍍",rarity:"Common",ability:"Tropical style."},
+ {id:9,name:"Golden Beak",emoji:"🐤",rarity:"Common",ability:"Classic bird style."},
+ {id:10,name:"Mint Chip",emoji:"🌿",rarity:"Common",ability:"Minty style."},
+ {id:11,name:"Cherry Bomb",emoji:"🍒",rarity:"Common",ability:"Cherry-red style."},
+ {id:12,name:"Ocean Mango",emoji:"🌊",rarity:"Rare",ability:"Collect 10% more run points."},
+ {id:13,name:"Frostbite",emoji:"❄️",rarity:"Rare",ability:"A frosty look."},
+ {id:14,name:"Toxic Slime",emoji:"🧪",rarity:"Rare",ability:"Collect 10% more run points."},
+ {id:15,name:"Solar Flare",emoji:"☀️",rarity:"Rare",ability:"A radiant look."},
+ {id:16,name:"Cloud Hopper",emoji:"☁️",rarity:"Rare",ability:"A cloud-themed look."},
+ {id:17,name:"Magma Bird",emoji:"🌋",rarity:"Rare",ability:"A volcanic look."},
+ {id:18,name:"Moon Dust",emoji:"🌙",rarity:"Rare",ability:"A moonlit look."},
+ {id:19,name:"Neon Mint",emoji:"💚",rarity:"Rare",ability:"Collect 10% more run points."},
+ {id:20,name:"Bubblegum",emoji:"🫧",rarity:"Rare",ability:"A bubbly look."},
+ {id:21,name:"Thunder Beak",emoji:"⚡",rarity:"Rare",ability:"A crackling look."},
+ {id:22,name:"Phantom Mango",emoji:"👻",rarity:"Epic",ability:"Start each run with one shield."},
+ {id:23,name:"Galaxy Fruit",emoji:"🌌",rarity:"Epic",ability:"Collect 20% more run points."},
+ {id:24,name:"Cyber Bird",emoji:"🤖",rarity:"Epic",ability:"Start each run with one shield."},
+ {id:25,name:"Dragon Fruit",emoji:"🐉",rarity:"Epic",ability:"A dragon-inspired look."},
+ {id:26,name:"Crystal Bloom",emoji:"💎",rarity:"Epic",ability:"Collect 20% more run points."},
+ {id:27,name:"Shadow Wings",emoji:"🦇",rarity:"Epic",ability:"Start each run with one shield."},
+ {id:28,name:"Aurora",emoji:"🌈",rarity:"Epic",ability:"Collect 20% more run points."},
+ {id:29,name:"Mecha Mango",emoji:"🦾",rarity:"Epic",ability:"Start each run with one shield."},
+ {id:30,name:"King Mango",emoji:"👑",rarity:"Legendary",ability:"Collect 35% more run points."},
+ {id:31,name:"Inferno Emperor",emoji:"🔥",rarity:"Legendary",ability:"Start each run with two shields."},
+ {id:32,name:"Storm Lord",emoji:"🌩️",rarity:"Legendary",ability:"Activate Time Slow for 3 seconds."},
+ {id:33,name:"Celestial",emoji:"🌠",rarity:"Legendary",ability:"Collect 35% more run points."},
+ {id:34,name:"Prism Guardian",emoji:"🔮",rarity:"Legendary",ability:"Start each run with two shields."},
+ {id:35,name:"Void Walker",emoji:"🌀",rarity:"Legendary",ability:"Activate Time Slow for 3 seconds."},
+ {id:36,name:"Eclipse Knight",emoji:"🌑",rarity:"Legendary",ability:"Collect 35% more run points."},
+ {id:37,name:"Golden Phoenix",emoji:"🦅",rarity:"Legendary",ability:"Start each run with two shields."},
+ {id:38,name:"Chrono Mango",emoji:"⏳",rarity:"Mythical",ability:"TIME STOP: slow obstacles for 5 seconds."},
+ {id:39,name:"Void Emperor",emoji:"🌌",rarity:"Mythical",ability:"VOID SHIFT: slow obstacles for 5 seconds and gain a shield."}
+];
+const rarityOrder = ["Common","Rare","Epic","Legendary","Mythical"];
+const rarityColors = {
+ Common:"#a8a8bb",Rare:"#55baff",Epic:"#c58aff",
+ Legendary:"#ffb84f",Mythical:"#ff6be0"
+};
+/* Percentages are shared by each pack. */
+const packs = [
+ {id:"basic",name:"Fruit Crate",emoji:"📦",price:100,
+  chances:{Common:70,Rare:22,Epic:7,Legendary:1,Mythical:0}},
+ {id:"premium",name:"Golden Pack",emoji:"🎁",price:350,
+  chances:{Common:35,Rare:35,Epic:20,Legendary:9,Mythical:1}},
+ {id:"mythic",name:"Cosmic Pack",emoji:"🌌",price:900,
+  chances:{Common:10,Rare:25,Epic:35,Legendary:25,Mythical:5}}
+];
+const SAVE_KEY = "mangoBirdDX_save_v2";
+const defaultSave = {
+ points:0,best:0,unlocked:[0],equipped:0
+};
+let save;
+try {
+ const raw = JSON.parse(localStorage.getItem(SAVE_KEY) || "null");
+ save = {...defaultSave,...(raw || {})};
+ if (!Array.isArray(save.unlocked)) save.unlocked=[0];
+ save.unlocked=[...new Set([0,...save.unlocked.filter(id=>skins.some(s=>s.id===id))])];
+ if (!skins.some(s=>s.id===save.equipped) || !save.unlocked.includes(save.equipped)) save.equipped=0;
+ save.points=Math.max(0,Number(save.points)||0);
+ save.best=Math.max(0,Number(save.best)||0);
+} catch {
+ save={...defaultSave,unlocked:[0]};
+}
+function persist() {
+ localStorage.setItem(SAVE_KEY,JSON.stringify(save));
+}
+function skinById(id) { return skins.find(s=>s.id===id) || skins[0]; }
+function equipped() { return skinById(save.equipped); }
+function formatPoints(n) { return Math.floor(n).toLocaleString("en-GB"); }
+function toast(message) {
+ const el=document.getElementById("toast");
+ el.textContent=message;
+ el.classList.add("show");
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>el.classList.remove("show"),2400);
+}
+function updateStats() {
+ document.getElementById("points").textContent=formatPoints(save.points);
+ document.getElementById("skinCount").textContent=save.unlocked.length;
+ document.getElementById("best").textContent=save.best;
+}
+function setTab(id) {
+ document.querySelectorAll(".page").forEach(p=>p.classList.toggle("hidden",p.id!==id));
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+ if(id==="collection") renderCollection();
+ if(id==="showcase") renderShowcase();
+ if(id==="packs") renderPacks();
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+/* =========================
+   COLLECTION + SHOWCASE
+========================= */
+function renderCollection() {
+ const grid=document.getElementById("collectionGrid");
+ grid.innerHTML="";
+ skins.forEach(s=>{
+  const owned=save.unlocked.includes(s.id);
+  const isEquipped=save.equipped===s.id;
+  const card=document.createElement("article");
+  card.className="skin-card "+(isEquipped?"equipped":"");
+  card.innerHTML=`
+   <div class="skin-icon ${owned?"":"locked-icon"}">${owned?s.emoji:"❔"}</div>
+   <div class="skin-name">${owned?s.name:"???"}</div>
+   <div class="rarity ${s.rarity}">${s.rarity}</div>
+   <p>${owned?s.ability:"Unlock this skin from a pack."}</p>
+   <div class="locked-label">${owned?"UNLOCKED":"🔒 LOCKED"}</div>
+   <button class="${isEquipped?"secondary":"primary"}" ${!owned||isEquipped?"disabled":""} data-equip="${s.id}">
+    ${isEquipped?"✓ Equipped":owned?"Equip":"Locked"}
+   </button>`;
+  grid.appendChild(card);
+ });
+ grid.querySelectorAll("[data-equip]").forEach(b=>b.addEventListener("click",()=>{
+  const id=Number(b.dataset.equip);
+  if(!save.unlocked.includes(id)) return;
+  save.equipped=id;
+  persist();
+  updateStats();
+  renderCollection();
+  updateAbilityUI();
+  renderShowcase();
+  toast("Equipped "+skinById(id).name+"!");
+ }));
+ document.getElementById("progressText").textContent=
+  `${save.unlocked.length} of ${skins.length} skins unlocked`;
+ document.getElementById("progressBar").style.width=
+  `${save.unlocked.length/skins.length*100}%`;
+}
+let showcaseIndex=0;
+function renderShowcase() {
+ const s=skinById(save.equipped);
+ document.getElementById("showcaseCard").innerHTML=`
+  <div class="big">${s.emoji}</div>
+  <h3 style="color:${rarityColors[s.rarity]}">${s.name}</h3>
+  <div class="rarity ${s.rarity}">${s.rarity}</div>
+  <p>${s.ability}</p>
+  <p class="muted">Skin ID #${String(s.id+1).padStart(2,"0")} · Unlocked</p>`;
+ const owned=save.unlocked.map(skinById);
+ showcaseIndex=Math.max(0,owned.findIndex(x=>x.id===save.equipped));
+}
+function cycleShowcase(direction) {
+ const owned=save.unlocked.map(skinById);
+ if(!owned.length) return;
+ showcaseIndex=(showcaseIndex+direction+owned.length)%owned.length;
+ save.equipped=owned[showcaseIndex].id;
+ persist();
+ updateStats();
+ updateAbilityUI();
+ renderShowcase();
+}
+document.getElementById("previousSkin").addEventListener("click",()=>cycleShowcase(-1));
+document.getElementById("nextSkin").addEventListener("click",()=>cycleShowcase(1));
+/* =========================
+   PACKS + RANDOM REWARDS
+========================= */
+function renderPacks() {
+ const grid=document.getElementById("packGrid");
+ grid.innerHTML="";
+ packs.forEach(pack=>{
+  const card=document.createElement("div");
+  card.className="pack";
+  const probabilities=rarityOrder.map(r=>
+   `<div><span style="color:${rarityColors[r]}">${r}</span>: <strong>${pack.chances[r]}%</strong></div>`
+  ).join("");
+  card.innerHTML=`
+   <div class="pack-art">${pack.emoji}</div>
+   <h3>${pack.name}</h3>
+   <div class="muted">Cost: 🪙 ${formatPoints(pack.price)}</div>
+   <div class="probabilities">${probabilities}</div>
+   <button class="primary" data-pack="${pack.id}">Open Pack</button>`;
+  grid.appendChild(card);
+ });
+ grid.querySelectorAll("[data-pack]").forEach(b=>b.addEventListener("click",()=>openPack(b.dataset.pack)));
+}
+function weightedRarity(chances) {
+ const roll=Math.random()*100;
+ let cumulative=0;
+ for(const rarity of rarityOrder) {
+  cumulative+=chances[rarity]||0;
+  if(roll<cumulative) return rarity;
+ }
+ return "Common";
+}
+function chooseReward(pack) {
+ const rarity=weightedRarity(pack.chances);
+ let pool=skins.filter(s=>s.rarity===rarity);
+ if(!pool.length) pool=skins.filter(s=>s.rarity!=="Mythical");
+ const locked=pool.filter(s=>!save.unlocked.includes(s.id));
+ if(locked.length) return locked[Math.floor(Math.random()*locked.length)];
+ return pool[Math.floor(Math.random()*pool.length)];
+}
+let packOpening=false;
+function openPack(packId) {
+ if(packOpening) return;
+ const pack=packs.find(p=>p.id===packId);
+ if(!pack) return;
+ if(save.points<pack.price) {
+  toast(`You need ${formatPoints(pack.price-save.points)} more points.`);
+  return;
+ }
+ save.points-=pack.price;
+ persist();
+ updateStats();
+ packOpening=true;
+ document.querySelectorAll("[data-pack]").forEach(b=>b.disabled=true);
+ const reward=chooseReward(pack);
+ const isNew=!save.unlocked.includes(reward.id);
+ const openingPanel=document.getElementById("openingPanel");
+ const reveal=document.getElementById("reveal");
+ const wheel=document.getElementById("wheel");
+ openingPanel.classList.remove("hidden");
+ reveal.classList.add("hidden");
+ wheel.innerHTML="";
+ wheel.style.transition="none";
+ wheel.style.transform="translateX(0)";
+ // Build a long horizontal wheel. The actual reward is at the centre.
+ const total=48;
+ const targetIndex=total-5;
+ for(let i=0;i<total;i++) {
+  const s=(i===targetIndex)?reward:skins[Math.floor(Math.random()*skins.length)];
+  const item=document.createElement("div");
+  item.className="wheel-item";
+  item.style.borderColor=rarityColors[s.rarity];
+  item.innerHTML=`<div class="skin-icon">${s.emoji}</div>
+   <strong>${s.name}</strong>
+   <span class="rarity ${s.rarity}">${s.rarity}</span>`;
+  wheel.appendChild(item);
+ }
+ const itemWidth=115;
+ const shell=document.getElementById("wheelShell");
+ const centre=shell.clientWidth/2;
+ const destination=targetIndex*itemWidth+itemWidth/2-centre;
+ void wheel.offsetWidth;
+ wheel.style.transition="transform 5.5s cubic-bezier(.08,.72,.12,1)";
+ wheel.style.transform=`translateX(${-destination}px)`;
+ setTimeout(()=>{
+  let duplicate=false;
+  if(isNew) {
+   save.unlocked.push(reward.id);
+  } else {
+   duplicate=true;
+   const refund=Math.max(20,Math.floor(pack.price*.25));
+   save.points+=refund;
+  }
+  persist();
+  updateStats();
+  renderCollection();
+  reveal.classList.remove("hidden");
+  reveal.style.border=`1px solid ${rarityColors[reward.rarity]}`;
+  reveal.innerHTML=`
+   <div class="big" style="animation:pop .65s ease">${reward.emoji}</div>
+   <h3 style="color:${rarityColors[reward.rarity]}">${isNew?"NEW SKIN UNLOCKED!":"DUPLICATE SKIN!"}</h3>
+   <h2>${reward.name}</h2>
+   <div class="rarity ${reward.rarity}">${reward.rarity}</div>
+   <p>${reward.ability}</p>
+   <p>${duplicate?"You already own this skin. A points refund has been added.":"Added to your collection!"}</p>
+   <button class="primary" id="revealEquip">${save.unlocked.includes(reward.id)&&save.equipped===reward.id?"Already equipped":"Equip Skin"}</button>
+   <button class="secondary" id="closeReveal">Continue</button>`;
+  document.getElementById("revealEquip").addEventListener("click",()=>{
+   save.equipped=reward.id;
+   persist();
+   updateStats();
+   updateAbilityUI();
+   renderCollection();
+   renderShowcase();
+   toast("Equipped "+reward.name+"!");
+   reveal.querySelector("#revealEquip").textContent="✓ Equipped";
+  });
+  document.getElementById("closeReveal").addEventListener("click",()=>{
+   openingPanel.classList.add("hidden");
+   packOpening=false;
+   document.querySelectorAll("[data-pack]").forEach(b=>b.disabled=false);
+   renderPacks();
+  });
+  toast(isNew?`Unlocked ${reward.name}!`:"Duplicate! Points refunded.");
+ },5600);
+}
+/* =========================
+   GAME ENGINE
+========================= */
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
+const W=canvas.width,H=canvas.height;
+let state="ready";
+let bird={x:145,y:190,vy:0};
+let pipes=[];
+let frame=0,score=0,runDistance=0;
+let shields=0,abilityCooldown=0,slowTime=0;
+let lastTime=0;
+const gravity=.34,flapPower=-6.3;
+let gameLoopId=0;
+function resetRun() {
+ bird={x:145,y:190,vy:0};
+ pipes=[];
+ frame=0;score=0;runDistance=0;
+ shields=equipped().rarity==="Legendary"?2:
+         equipped().rarity==="Epic"?1:0;
+ abilityCooldown=0;slowTime=0;
+ for(let i=0;i<3;i++) pipes.push({x:430+i*220,gap:145,passed:false});
+ updateAbilityUI();
+}
+function startRun() {
+ if(state==="play") return;
+ resetRun();
+ state="play";
+ document.getElementById("gameMessage").textContent="Fly through the gaps!";
+ document.getElementById("startButton").textContent="↻ Restart Run";
+ lastTime=0;
+ cancelAnimationFrame(gameLoopId);
+ gameLoopId=requestAnimationFrame(loop);
+}
+function flap() {
+ if(state!=="play") {
+  if(state==="ready"||state==="over") startRun();
+  return;
+ }
+ bird.vy=flapPower;
+}
+function endRun() {
+ if(state!=="play") return;
+ state="over";
+ const distance=score;
+ const skin=equipped();
+ let multiplier=1;
+ if(skin.rarity==="Rare") multiplier=1.1;
+ if(skin.rarity==="Epic") multiplier=1.2;
+ if(skin.rarity==="Legendary") multiplier=1.35;
+ if(skin.rarity==="Mythical") multiplier=1.5;
+ const earned=Math.max(5,Math.floor((distance*5+score*2)*multiplier));
+ save.points+=earned;
+ save.best=Math.max(save.best,distance);
+ persist();
+ updateStats();
+ document.getElementById("gameMessage").innerHTML=
+  `<strong>Run over!</strong><br>Distance: ${distance}<br>Points earned: 🪙 ${earned}<br>New total: 🪙 ${formatPoints(save.points)}`;
+ document.getElementById("startButton").textContent="▶ Play Again";
+}
+function hitObstacle() {
+ if(shields>0) {
+  shields--;
+  bird.vy=-3;
+  bird.y=Math.max(25,Math.min(H-50,bird.y));
+  toast("🛡️ Shield saved you!");
+  updateAbilityUI();
+  return false;
+ }
+ endRun();
+ return true;
+}
+function activateAbility() {
+ if(state!=="play") {
+  toast("Start a run first!");
+  return;
+ }
+ const s=equipped();
+ if(abilityCooldown>0) {
+  toast("Ability is recharging!");
+  return;
+ }
+ if(s.rarity==="Mythical") {
+  slowTime=300;
+  if(s.id===39) shields++;
+  abilityCooldown=600;
+  toast(s.id===38?"⏳ TIME STOP!":"🌌 VOID SHIFT!");
+ } else if(s.rarity==="Legendary"&&(s.id===32||s.id===35)) {
+  slowTime=180;
+  abilityCooldown=600;
+  toast("⚡ TIME SLOW!");
+ } else if(s.rarity==="Epic"&&shields===0) {
+  shields++;
+  abilityCooldown=600;
+  toast("🛡️ Phantom shield activated!");
+ } else {
+  toast("This skin's passive bonus is active!");
+  abilityCooldown=180;
+ }
+ updateAbilityUI();
+}
+function updateAbilityUI() {
+ const s=equipped();
+ document.getElementById("equippedName").textContent=s.emoji+" "+s.name;
+ document.getElementById("equippedAbility").textContent="Ability: "+s.ability;
+ const button=document.getElementById("abilityButton");
+ button.disabled=state!=="play"||abilityCooldown>0;
+ document.getElementById("cooldownText").textContent=
+  shields>0?`Shields remaining: ${shields}`:
+  abilityCooldown>0?`Cooldown: ${Math.ceil(abilityCooldown/60)} seconds`:
+  "Ready when you are!";
+}
+function update(dt) {
+ if(state!=="play") return;
+ const slowFactor=slowTime>0?.35:1;
+ if(slowTime>0) slowTime=Math.max(0,slowTime-dt);
+ if(abilityCooldown>0) abilityCooldown=Math.max(0,abilityCooldown-dt);
+ frame+=dt*slowFactor;
+ bird.vy+=gravity*dt*slowFactor;
+ bird.y+=bird.vy*dt*slowFactor;
+ runDistance+=dt/60;
+ if(frame>80) {
+  frame=0;
+  const last=pipes[pipes.length-1];
+  pipes.push({x:last.x+220,gap:120+Math.random()*55,passed:false});
+ }
+ pipes.forEach(p=>{
+  p.x-=2.7*dt*slowFactor;
+  const top= p.gap;
+  const gapSize=145;
+  const bottom=top+gapSize;
+  if(!p.passed&&p.x+58<bird.x) {
+   p.passed=true;
+   score++;
+  }
+  const overlaps=bird.x+17>p.x&&bird.x-17<p.x+58;
+  const hits=bird.y-15<top||bird.y+15>bottom;
+  if(overlaps&&hits) {
+   if(!p.hitHandled) {
+    p.hitHandled=true;
+    hitObstacle();
+   }
+  }
+ });
+ pipes=pipes.filter(p=>p.x>-80);
+ if(bird.y<0) {
+  bird.y=0;
+  if(bird.vy<0) bird.vy=0;
+ }
+ if(bird.y>H-20) {
+  bird.y=H-20;
+  if(hitObstacle()) return;
+  bird.vy=-3;
+ }
+ updateAbilityUI();
+}
+function drawBackground() {
+ const grad=ctx.createLinearGradient(0,0,0,H);
+ grad.addColorStop(0,"#78d9ef");
+ grad.addColorStop(1,"#e6f8c5");
+ ctx.fillStyle=grad;
+ ctx.fillRect(0,0,W,H);
+ // floating clouds
+ ctx.fillStyle="#ffffffaa";
+ for(let i=0;i<5;i++) {
+  let x=((i*155-frame*.4)%700+700)%700-50;
+  let y=55+(i%3)*42;
+  ctx.beginPath();
+  ctx.arc(x,y,20,0,Math.PI*2);
+  ctx.arc(x+22,y-10,25,0,Math.PI*2);
+  ctx.arc(x+47,y,18,0,Math.PI*2);
+  ctx.fill();
+ }
+ ctx.fillStyle="#8bce8a";
+ ctx.fillRect(0,H-18,W,18);
+}
+function drawPipes() {
+ pipes.forEach(p=>{
+  const gapSize=145;
+  const top=p.gap,bottom=top+gapSize;
+  const pipeGrad=ctx.createLinearGradient(p.x,0,p.x+58,0);
+  pipeGrad.addColorStop(0,"#138a57");
+  pipeGrad.addColorStop(.5,"#42d58a");
+  pipeGrad.addColorStop(1,"#087344");
+  ctx.fillStyle=pipeGrad;
+  ctx.fillRect(p.x,0,58,top);
+  ctx.fillRect(p.x,bottom,58,H-bottom);
+  ctx.fillStyle="#087344";
+  ctx.fillRect(p.x-5,top-14,68,14);
+  ctx.fillRect(p.x-5,bottom,68,14);
+  ctx.strokeStyle="#ffffff55";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(p.x+12,0);ctx.lineTo(p.x+12,top-14);
+  ctx.moveTo(p.x+12,bottom+14);ctx.lineTo(p.x+12,H);
+  ctx.stroke();
+ });
+}
+function drawBird() {
+ const s=equipped();
+ ctx.save();
+ ctx.translate(bird.x,bird.y);
+ ctx.rotate(Math.max(-.45,Math.min(.6,bird.vy*.055)));
+ if(s.rarity==="Mythical"||s.rarity==="Legendary") {
+  ctx.shadowColor=rarityColors[s.rarity];
+  ctx.shadowBlur=slowTime>0?25:12;
+ }
+ // Body
+ ctx.fillStyle=s.id===0?"#ffbd36":rarityColors[s.rarity];
+ ctx.beginPath();
+ ctx.ellipse(0,0,22,18,0,0,Math.PI*2);
+ ctx.fill();
+ ctx.shadowBlur=0;
+ // Wing
+ ctx.fillStyle="#fff1ad";
+ ctx.beginPath();
+ ctx.ellipse(-7,5,11,7,Math.sin(frame*.15)*.3,0,Math.PI*2);
+ ctx.fill();
+ // Eye
+ ctx.fillStyle="white";
+ ctx.beginPath();ctx.arc(9,-6,7,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#222";
+ ctx.beginPath();ctx.arc(12,-6,3,0,Math.PI*2);ctx.fill();
+ // Beak
+ ctx.fillStyle="#ff7040";
+ ctx.beginPath();
+ ctx.moveTo(19,0);ctx.lineTo(32,5);ctx.lineTo(19,9);ctx.closePath();ctx.fill();
+ // Skin emblem
+ ctx.font="15px system-ui";
+ ctx.textAlign="center";
+ ctx.fillText(s.emoji,0,-24);
+ if(s.rarity==="Mythical"&&slowTime>0) {
+  ctx.strokeStyle="#ff6be0";
+  ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(0,0,32+Math.sin(frame*.3)*3,0,Math.PI*2);ctx.stroke();
+ }
+ ctx.restore();
+}
+function drawOverlay() {
+ ctx.textAlign="center";
+ if(state==="ready"||state==="over") {
+  ctx.fillStyle="#11152cbb";
+  ctx.fillRect(55,145,W-110,115);
+  ctx.fillStyle="#fff";
+  ctx.font="bold 26px system-ui";
+  ctx.fillText(state==="ready"?"MANGO RUN":"RUN OVER",W/2,190);
+  ctx.font="16px system-ui";
+  ctx.fillText(state==="ready"?"Tap Start or flap to fly":"Distance: "+score,W/2,220);
+ } else {
+  ctx.fillStyle="#17213c";
+  ctx.font="bold 28px system-ui";
+  ctx.fillText(score,W/2,45);
+  if(slowTime>0) {
+   ctx.fillStyle="#ff6be0";
+   ctx.font="bold 14px system-ui";
+   ctx.fillText("TIME DISTORTION",W/2,67);
+  }
+ }
+}
+function render() {
+ drawBackground();
+ drawPipes();
+ drawBird();
+ drawOverlay();
+}
+function loop(now) {
+ const dt=lastTime?Math.min(2,(now-lastTime)/16.667):1;
+ lastTime=now;
+ update(dt);
+ render();
+ if(state==="play") gameLoopId=requestAnimationFrame(loop);
+}
+document.getElementById("startButton").addEventListener("click",startRun);
+document.getElementById("flyButton").addEventListener("click",flap);
+document.getElementById("abilityButton").addEventListener("click",activateAbility);
+canvas.addEventListener("pointerdown",flap);
+document.addEventListener("keydown",e=>{
+ if(e.code==="Space"&&!e.repeat) {
+  e.preventDefault();
+  flap();
+ }
+});
+const style=document.createElement("style");
+style.textContent="@keyframes pop{0%{transform:scale(.2) rotate(-20deg);opacity:0}70%{transform:scale(1.2) rotate(8deg)}100%{transform:scale(1);opacity:1}}";
+document.head.appendChild(style);
+/* INITIALIZE */
+function init() {
+ updateStats();
+ renderPacks();
+ renderCollection();
+ renderShowcase();
+ updateAbilityUI();
+ resetRun();
+ render();
+}
+init();
+</script>
 </body>
 </html>
